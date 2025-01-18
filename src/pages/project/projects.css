@@ -1,0 +1,45 @@
+.projects-container {
+    padding: 20px;
+    width: 100%;
+    /* max-width: 800px; */
+    /* margin: 0 auto; */
+}
+
+.create-project {
+    margin-bottom: 0;
+}
+
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.create-project input,
+.create-project textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.project-list {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+}
+
+.project-card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.project-card button {
+    margin-top: 10px;
+}
