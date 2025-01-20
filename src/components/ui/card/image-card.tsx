@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import './image-card.css';
 
 // Define the types for annotation and image
@@ -7,6 +8,7 @@ interface Annotation {
 }
 
 interface ImageProps {
+  image_id: string
   image_url: string; // URL of the image
   image_name: string; // Name of the image
   annotations?: Annotation[]; // Optional annotations
@@ -14,11 +16,13 @@ interface ImageProps {
 
 interface ImageCardProps {
   image: ImageProps; // Prop type for the component
+  index: number
+  onClick: (imageID: string) => void
 }
 
-const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
+const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, index }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null); // Type the canvasRef
-
+  const navigate = useNavigate();
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return; // Handle null canvas
@@ -50,9 +54,16 @@ const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
     };
   }, [image]);
 
+
+  const handleOnClick = (imageID: string, index: number): void => {
+    if (onClick) {
+      onClick(imageID, index)
+    }
+  }
+
   return (
     <div className="image-card">
-      <canvas ref={canvasRef} className="canvas" />
+      <canvas ref={canvasRef} className="canvas" onClick={() => handleOnClick(image.image_id, index)}/>
       <p>{image.image_name}</p>
     </div>
   );

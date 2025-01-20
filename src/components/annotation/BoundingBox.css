@@ -1,0 +1,68 @@
+.bounding-box {
+  position: absolute;
+  border: 3px solid;
+  cursor: move;
+}
+
+.bounding-box.selected {
+  border-color: var(--primary);
+}
+
+.bounding-box.not-selected {
+  border-color: rgba(128, 0, 255, 0.822);
+}
+
+.bounding-box.draw-mode {
+  pointer-events: none;
+}
+
+.bounding-box.selected-bg {
+  background-color: rgba(128, 0, 255, 0.281);
+}
+
+.resize-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary);
+  border: 2px solid rgb(255, 255, 255);
+  transform: translate(-50%, -50%);
+}
+
+.resize-handle.nw {
+  left: 0;
+  top: 0;
+  cursor: nw-resize;
+}
+
+.resize-handle.ne {
+  right: 0;
+  top: 0;
+  cursor: ne-resize;
+  transform: translate(50%, -50%);
+}
+
+.resize-handle.sw {
+  left: 0;
+  bottom: 0;
+  cursor: sw-resize;
+  transform: translate(-50%, 50%);
+}
+
+.resize-handle.se {
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
+  transform: translate(50%, 50%);
+}
+
+.box-label {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}

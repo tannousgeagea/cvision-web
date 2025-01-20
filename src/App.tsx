@@ -7,6 +7,7 @@ import Dataset from './pages/dataset/dataset';
 import Versions from './pages/versions/versions';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ProjectLayout from './components/ui/common/project-layout';
+import Index from './pages/annotate/annotate-page';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="versions/generate" element={<Versions mode="generate" />} />
           </Route>
         </Route>
+        <Route path='/projects/:projectId/:annotate/:imageID' element={<Index />} />
       </Routes>
     </Router>
   );

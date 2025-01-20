@@ -1,0 +1,28 @@
+/* BackArrow.css */
+.back-arrow {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #00d1b2; /* Adjust color as needed */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: fit-content;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transition: background-color 0.3s;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+  
+  .back-arrow:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .back-arrow span {
+    font-size: 20px;
+  }
+  

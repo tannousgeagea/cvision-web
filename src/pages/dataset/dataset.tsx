@@ -1,7 +1,7 @@
 import React, { useState, FC } from "react";
 import useFetchData from "@/hooks/use-fetch-data";
 import ImageCard from "@/components/ui/card/image-card";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import FilterTabs from "@/components/ui/filter/filter-tabs";
 import Spinner from '@/components/ui/animation/spinner';
 import PaginationControls from "@/components/ui/actions/pagination-control";
@@ -9,6 +9,7 @@ import DatasetActions from "@/components/ui/actions/dataset-actions";
 
 import "./dataset.css";
 import { da } from "date-fns/locale";
+import { Images } from "lucide-react";
 
 interface Filter {
   key: string;
@@ -27,6 +28,7 @@ interface DataResponse {
 
 const Dataset: FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
+  const navigate = useNavigate()
   const [selectedFilter, setSelectedFilter] = useState<string>("unannotated");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 50;
@@ -48,6 +50,10 @@ const Dataset: FC = () => {
     { data?: DataResponse; loading: boolean; error?: Error | null; refetch: () => void } = useFetchData(
     `/api/v1/projects/${projectId}/images?annotated=${filterParams.annotated}&reviewed=${filterParams.reviewed}&items_per_page=${itemsPerPage}&page=${currentPage}`
   );
+
+  const handleImageClick = (imageID:string, index:number): void => {
+    navigate(`/projects/${projectId}/annotate/${index}`,  { state: { images: data, currentIndex: index } });
+  };
 
   const filters: Filter[] = [
     { key: "unannotated", label: "Unannotated", count: data?.unannotated || 0 },
@@ -93,7 +99,7 @@ const Dataset: FC = () => {
       ) : (
         <div className="image-grid">
           {imageData.map((image, index) => (
-            <ImageCard key={index} image={image} />
+            <ImageCard key={index} image={image} index={index} onClick={handleImageClick} />
           ))}
         </div>
       )}
