@@ -5,9 +5,7 @@ import ToolBar from './components/ToolBar';
 import Canvas from './components/Canvas';
 import LabelPanel from './LabelPanel';
 import AnnotationControls from './components/AnnotationControl';
-import useFetctData from '@/hooks/use-fetch-data'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Spinner from '@/components/ui/animation/spinner'
 import './AnnotationTool.css';
 
 interface ImageResponse {

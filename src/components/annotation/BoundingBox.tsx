@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useCoordinates } from '@/hooks/useCoordinates';
+import { useCoordinates } from '@/hooks/annotation/useCoordinates';
 import './BoundingBox.css';
 
 interface Box {
@@ -9,6 +9,7 @@ interface Box {
   width: number;
   height: number;
   label: string;
+  color: string;
 }
 
 interface Props {
@@ -130,6 +131,7 @@ const BoundingBox: React.FC<Props> = ({ box, canvasWidth, canvasHeight, isSelect
         top: `${pixelY}px`,
         width: `${pixelWidth}px`,
         height: `${pixelHeight}px`,
+        borderColor: `${box.color}`,
       }}
       onMouseDown={handleMouseDown}
     >
@@ -142,7 +144,7 @@ const BoundingBox: React.FC<Props> = ({ box, canvasWidth, canvasHeight, isSelect
         </>
       )}
       {box.label && (
-        <div className="box-label">
+        <div className="box-label" style={{background: `${box.color}`}}>
           {box.label}
         </div>
       )}

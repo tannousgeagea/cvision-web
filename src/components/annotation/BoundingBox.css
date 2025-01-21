@@ -58,11 +58,11 @@
 
 .box-label {
   position: absolute;
-  top: -24px;
-  left: 0;
-  background-color: var(--primary);
-  color: var(--primary-foreground);
+  top: -32px;
+  left: -2px;
+  background-color: rgba(128, 0, 255, 0.822);;
+  color: white;
   padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 2px;
+  font-size: 18px;
 }

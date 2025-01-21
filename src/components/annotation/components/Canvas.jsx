@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAnnotation } from '@/contexts/AnnotationContext';
-import { useCoordinates } from '@/hooks/useCoordinates';
+import { useCoordinates } from '@/hooks/annotation/useCoordinates';
+import useFetchAnnotations from "@/hooks/annotation/useFecthAnnotations"
 import BoundingBox from '../BoundingBox';
 import './Canvas.css'
 import { da } from 'date-fns/locale';
@@ -17,12 +18,23 @@ const Canvas = ({ image }) => {
   const [currentBox, setCurrentBox] = useState(null);
   const canvasRef = useRef(null);
   const { getScaledCoordinates } = useCoordinates();
+  // const { fetchAnnotations, loading: annotationLoading, error: annotationError } = useFetchAnnotations();
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
-
+ 
   const updateCanvasDimensions = () => {
     if (canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect();
       setCanvasDimensions({ width: rect.width, height: rect.height });
+    }
+  };
+
+  const fetchAnnotations = async (imageID, projectId) => {
+    const response = await fetch(`http://localhost:29085/api/v1/annotations/${projectId}/${imageID}`);
+    const data = await response.json();
+    if (data) {
+      setBoxes(data.map(box =>
+        box.data
+      ));
     }
   };
 
@@ -33,6 +45,12 @@ const Canvas = ({ image }) => {
       window.removeEventListener('resize', updateCanvasDimensions);
     };
   }, []);
+
+  useEffect(() => {
+    if (image) {
+      fetchAnnotations(image.image_id, image.project_id)
+    }
+  }, [image]);
 
   const startDrawing = (e) => {
     if (tool !== 'draw') return;
@@ -93,6 +111,7 @@ const Canvas = ({ image }) => {
     label: box.label,
   });
 
+  console.log(boxes)
   return (
     <div className="canvas-container">
 
