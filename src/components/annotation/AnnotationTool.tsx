@@ -13,27 +13,26 @@ interface ImageResponse {
 }
 
 const AnnotationTool = () => {
-  const { projectId, imageID }: {projectId: string, imageID: number} = useParams()
-  // const [currentImageIndex, setCurrentImageIndex] useState()
-  const location = useLocation()
-  const navigate = useNavigate()
-  
+  const location = useLocation();
+  const navigate = useNavigate();
   const { images, currentIndex = 0 } = location.state || {};
+  const [currentImageIndex, setCurrentImageIndex] = useState(currentIndex)
   const totalImages = images?.data.length
 
+
   const handlePrevious = () => {
-    const prevIndex: number = (currentIndex - 1 + totalImages) % totalImages;
-    navigate(`/projects/${projectId}/annotate/${prevIndex}`,  { state: { images: images, currentIndex: prevIndex } });
+    const prevIndex: number = (currentImageIndex - 1 + totalImages) % totalImages;
+    setCurrentImageIndex(prevIndex)
   };
 
   const handleNext = () => {
     if (currentIndex < totalImages) {
-      const nextIndex: number = (currentIndex + 1) % totalImages;
-      navigate(`/projects/${projectId}/annotate/${nextIndex}`,  { state: { images: images, currentIndex: nextIndex } });
+      const nextIndex: number = (currentImageIndex + 1) % totalImages;
+      setCurrentImageIndex(nextIndex);
     };
   };
 
-  const image = images?.data[currentIndex];
+  const image = images?.data[currentImageIndex];
   if (!image) {
       return <p>Image not found</p>;
   }
@@ -44,7 +43,7 @@ const AnnotationTool = () => {
       <div className='annotation'>
         <AnnotationControls
           title={image_name}
-          current={currentIndex + 1}
+          current={currentImageIndex + 1}
           total={totalImages}
           onPrevious={handlePrevious}
           onNext={handleNext}

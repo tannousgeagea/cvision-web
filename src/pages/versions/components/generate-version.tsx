@@ -25,6 +25,8 @@ const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) 
     error: Error | null;
   } = useFetchData(`/api/v1/projects/${projectId}/dataset-info`);
 
+
+  console.log(datasetInfo)
   return (
     <div className="generate-version">
       {datasetLoading ? (

@@ -7,7 +7,8 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: border 0.5s ease-in-out;
-    width: 175px;
+    /* width: 200px; */
+    min-width: 225px;
 }
 
 .version-card.selected {
@@ -24,7 +25,7 @@
 .version-card-content {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.15rem;
 }
 
 .version-top {

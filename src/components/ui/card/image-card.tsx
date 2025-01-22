@@ -17,7 +17,7 @@ interface ImageProps {
 interface ImageCardProps {
   image: ImageProps; // Prop type for the component
   index: number
-  onClick: (imageID: string) => void
+  onClick: (index: number) => void
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, index }) => {
@@ -55,15 +55,15 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, index }) => {
   }, [image]);
 
 
-  const handleOnClick = (imageID: string, index: number): void => {
+  const handleOnClick = (index: number): void => {
     if (onClick) {
-      onClick(imageID, index)
+      onClick(index)
     }
   }
 
   return (
     <div className="image-card">
-      <canvas ref={canvasRef} className="image-canvas" onClick={() => handleOnClick(image.image_id, index)}/>
+      <canvas ref={canvasRef} className="image-canvas" onClick={() => handleOnClick(index)}/>
       <p>{image.image_name}</p>
     </div>
   );

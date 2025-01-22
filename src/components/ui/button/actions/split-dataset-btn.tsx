@@ -5,6 +5,7 @@ import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
 import LoadingPopup from '../../popup/loading-popup';
 import splitIcon from '../../../../assets/icons/actions/cut.png'
+import TrainValidSlider from '../../modal/TrainValidSlider';
 import './split-dataset-btn.css'
 
 interface SplitDatasetButtonProps {
@@ -16,11 +17,15 @@ const SplitDatasetButton: FC<SplitDatasetButtonProps> = ({ projectId, onSplitCom
     const { splitDataset, loading, error } = useSplitDataset();
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [showError, setShowError] = useState<boolean>(false);
+    const [TrainPercentage, setTrainPercentage] = useState<number>();
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const handleSplitDataset = async (): Promise<void> => {
         try {
-            const result = await splitDataset(projectId, 0.7);
+            console.log(TrainPercentage)
+            const result = await splitDataset(projectId, TrainPercentage);
             setSuccessMessage(result.detail);
+            setShowModal(false)
             if (onSplitComplete) onSplitComplete(result); // Callback to refresh UI or fetch updated data
         } catch (err) {
             console.error(err);
@@ -32,13 +37,20 @@ const SplitDatasetButton: FC<SplitDatasetButtonProps> = ({ projectId, onSplitCom
         <div className='split-btn-container'>
             <button
                 className="split-dataset-btn"
-                onClick={handleSplitDataset}
+                onClick={() => setShowModal(true)}
                 disabled={loading}
             >   
                 <img src={splitIcon} alt="generate-icon" />
                 Split Dataset
             </button>
             
+            {showModal && (
+                <TrainValidSlider
+                    onChange={setTrainPercentage}
+                    onClick={handleSplitDataset}
+                />
+            )
+            }
 
             {loading && <LoadingPopup />}
             {showError && <ErrorPopup message={error} onClose={() => setShowError(false)} />}

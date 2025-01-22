@@ -1,7 +1,7 @@
 import React, { useState, FC } from "react";
 import useFetchData from "@/hooks/use-fetch-data";
 import ImageCard from "@/components/ui/card/image-card";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import FilterTabs from "@/components/ui/filter/filter-tabs";
 import Spinner from '@/components/ui/animation/spinner';
 import PaginationControls from "@/components/ui/actions/pagination-control";
@@ -28,10 +28,30 @@ interface DataResponse {
 
 const Dataset: FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
-  const navigate = useNavigate()
-  const [selectedFilter, setSelectedFilter] = useState<string>("unannotated");
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const query = new URLSearchParams(location.search);
+  const [selectedFilter, setSelectedFilter] = useState<string>(query.get("filter") || "unannotated");
+  const [currentPage, setCurrentPage] = useState<number>(parseInt(query.get("page") || "1", 10));
   const itemsPerPage: number = 50;
+
+  const updateURL = (filter: string, page: number) => {
+    navigate({
+      pathname: location.pathname,
+      search: `?filter=${filter}&page=${page}`,
+    });
+  };
+
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilter(filter);
+    setCurrentPage(1);
+    updateURL(filter, 1);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    updateURL(selectedFilter, newPage);
+  };
 
   const getFilterParams = (): { annotated: boolean; reviewed: boolean } => {
     switch (selectedFilter) {
@@ -51,8 +71,10 @@ const Dataset: FC = () => {
     `/api/v1/projects/${projectId}/images?annotated=${filterParams.annotated}&reviewed=${filterParams.reviewed}&items_per_page=${itemsPerPage}&page=${currentPage}`
   );
 
-  const handleImageClick = (imageID:string, index:number): void => {
-    navigate(`/projects/${projectId}/annotate/${index}`,  { state: { images: data, currentIndex: index } });
+  const handleImageClick = (index:number): void => {
+    navigate(
+      `${location.pathname}/annotate`,
+      { state: { images: data, currentIndex: index } });
   };
 
   const filters: Filter[] = [
@@ -74,10 +96,7 @@ const Dataset: FC = () => {
         <FilterTabs 
           filters={filters}
           selectedFilter={selectedFilter}
-          onSelectFilter={(filter) => {
-            setSelectedFilter(filter);
-            setCurrentPage(1);
-          }}
+          onSelectFilter={handleFilterChange}
         />
 
         <DatasetActions
@@ -108,7 +127,7 @@ const Dataset: FC = () => {
         <PaginationControls
           currentPage={currentPage}
           totalPages={pages}
-          onNext={() => setCurrentPage((prev) => prev + 1)}
+          onNext={() => handlePageChange(currentPage + 1)}
           onPrevious={() => setCurrentPage((prev) => prev - 1)}
         />
       )}

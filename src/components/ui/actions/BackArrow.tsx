@@ -1,13 +1,13 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './BackArrow.css';
 
 const BackArrow: React.FC = () => {
   const navigate = useNavigate();
-  const { projectId } = useParams()
 
   const handleGoBack = () => {
-    navigate(`/projects/${projectId}/dataset`); // Navigate to the previous page
+    navigate(-1)
+    // navigate(`/projects/${projectId}/dataset`); // Navigate to the previous page
   };
 
   return (

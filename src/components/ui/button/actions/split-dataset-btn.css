@@ -1,6 +1,7 @@
 .split-btn-container {
     display: flex;
     height: 100%;
+    position: relative;
 }
 
 .split-dataset-btn {
