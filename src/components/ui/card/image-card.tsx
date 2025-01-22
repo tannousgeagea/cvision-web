@@ -63,7 +63,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, index }) => {
 
   return (
     <div className="image-card">
-      <canvas ref={canvasRef} className="canvas" onClick={() => handleOnClick(image.image_id, index)}/>
+      <canvas ref={canvasRef} className="image-canvas" onClick={() => handleOnClick(image.image_id, index)}/>
       <p>{image.image_name}</p>
     </div>
   );

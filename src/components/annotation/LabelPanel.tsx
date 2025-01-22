@@ -16,6 +16,7 @@ const LabelPanel: React.FC = () => {
 
   const deleteBox = (id: string) => {
     setBoxes(boxes.filter((box) => box.id !== id));
+    
     setSelectedBox(null);
   };
 

@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAnnotation } from '@/contexts/AnnotationContext';
-import { useCoordinates } from '@/hooks/annotation/useCoordinates';
 import useFetchAnnotations from "@/hooks/annotation/useFecthAnnotations"
 import BoundingBox from '../BoundingBox';
+import AnnotationEditor from './AnnotationEditor'
+import { useDraw } from '../../../hooks/annotation/useDraw';
+import useSaveAnnotation from '@/hooks/annotation/useSaveAnnotation';
+import useDeleteAnnotation from "../../../hooks/annotation/useDeleteAnnotation";
+import useFetchAnnotationClasses from "@/hooks/annotation/useFetchAnnotationClasses"
 import './Canvas.css'
-import { da } from 'date-fns/locale';
 
 const Canvas = ({ image }) => {
   const {
@@ -14,13 +17,14 @@ const Canvas = ({ image }) => {
     setBoxes,
     setSelectedBox
   } = useAnnotation();
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [currentBox, setCurrentBox] = useState(null);
   const canvasRef = useRef(null);
-  const { getScaledCoordinates } = useCoordinates();
+  const { startDrawing, draw, stopDrawing, currentBox } = useDraw(boxes, setBoxes, setSelectedBox);
   // const { fetchAnnotations, loading: annotationLoading, error: annotationError } = useFetchAnnotations();
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
- 
+  const { classes, loading: classesLoading, error: classerError } = useFetchAnnotationClasses(image.project_id)
+  const { saveAnnotation, loading: saveLoading, error: saveError, success: saveSuccess } = useSaveAnnotation();
+  const { deleteAnnotation, loading: deleteLoading, error: deleteError, success: deleteSuccess  } = useDeleteAnnotation();
+
   const updateCanvasDimensions = () => {
     if (canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect();
@@ -38,63 +42,38 @@ const Canvas = ({ image }) => {
     }
   };
 
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const handleSave = async () => {
+    if (image) {
+      const annotation = boxes.find((b) => b.id === selectedBox);
+      if (!annotation.color){
+        const color = getRandomColor()
+        annotation.color = color
+      }
+      await saveAnnotation(annotation, image.project_id, image.image_id);
+    };
+  };
+
+  const handleDelete = async (id) => {
+    if (id) {
+      await deleteAnnotation(id)
+    }
+  }
+
   useEffect(() => {
     updateCanvasDimensions();
     window.addEventListener('resize', updateCanvasDimensions);
-    return () => {
-      window.removeEventListener('resize', updateCanvasDimensions);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (image) {
-      fetchAnnotations(image.image_id, image.project_id)
-    }
+    if (image) fetchAnnotations(image.image_id, image.project_id);
+    return () => window.removeEventListener('resize', updateCanvasDimensions);
   }, [image]);
-
-  const startDrawing = (e) => {
-    if (tool !== 'draw') return;
-    const { x, y } = getScaledCoordinates(e.clientX, e.clientY);
-
-    const newBox = {
-      id: Date.now().toString(),
-      x,
-      y,
-      width: 0,
-      height: 0,
-      label: ''
-    };
-    
-    setCurrentBox(newBox);
-    setIsDrawing(true);
-  };
-
-  const draw = (e) => {
-    if (!isDrawing || !currentBox || tool !== 'draw') return;
-    const { x, y } = getScaledCoordinates(e.clientX, e.clientY);
-
-    setCurrentBox({
-      ...currentBox,
-      width: x - currentBox.x,
-      height: y - currentBox.y
-    });
-  };
-
-  const stopDrawing = () => {
-    if (isDrawing && currentBox && Math.abs(currentBox.width) > 0.00625 && Math.abs(currentBox.height) > 0.00625) {
-      const normalizedBox = {
-        ...currentBox,
-        x: currentBox.width < 0 ? currentBox.x + currentBox.width : currentBox.x,
-        y: currentBox.height < 0 ? currentBox.y + currentBox.height : currentBox.y,
-        width: Math.abs(currentBox.width),
-        height: Math.abs(currentBox.height),
-      };
-      setBoxes([...boxes, normalizedBox]);
-      setSelectedBox(normalizedBox.id);
-    }
-    setIsDrawing(false);
-    setCurrentBox(null);
-  };
 
   const updateBoxPosition = (id, updates) => {
     setBoxes(boxes.map(box => 
@@ -102,29 +81,21 @@ const Canvas = ({ image }) => {
     ));
   };
 
-  const denormalizeBox = (box, rect) => ({
-    id: box.id,
-    x: box.x * rect.width,
-    y: box.y * rect.height,
-    width: box.width * rect.width,
-    height: box.height * rect.height,
-    label: box.label,
-  });
-
-  console.log(boxes)
   return (
     <div className="canvas-container">
+      {selectedBox &&
+        <AnnotationEditor
+          classes={classes}
+          onSaveClass={handleSave}
+          onDeleteClass={handleDelete}
+        />
+      }
 
-      {/* {loading ? (
-        <Spinner />
-      ): image.lenght === 0 ? (
-        <p>No Image Found</p>
-      ) : ( */}
       <div
         ref={canvasRef}
         className="annotation-canvas"
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
+        onMouseDown={(e) => startDrawing(e, tool)}
+        onMouseMove={(e) => draw(e, tool)}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
       >

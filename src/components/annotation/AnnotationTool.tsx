@@ -14,6 +14,7 @@ interface ImageResponse {
 
 const AnnotationTool = () => {
   const { projectId, imageID }: {projectId: string, imageID: number} = useParams()
+  // const [currentImageIndex, setCurrentImageIndex] useState()
   const location = useLocation()
   const navigate = useNavigate()
   
@@ -21,7 +22,7 @@ const AnnotationTool = () => {
   const totalImages = images?.data.length
 
   const handlePrevious = () => {
-    const prevIndex: number = (imageID - 1 + totalImages) % totalImages;
+    const prevIndex: number = (currentIndex - 1 + totalImages) % totalImages;
     navigate(`/projects/${projectId}/annotate/${prevIndex}`,  { state: { images: images, currentIndex: prevIndex } });
   };
 
@@ -32,7 +33,7 @@ const AnnotationTool = () => {
     };
   };
 
-  const image = images?.data[imageID];
+  const image = images?.data[currentIndex];
   if (!image) {
       return <p>Image not found</p>;
   }

@@ -31,7 +31,10 @@ const SideBar: FC<SideBarProps> = () => {
     <div className="sidebar">
       <div className="top-info">
         <div className="project-thumbnail">
-          <img src="https://via.placeholder.com/150" alt="project-thumbnail"></img>
+          <img 
+            src="https://wacoreblob.blob.core.windows.net/cvisionops/media/images/AMK_gate03_front_2024-12-20_07-03-35_78e6ac1e-59ca-4771-97f2-95d5662f396b.jpg?se=2025-01-21T13%3A15%3A41Z&sp=r&sv=2025-01-05&sr=b&sig=X3/hpnffG7ApioooYobFiaL%2BYj1REBZzRHlYlj0vB%2Bg%3D" 
+            alt="project-thumbnail">
+          </img>
         </div>
         <div className="project-name">
           <h2>{projectId}</h2>

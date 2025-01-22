@@ -1,0 +1,88 @@
+.annotation-editor {
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #06101d;
+  color: white;
+  width: 300px;
+  font-family: Arial, sans-serif;
+  position: absolute;
+  top: 1rem;
+  left: 1rem; 
+  z-index: 10; 
+}
+
+.editor-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.editor-input input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  background-color: #0d1f34;
+  color: white;
+}
+
+.editor-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.delete-button,
+.save-button,
+.add-button {
+  flex: 1;
+  padding: 0.25rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.save-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.add-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.class-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.class-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.class-item:hover {
+  background-color: #0d1f34;
+}
+
+.class-item.selected {
+  background-color: #1a324d;
+}
+
+.class-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
