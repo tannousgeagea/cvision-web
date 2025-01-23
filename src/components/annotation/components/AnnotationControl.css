@@ -24,7 +24,7 @@
     white-space: nowrap;
     font-weight: 400;
     font-size: 1.25rem;
-    width: 250px;
+    width: 300px;
   }
 
   .annotation-controls-button {
@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10rem;
+    margin-right: 15rem;
   }
 
   .annotation-controls button {

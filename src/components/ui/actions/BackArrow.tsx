@@ -12,7 +12,7 @@ const BackArrow: React.FC = () => {
 
   return (
     <div className="back-arrow" onClick={handleGoBack}>
-      <span>&larr;</span>
+      <p>&larr;</p>
     </div>
   );
 };

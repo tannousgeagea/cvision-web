@@ -7,7 +7,7 @@
     opacity: 90%;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    gap: 3rem;
+    gap: 1.5rem;
   }
 
 
@@ -35,14 +35,14 @@
 .sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   justify-content: center;
   }
   
 .sidebar-content h3 {
   display: flex;
-  margin-bottom: .25rem;
-  margin-top: .25rem;
+  /* margin-bottom: .25rem;
+  margin-top: .25rem; */
   padding-left: .75rem;
   padding-right: .75rem;
   width: auto;
@@ -52,7 +52,7 @@
 }
 
 .sidebar-item {
-  padding: 1.25rem 1rem;
+  padding: 1rem 1rem;
   border: none;
   border-radius: 6px;
   transition: all 0.5s ease-in-out;
