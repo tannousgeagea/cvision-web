@@ -55,12 +55,12 @@
 }
 
 .version-content {
-  width: 100%;
+  width: 80%;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
@@ -113,8 +113,8 @@
 .version-content-images {
   display: flex;
   flex-direction: column;
-  width: 100%;
   margin-left: 1.5rem;
+  margin-right: 1.5rem;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -142,7 +142,7 @@
   flex-direction: row;
   overflow: hidden;
   position: relative;
-  max-width: 1000px;
+  /* max-width: 1000px; */
   white-space: nowrap;
   /* flex-wrap: wrap; */
 }

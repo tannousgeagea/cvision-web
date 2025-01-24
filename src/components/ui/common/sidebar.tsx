@@ -3,6 +3,7 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import uploadIcon from "../../../assets/icons/sidebar/upload.png";
 import datasetIcon from "../../../assets/icons/sidebar/dataset.png";
 import annotateIcon from "../../../assets/icons/sidebar/annotate.png";
+import analysisIcon from "../../../assets/icons/sidebar/analysis.png";
 import versionIcon from "../../../assets/icons/sidebar/version.png";
 import analyticsIcon from "../../../assets/icons/sidebar/analytics.png";
 import "./sidebar.css";
@@ -22,6 +23,7 @@ const SideBar: FC<SideBarProps> = () => {
   const items: Item[] = [
     { item: "Upload Data", ref: `/projects/${projectId}/upload`, icon: uploadIcon },
     { item: "Annotate", ref: `/projects/${projectId}/annotate`, icon: annotateIcon },
+    { item: "Analysis", ref: `/projects/${projectId}/analysis`, icon: analysisIcon },
     { item: "Dataset", ref: `/projects/${projectId}/dataset`, icon: datasetIcon },
     { item: "Version", ref: `/projects/${projectId}/versions`, icon: versionIcon },
     { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: analyticsIcon },

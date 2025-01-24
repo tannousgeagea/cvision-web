@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import ProjectLayout from './components/ui/common/project-layout';
 import Index from './pages/annotate/annotate-page';
 import ProtectedRoute from './pages/login/ProtectedRoute';
+import AnalysisPage from './pages/analysis/Index';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
               <Route path='versions' element={<Versions mode="view" />} />
               <Route path='versions/:versionID' element={<Versions mode="view" />} />
               <Route path="versions/generate" element={<Versions mode="generate" />} />
+              <Route path="analysis" element={<AnalysisPage/>} />
             </Route>
           </Route>
           <Route path='/projects/:projectId/dataset/:annotate' element={<Index />} />
