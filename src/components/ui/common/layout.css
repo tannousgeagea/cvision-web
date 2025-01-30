@@ -13,7 +13,7 @@
 
 .layout-main {
   width: 100%;
-  overflow-x: hidden;
+  height: 100%;
   }
 
 .layout-header {
@@ -31,6 +31,6 @@
   justify-content: flex-start;
   box-sizing: border-box; 
   margin-bottom: .5rem;
-  max-height: 95%;
+  height: 100%;
     
 }

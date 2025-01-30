@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <h1 className="login-title">Welcome Back</h1>
+        <h1 className="login-title">Welcome To VisionNest</h1>
         <p className="login-subtitle">Login to your account</p>
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">

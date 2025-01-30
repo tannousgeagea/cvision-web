@@ -27,36 +27,6 @@
 .download-btn:hover {
     background-color: #ccccccb8;
   }
-
-.request-feedback {
-    display: flex;
-    gap: 0.25rem;
-    background-color: #6a0dadb9;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    align-items: center;
-    align-content: center;
-  }
-  
-.request-feedback:hover {
-    background-color: #6a0dad;
-  }
-  
-.request-feedback img {
-    width: 1.5rem;
-  }
-  
-.request-feedback span {
-    font-size: 1rem;
-    color: white;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
   
 .split-btn {
   display: flex;

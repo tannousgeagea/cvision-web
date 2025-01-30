@@ -140,11 +140,11 @@
 .version-images {
   display: flex;
   flex-direction: row;
-  overflow: hidden;
-  position: relative;
+  overflow-x: hidden;
+  /* position: relative; */
   /* max-width: 1000px; */
   white-space: nowrap;
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
 }
 
 .version-content-dataset-split {
@@ -202,6 +202,7 @@
 .create-version-btn {
   margin-left: 1.5rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   }
   
 .create-version button:disabled {

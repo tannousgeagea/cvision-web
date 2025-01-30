@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useSplitDataset } from '../../../../hooks/use-split-dataset';
-import Spinner from '../../animation/spinner';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
 import LoadingPopup from '../../popup/loading-popup';

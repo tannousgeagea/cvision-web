@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import useFetchData from '@/hooks/use-fetch-data';
-import ImageCard from '@/components/ui/card/image-card';
+import ImageCard2 from '@/components/ui/card/image-card2';
 import SplitCard from '@/components/ui/card/split-card';
 import DownloadVersionBtn from '@/components/ui/button/actions/download-version-btn';
 
@@ -19,7 +19,7 @@ interface VersionContentProps {
 }
 
 const VersionContent: FC<VersionContentProps> = ({ version, projectId }) => {
-    const { data: versionImages, loading: versionImagesLoading }: { data?: { data: Array<{ image_name: string, image_url: string }> }; loading: boolean } = useFetchData(
+    const { data: versionImages, loading: versionImagesLoading }: { data?: { data: Array<{ image_name: string, image_url: string, image_id: string }> }; loading: boolean } = useFetchData(
         version ? `/api/v1/projects/${projectId}/versions/${version.version_number}` : ''
     );
 
@@ -45,7 +45,7 @@ const VersionContent: FC<VersionContentProps> = ({ version, projectId }) => {
                         </h3>
                         <div className="version-images">
                             {versionImages?.data?.map((image) => (
-                                <ImageCard key={image.image_name} image={image} />
+                                <ImageCard2 key={image.image_name} image={image} />
                             ))}
                         </div>
                     </div>

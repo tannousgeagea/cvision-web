@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnnotationProvider } from '@/contexts/AnnotationContext';
 import ToolBar from './components/ToolBar';
 import Canvas from './components/Canvas';
@@ -31,6 +31,21 @@ const AnnotationTool = () => {
       setCurrentImageIndex(nextIndex);
     };
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (event.key === 'ArrowRight') {
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentImageIndex, totalImages]);
 
   const image = images?.data[currentImageIndex];
   if (!image) {

@@ -8,9 +8,10 @@ import Versions from './pages/versions/versions';
 import LoginPage from './pages/login/login';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ProjectLayout from './components/ui/common/project-layout';
-import Index from './pages/annotate/annotate-page';
+import Index from './pages/annotate-tool/annotate-tool';
 import ProtectedRoute from './pages/login/ProtectedRoute';
 import AnalysisPage from './pages/analysis/Index';
+import Annotate from './pages/annotate/annotate';
 
 const App = () => {
   return (
@@ -25,13 +26,14 @@ const App = () => {
             <Route path='/upload' element={<UploadPage />} />
             <Route path='projects/:projectId' element={<ProjectLayout />}>
               <Route path='dataset' element={<Dataset />} />
+              <Route path='annotate' element={<Annotate />} />
               <Route path='versions' element={<Versions mode="view" />} />
               <Route path='versions/:versionID' element={<Versions mode="view" />} />
               <Route path="versions/generate" element={<Versions mode="generate" />} />
               <Route path="analysis" element={<AnalysisPage/>} />
             </Route>
           </Route>
-          <Route path='/projects/:projectId/dataset/:annotate' element={<Index />} />
+          <Route path='/projects/:projectId/images/annotate' element={<Index />} />
         </Route>
       </Routes>
     </Router>
