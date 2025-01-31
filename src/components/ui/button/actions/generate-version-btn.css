@@ -1,5 +1,5 @@
-.download-btn {
-    padding: 0.75rem 0.75rem;
+.generate-btn {
+    padding: 0.25rem 0.75rem;
     background-color: white;
     color: #333;
     border: 1px solid #cccccca0;
@@ -12,11 +12,11 @@
     transition: background-color 0.3s ease;
   }
   
-.download-btn img {
+.generate-btn img {
     width: 1.5rem;
     height: 1.5rem;
   }
   
-.download-btn:hover {
+.generate-btn:hover {
     background-color: #ccccccb8;
   }

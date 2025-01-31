@@ -23,7 +23,7 @@ export const useDownloadVersion = () => {
       const url: string = window.URL.createObjectURL(new Blob([response.data]));
       const link: HTMLAnchorElement = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", `version_${versionId}.zip`);
+      link.setAttribute("download", `${projectId}.v${versionId}.zip`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

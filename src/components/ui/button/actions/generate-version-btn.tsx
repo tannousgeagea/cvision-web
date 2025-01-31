@@ -16,7 +16,7 @@ const GenerateDatasetVersion: FC<GenerateDatasetVersionProps> = ({ projectId }) 
 
     return (
         <>
-            <button className="download-btn" onClick={() => handleGenerateVersion(projectId)}>
+            <button className="generate-btn" onClick={() => handleGenerateVersion(projectId)}>
                 <img src={generateIcon} alt="generate-icon" />
                 Generate Version
             </button>
