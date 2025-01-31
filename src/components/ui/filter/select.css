@@ -45,11 +45,11 @@
     z-index: 100;
     width: fit-content;
     overflow: hidden;
-    gap: 1rem;
+    gap: 0.25rem;
     position: absolute;
     top: 110%;
     left: 0;
-    padding: 2rem 1rem;
+    padding: 0.5rem 1rem;
 }
 
 .select-filter-option {
@@ -57,12 +57,13 @@
     padding: 5px 10px;
     display: flex;
     justify-content: flex-start;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-style: italic;
     width: 100%;
     cursor: pointer;
     border-radius: 6px;
     background-color: white;
+    color: #ada8a8;
     transition: background-color 0.3s;
 }
 

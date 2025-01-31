@@ -60,7 +60,7 @@ const Dataset: FC = () => {
   return (
     <div className="dataset">
       <h1>Dataset</h1>
-      <div>
+      <div className="dataset-top">
         <FiltersDataset 
           onSearch={(value) => {
             setSelectedFilter(value);
