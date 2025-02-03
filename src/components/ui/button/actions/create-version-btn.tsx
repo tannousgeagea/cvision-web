@@ -14,11 +14,18 @@ const CreateDatasetVersion: FC<CreateDatasetVersionProps> = ({ projectId }) => {
     const { createVersion, loading, error } = useCreateVersion();
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [showError, setShowError] = useState<boolean>(false);
-
+    const navigate = useNavigate()
+    
     const handleCreateVersion = async (): Promise<void> => {
         try {
             const newVersion = await createVersion(projectId);
-            setSuccessMessage('Version created successfully!');
+            if (newVersion) {
+                console.log(newVersion)
+                setSuccessMessage("Version created successfully!");
+                setTimeout(() => {
+                  navigate(`/projects/${projectId}/versions/${newVersion.version_number}`);
+                }, 2000);
+              }
         } catch (err) {
             console.error(err);
             setShowError(true);

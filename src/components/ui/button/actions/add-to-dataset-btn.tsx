@@ -56,7 +56,7 @@ const AddToDatasetButton: React.FC<AddToDatasetButtonProps> = ({
                     onChange={setTrainPercentage}
                     onClick={handleClick}
                 />
-            )};
+            )}
 
       {loading && <LoadingPopup />}
       {showError && <ErrorPopup message={error} onClose={() => setShowError(false)} />}

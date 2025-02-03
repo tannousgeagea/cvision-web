@@ -15,18 +15,16 @@ export const useDownloadVersion = () => {
     setError(null);
 
     try {
-      const response = await axios.get<Blob>(
+      const response = await axios.get<{ download_url: string }>(
         `${baseURL}/api/v1/projects/${projectId}/versions/${versionId}/download`,
-        { responseType: "blob" }
       );
 
-      const url: string = window.URL.createObjectURL(new Blob([response.data]));
-      const link: HTMLAnchorElement = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `${projectId}.v${versionId}.zip`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      if (response.data.download_url) {
+        // Redirect the user to the file URL (stored in Azure)
+        window.location.href = response.data.download_url;
+      } else {
+        throw new Error("No download URL received.");
+      }
 
     } catch (err) {
       const errorResponse = err as AxiosError<ErrorResponse>;

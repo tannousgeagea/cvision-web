@@ -31,7 +31,7 @@ const VersionCard: FC<VersionCardProps> = ({ version, onView }) => {
     const { versionID }: { versionID?: string } = location.state || {};
 
     return (
-        <div className={`version-card ${versionID === version.version_number ? "selected" : ""}`} onClick={() => onView(version.version_number)}>
+        <div className={`version-card ${location.pathname.includes(version.version_number) ? "selected" : ""}`} onClick={() => onView(version.version_number)}>
             <div className="version-card-content">
                 <div className="version-top">
                     {formatCreatedTime(version.created_at)}

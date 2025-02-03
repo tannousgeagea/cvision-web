@@ -1,12 +1,35 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import useFetchData from '@/hooks/use-fetch-data';
 import Spinner from '@/components/ui/animation/spinner';
-import ImageCard from '@/components/ui/card/image-card';
+import ImageCard2 from '@/components/ui/card/image-card2';
 import SplitCard from '@/components/ui/card/split-card';
 import CreateDatasetVersion from '@/components/ui/button/actions/create-version-btn';
+import AugmentationPanel from '@/components/augmentation/AugmentationPanel';
+import Modal from '@/components/ui/modal/modal';
+import plusIcon from "@/assets/icons/actions/plus.png"
 
 interface GenerateVersionSectionProps {
   projectId: string;
+}
+
+interface AugmentationData {
+  id:  number;
+  name: string;
+  title: string;
+  thumbnail: string;
+  description: string;
+}
+
+
+interface Annotation {
+  xyxyn: number[]; // Coordinates in normalized [x_min, y_min, x_max, y_max] format
+}
+
+interface ImageProps {
+  image_id: string
+  image_url: string; // URL of the image
+  image_name: string; // Name of the image
+  annotations?: Annotation[]; // Optional annotations
 }
 
 const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) => {
@@ -19,14 +42,20 @@ const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) 
       total_images: number; 
       count_train: number; 
       count_val: number; 
-      data?: Array<{ image_url: string, image_name: string }> 
+      data?: Array<ImageProps> 
     };
     loading: boolean;
     error: Error | null;
   } = useFetchData(`/api/v1/projects/${projectId}/dataset-info`);
 
+  const [isOpen, setIsOpen] = useState(false)
+  const { data: augmentations, loading:augmentationLoading, error: augmentationError }:
+    {
+      data: Array<AugmentationData>;
+      loading: boolean;
+      error: Error | null;
+    } = useFetchData(`/api/v1/augmentations`)
 
-  console.log(datasetInfo)
   return (
     <div className="generate-version">
       {datasetLoading ? (
@@ -46,7 +75,7 @@ const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) 
             </h3>
             <div className="version-images">
               {datasetInfo?.data?.map((image, index) => (
-                <ImageCard key={index} image={image} />
+                <ImageCard2 key={index} image={image} />
               ))}
             </div>
           </div>
@@ -79,7 +108,13 @@ const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) 
 
           <div className="version-content-augmentation">
             <h3>Augmentation</h3>
-            <p>No augmentation were applied</p>
+            <button className='add-augmentation-btn' onClick={() => setIsOpen(true)} >
+              <img src={plusIcon} alt="add augmentation btn" />
+              Add Augmentation Step
+              </button>
+            <Modal isOpen={isOpen} title="Augmentation settings" onClose={() => setIsOpen(false)}>
+              {!augmentationLoading ? (<AugmentationPanel data={augmentations}/>) : <Spinner />}
+            </Modal>
           </div>
 
           <div className="create-version-btn">

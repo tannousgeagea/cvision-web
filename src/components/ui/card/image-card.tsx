@@ -15,14 +15,12 @@ interface ImageProps {
 }
 
 interface ImageCardProps {
-  image: ImageProps; // Prop type for the component
-  index: number
-  onClick: (index: number) => void
+  image: ImageProps; // Prop type for the component 
+  onClick: () => void; 
 }
 
-const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, index }) => {
+const ImageCard: React.FC<ImageCardProps> = ({ image, onClick }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null); // Type the canvasRef
-  const navigate = useNavigate();
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return; // Handle null canvas
@@ -55,15 +53,15 @@ const ImageCard: React.FC<ImageCardProps> = ({ image, onClick, index }) => {
   }, [image]);
 
 
-  const handleOnClick = (index: number): void => {
+  const handleOnClick = (): void => {
     if (onClick) {
-      onClick(index)
+      onClick()
     }
   }
 
   return (
     <div className="image-card">
-      <canvas ref={canvasRef} className="image-canvas" onClick={() => handleOnClick(index)}/>
+      <canvas ref={canvasRef} className="image-canvas" onClick={() => handleOnClick()}/>
       <p>{image.image_name}</p>
     </div>
   );
