@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 LABEL maintainer="tannousgeagea@hotmail.com"
 LABEL com.visionnest.version="1.1b1"
