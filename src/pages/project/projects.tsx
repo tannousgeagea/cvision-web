@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProjectCard from '@/components/ui/card/project-card';
 import NewProjectButton from '@/components/ui/button/create-project-button';

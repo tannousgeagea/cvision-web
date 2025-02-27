@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import uploadIcon from "../../../assets/icons/sidebar/upload.png";
 import datasetIcon from "../../../assets/icons/sidebar/dataset.png";

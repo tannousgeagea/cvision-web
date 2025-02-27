@@ -1,20 +1,18 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
 import { AnnotationProvider } from '@/contexts/AnnotationContext';
 import ToolBar from './components/ToolBar';
 import Canvas from './components/Canvas';
 import LabelPanel from './LabelPanel';
 import AnnotationControls from './components/AnnotationControl';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './AnnotationTool.css';
 
-interface ImageResponse {
-  data?: Array<{ image_id: string, image_url: string, image_name: string }>;
-}
+// interface ImageResponse {
+//   data?: Array<{ image_id: string, image_url: string, image_name: string }>;
+// }
 
 const AnnotationTool = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { images, currentIndex = 0 } = location.state || {};
   const [currentImageIndex, setCurrentImageIndex] = useState(currentIndex)
   const totalImages = images?.data.length

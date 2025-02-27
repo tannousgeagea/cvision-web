@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC } from "react";
 import AddToDatasetButton from "../button/actions/add-to-dataset-btn";
 import RequestFeedbackBtn from "../button/actions/request-feedback-btn";
 import './annotate-actions.css'

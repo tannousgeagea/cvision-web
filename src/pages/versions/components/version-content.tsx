@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import useFetchData from '@/hooks/use-fetch-data';
 import ImageCard2 from '@/components/ui/card/image-card2';
 import SplitCard from '@/components/ui/card/split-card';
@@ -19,7 +19,7 @@ interface VersionContentProps {
 }
 
 const VersionContent: FC<VersionContentProps> = ({ version, projectId }) => {
-    const { data: versionImages, loading: versionImagesLoading }: { data?: { data: Array<{ image_name: string, image_url: string, image_id: string }> }; loading: boolean } = useFetchData(
+    const { data: versionImages }: { data?: { data: Array<{ image_name: string, image_url: string, image_id: string }> }; } = useFetchData(
         version ? `/api/v1/projects/${projectId}/versions/${version.version_number}` : ''
     );
 

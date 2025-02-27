@@ -20,7 +20,7 @@ const AddToDatasetButton: React.FC<AddToDatasetButtonProps> = ({
   onSuccess,
 }) => {
   const { addToDataset, loading, error } = useAddToDataset();
-  const { splitDataset, loading: splitLoading, error: splitError } = useSplitDataset();
+  const { splitDataset } = useSplitDataset();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showError, setShowError] = useState<boolean>(false);
   const [TrainPercentage, setTrainPercentage] = useState<number>();

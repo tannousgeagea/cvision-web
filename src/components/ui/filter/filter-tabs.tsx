@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import "./filter-tabs.css";
 
 interface Filter {

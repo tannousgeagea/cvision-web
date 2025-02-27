@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import { useState, FC } from "react";
 import useFetchData from "@/hooks/use-fetch-data";
 import ImageCard2 from "../../components/ui/card/image-card2";
 import { useParams, useNavigate, useLocation } from "react-router-dom";

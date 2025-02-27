@@ -1,6 +1,6 @@
 import './create-project-button.css';
 
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 interface NewProjectButtonProps {
     onClick: () => void;

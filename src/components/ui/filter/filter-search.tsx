@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FC } from 'react';
+import { useState, ChangeEvent, FC } from 'react';
 import './filter.css';
 
 interface SearchFilterProps {

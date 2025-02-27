@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import generateIcon from "../../../../assets/icons/actions/plus.png";
 import './generate-version-btn.css';

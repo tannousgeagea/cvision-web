@@ -19,8 +19,8 @@ const FolderSelectButton: FC<FolderSelectButtonProps> = ({ onChange }) => {
         <>
             <input 
                 type='file'
-                webkitdirectory="false"
-                directory=""
+                // webkitdirectory="false"
+                // directory=""
                 multiple
                 id='fileInput'
                 ref={fileInputRef}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import Navbar from './navbar';
 import './layout.css';
 import { Outlet } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { parseISO, formatDistanceToNow } from "date-fns";
 import "./project-card.css";
 

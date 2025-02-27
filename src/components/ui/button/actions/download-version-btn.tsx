@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useDownloadVersion } from '../../../../hooks/use-download-version';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';

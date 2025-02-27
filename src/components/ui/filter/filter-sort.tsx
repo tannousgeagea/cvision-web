@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, FC } from 'react';
+import { useState, FC } from 'react';
 import './filter.css';
 import DownArrow from '../../../assets/icons/down-arrow.png';
 import useToggle from '../../../hooks/use-toggle';

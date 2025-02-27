@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import { useState, FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCreateVersion } from '../../../../hooks/use-create-version';
 import ErrorPopup from '../../popup/error-popup';

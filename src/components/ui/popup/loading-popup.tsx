@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import "./loading-popup.css";
 import Spinner from "../animation/spinner";
 

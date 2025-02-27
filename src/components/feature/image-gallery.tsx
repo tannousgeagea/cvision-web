@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import ImageModal from "../ui/modal/image-modal";
 import './image-gallery.css';
 

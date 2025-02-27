@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import Spinner from "../../ui/animation/spinner";
 
 interface Box {

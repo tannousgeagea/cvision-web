@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Switch from "../ui/input/switch";
-import Slider from "../ui/input/slider";
 import AugmentationCard from "../ui/card/AugmentationCard";
 import "./AugmentationPanel.css";
 
@@ -39,28 +37,28 @@ const AugmentationPanel: React.FC<AugmentationProps> = ({ data }) => {
     fetchData();
   }, []);
 
-  const toggleAugmentation = (id: number) => {
-    setAugmentations((prev) =>
-      prev.map((aug) =>
-        aug.id === id ? { ...aug, active: !aug.active } : aug
-      )
-    );
-  };
+  // const toggleAugmentation = (id: number) => {
+  //   setAugmentations((prev) =>
+  //     prev.map((aug) =>
+  //       aug.id === id ? { ...aug, active: !aug.active } : aug
+  //     )
+  //   );
+  // };
 
-  const updateParameter = (id: number, paramName: string, value: number) => {
-    setAugmentations((prev) =>
-      prev.map((aug) =>
-        aug.id === id
-          ? {
-              ...aug,
-              parameters: aug.parameters.map((param) =>
-                param.name === paramName ? { ...param, default_value: value } : param
-              ),
-            }
-          : aug
-      )
-    );
-  };
+  // const updateParameter = (id: number, paramName: string, value: number) => {
+  //   setAugmentations((prev) =>
+  //     prev.map((aug) =>
+  //       aug.id === id
+  //         ? {
+  //             ...aug,
+  //             parameters: aug.parameters.map((param) =>
+  //               param.name === paramName ? { ...param, default_value: value } : param
+  //             ),
+  //           }
+  //         : aug
+  //     )
+  //   );
+  // };
 
   return (
     <div className="augmentation-panel">

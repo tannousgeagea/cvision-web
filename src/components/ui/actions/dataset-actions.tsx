@@ -1,10 +1,6 @@
-import React, { FC, useState } from "react";
-import { useRequestFeedback } from "../../../hooks/use-request-feedback";
-import SplitDatasetButton from "../button/actions/split-dataset-btn";
+import { FC, useState } from "react";
 import GenerateDatasetVersion from "../button/actions/generate-version-btn";
-import LoadingPopup from "../popup/loading-popup";
 import SuccessPopup from "../popup/success-popup";
-import ErrorPopup from "../popup/error-popup";
 import './dataset-actions.css'
 
 interface DatasetActionsProps {

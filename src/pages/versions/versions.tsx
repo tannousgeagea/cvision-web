@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useFetchData from '@/hooks/use-fetch-data';
 import Spinner from '@/components/ui/animation/spinner';
@@ -17,7 +17,7 @@ interface VersionsProps {
 const Versions: FC<VersionsProps> = ({ mode }) => {
     const { projectId, versionID } = useParams<{ projectId: string; versionID?: string }>();
     const navigate = useNavigate();
-    const { data: versions, loading, error, refetch } = useFetchData(`/api/v1/projects/${projectId}/versions`);
+    const { data: versions, loading, error } = useFetchData(`/api/v1/projects/${projectId}/versions`);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [selectedVersion, setSelectedVersion] = useState<any | null>(null);
 

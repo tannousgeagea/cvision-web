@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import useImages from "@/hooks/use-images";
 import useFilters from "@/hooks/use-filters";

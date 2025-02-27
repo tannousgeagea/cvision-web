@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useRequestFeedback } from '@/hooks/use-request-feedback';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';

@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback} from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Loader2 } from 'lucide-react';
 import ImageCanvas from './ui/ImageCanvas';
 import './ImageAnalysis.css';
 

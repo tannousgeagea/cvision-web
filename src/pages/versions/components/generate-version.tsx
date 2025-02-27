@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import useFetchData from '@/hooks/use-fetch-data';
 import Spinner from '@/components/ui/animation/spinner';
 import ImageCard2 from '@/components/ui/card/image-card2';
@@ -36,7 +36,7 @@ const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) 
   const {
     data: datasetInfo,
     loading: datasetLoading,
-    error: datasetError,
+    // error: datasetError,
   }: {
     data: { 
       total_images: number; 
@@ -49,7 +49,7 @@ const GenerateVersionSection: FC<GenerateVersionSectionProps> = ({ projectId }) 
   } = useFetchData(`/api/v1/projects/${projectId}/dataset-info`);
 
   const [isOpen, setIsOpen] = useState(false)
-  const { data: augmentations, loading:augmentationLoading, error: augmentationError }:
+  const { data: augmentations, loading:augmentationLoading}:
     {
       data: Array<AugmentationData>;
       loading: boolean;

@@ -1,7 +1,6 @@
 import './App.css';
 import Datalake from './pages/datalake/datalake';
 import Projects from './pages/project/projects';
-import UploadPage from './pages/upload/upload-page';
 import Layout from './components/ui/common/layout';
 import Dataset from './pages/dataset/dataset';
 import Versions from './pages/versions/versions';
@@ -23,7 +22,6 @@ const App = () => {
             <Route index element={<Navigate to="/projects" replace />} />
             <Route path='/datalake' element={<Datalake />} />
             <Route path='/projects' element={<Projects />} />
-            <Route path='/upload' element={<UploadPage />} />
             <Route path='projects/:projectId' element={<ProjectLayout />}>
               <Route path='dataset' element={<Dataset />} />
               <Route path='annotate' element={<Annotate />} />

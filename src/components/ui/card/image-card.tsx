@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import './image-card.css';
 
 // Define the types for annotation and image

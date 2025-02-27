@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import './submit-button.css'
 import fileUpload from '../../../assets/icons/file.png'
 
