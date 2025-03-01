@@ -6,6 +6,7 @@ import FilterTabs from "@/components/ui/filter/filter-tabs";
 import Spinner from '@/components/ui/animation/spinner';
 import PaginationControls from "@/components/ui/actions/pagination-control";
 import AnnotateActions from "../../components/ui/actions/annotate-actions";
+import Header from "@/components/ui/header/Header";
 import "./annotate.css";
 
 
@@ -76,8 +77,11 @@ const Annotate: FC = () => {
   if (error) return <p>Error loading images: {error.message}</p>;
 
   return (
-    <div className="dataset">
-      <h1>Annotate</h1>
+    <div className="space-y-6 p-6 w-full">
+      <Header
+        title="Annotate"
+        description={`Annotate your images.`}
+      />
       <div className="tabs">
         <FilterTabs 
           filters={filters}

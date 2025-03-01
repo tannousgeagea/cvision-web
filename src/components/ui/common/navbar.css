@@ -10,7 +10,7 @@
   font-weight: 500;
   padding-left: .75rem;
   padding-right: .75rem;
-  transition: width 0.1s ease;
+  transition: width 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -125,15 +125,11 @@
   transition: color 0.3s;
   gap: 0.25rem;
   transition: all 0.7s ease;
-}
-
-.logout-button img {
-  width: 1.5rem;
+  width: fit-content;
 }
 
 .logout-button:hover {
-  color: #ff4d4f;
-  background-color: rgba(240, 248, 255, 0.631);
+  color: red
 }
 
 .icon {

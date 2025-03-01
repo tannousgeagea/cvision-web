@@ -4,15 +4,13 @@
     overflow: scroll;
   }
 
-.versions h1 {
-  font-weight: 500;
-}
   
 .versions-body {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     width: 100%;
+    margin-top: 2rem;
   }
 
 .versions-list {

@@ -6,6 +6,7 @@ import Spinner from '@/components/ui/animation/spinner';
 import PaginationControls from "@/components/ui/actions/pagination-control";
 import DatasetActions from "@/components/ui/actions/dataset-actions";
 import FiltersDataset from "@/components/ui/filter/filter-dataset";
+import Header from "@/components/ui/header/Header";
 import "./dataset.css";
 
 
@@ -27,6 +28,8 @@ const Dataset: FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(parseInt(query.get("page") || "1", 10));
   const itemsPerPage: number = 50;
 
+
+  console.log(selectedFilter)
   const updateURL = (filter: string, page: number) => {
     console.log(filter)
     navigate({
@@ -58,8 +61,11 @@ const Dataset: FC = () => {
   if (error) return <p>Error loading images: {error.message}</p>;
 
   return (
-    <div className="dataset">
-      <h1>Dataset</h1>
+    <div className="space-y-6 p-6 w-full">
+      <Header
+        title="Dataset"
+        description={``}
+      />
       <div className="dataset-top">
         <FiltersDataset 
           onSearch={(value) => {
@@ -67,13 +73,10 @@ const Dataset: FC = () => {
             updateURL(value, currentPage);
           }}
         />
-        
         <DatasetActions 
           projectId={projectId || ""}
         />
-
       </div>
-
 
       {loading ? (
         <div className="image-grid">

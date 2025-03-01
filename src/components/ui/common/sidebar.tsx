@@ -1,19 +1,22 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
-import uploadIcon from "../../../assets/icons/sidebar/upload.png";
-import datasetIcon from "../../../assets/icons/sidebar/dataset.png";
-import annotateIcon from "../../../assets/icons/sidebar/annotate.png";
-import analysisIcon from "../../../assets/icons/sidebar/analysis.png";
-import versionIcon from "../../../assets/icons/sidebar/version.png";
-import analyticsIcon from "../../../assets/icons/sidebar/analytics.png";
 import "./sidebar.css";
+
+import {
+  Upload,
+  Pencil,
+  BarChart,
+  Database,
+  Layers,
+  LineChart,
+} from "lucide-react";
 
 interface SideBarProps {}
 
 interface Item {
   item: string;
   ref: string;
-  icon: string;
+  icon: ReactNode;
 }
 
 const SideBar: FC<SideBarProps> = () => {
@@ -21,12 +24,12 @@ const SideBar: FC<SideBarProps> = () => {
   const location = useLocation();
 
   const items: Item[] = [
-    { item: "Upload Data", ref: `/projects/${projectId}/upload`, icon: uploadIcon },
-    { item: "Annotate", ref: `/projects/${projectId}/annotate`, icon: annotateIcon },
-    { item: "Analysis", ref: `/projects/${projectId}/analysis`, icon: analysisIcon },
-    { item: "Dataset", ref: `/projects/${projectId}/dataset`, icon: datasetIcon },
-    { item: "Version", ref: `/projects/${projectId}/versions`, icon: versionIcon },
-    { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: analyticsIcon },
+    { item: "Upload Data", ref: `/projects/${projectId}/upload`, icon: <Upload size={20} /> },
+    { item: "Annotate", ref: `/projects/${projectId}/annotate`, icon: <Pencil size={20} /> },
+    { item: "Analysis", ref: `/projects/${projectId}/analysis`, icon: <BarChart size={20} /> },
+    { item: "Dataset", ref: `/projects/${projectId}/dataset`, icon: <Database size={20} /> },
+    { item: "Version", ref: `/projects/${projectId}/versions`, icon: <Layers size={20} /> },
+    { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: <LineChart size={20} /> },
   ];
 
   return (
@@ -53,7 +56,7 @@ const SideBar: FC<SideBarProps> = () => {
             key={index}
           >
             <Link to={item.ref}>
-              <img src={item.icon} alt={item.item}></img>
+              {item.icon}
               <span>{item.item}</span>
             </Link>
           </div>

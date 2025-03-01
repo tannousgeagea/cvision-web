@@ -4,7 +4,7 @@ import useFetchData from '@/hooks/use-fetch-data';
 import Spinner from '@/components/ui/animation/spinner';
 import ErrorPopup from '@/components/ui/popup/error-popup';
 import SuccessPopup from '@/components/ui/popup/success-popup';
-import { VersionHeader } from './components/version-header';
+import Header from '@/components/ui/header/Header';
 import VersionList from './components/version-list';
 import VersionContent from './components/version-content';
 import GenerateVersionSection from './components/generate-version';
@@ -39,7 +39,17 @@ const Versions: FC<VersionsProps> = ({ mode }) => {
 
     return (
         <div className="versions">
-            <VersionHeader mode={mode} />
+            {mode === "view" ? (
+                <Header
+                    title="Dataset Version"
+                    description={``}
+                />
+            ) : (
+                <Header
+                    title="Generate New Version"
+                    description={``}
+                />
+            )}
 
             {loading ? (
                 <Spinner />

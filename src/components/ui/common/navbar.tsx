@@ -1,21 +1,12 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; 
-import Logo from '../../../assets/icons/nav/vision.png'
-import HamburgerIcon from '../../../assets/icons/nav/menu.png'; 
-import CloseIcon from '../../../assets/icons//nav/close.png';
-import ProjectIcon from '../../../assets/icons//nav/projects.png'
-import DatalakeIcon from '../../../assets/icons//nav/datalake.png'
-import UploadIcon from '../../../assets/icons//nav/upload.png'
-import ModelsIcon from '../../../assets/icons/nav/ai-model.png'
-import DeployIcon from '../../../assets/icons/nav/shuttle.png'
-import logoutIcon from '../../../assets/icons/nav/logout.png'
-
+import { Folder, Database, Upload, Brain, Rocket, Eye, X, Menu, LogOut } from "lucide-react";
 import './navbar.css';
 
 interface NavbarItem {
   item: string;
   ref: string;
-  icon: string;
+  icon: ReactNode;
 }
 
 const Navbar: FC = () => {
@@ -23,12 +14,13 @@ const Navbar: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+
   const items: NavbarItem[] = [
-    { item: 'Projects', ref: '/projects', icon: ProjectIcon },
-    { item: 'Datalake', ref: '/datalake', icon: DatalakeIcon },
-    { item: 'Upload', ref: '/upload', icon: UploadIcon },
-    { item: 'Models', ref: '/models', icon: ModelsIcon },
-    { item: 'Deploy', ref: '/deploy', icon: DeployIcon },
+    { item: "Projects", ref: "/projects", icon: <Folder size={20} color='#ccc'/> },
+    { item: "Datalake", ref: "/datalake", icon: <Database size={20} color='#ccc'/> },
+    { item: "Upload", ref: "/upload", icon: <Upload size={20} color='#ccc'/> },
+    { item: "Models", ref: "/models", icon: <Brain size={20} color='#ccc'/> },
+    { item: "Deploy", ref: "/deploy", icon: <Rocket size={20} color='#ccc'/> },
   ];
 
   const toggleNavbar = (): void => {
@@ -51,10 +43,10 @@ const Navbar: FC = () => {
       <div>
         <div className="navbar-header">
           <button className="toggle-button" onClick={toggleNavbar}>
-            <img src={isExpanded ? CloseIcon : HamburgerIcon} alt="Toggle" />
+            {isExpanded ? <X size={24} color='#ccc'/> : <Menu size={24} color='#ccc' />}
           </button>
           <div className='navbar-title'>
-            <img src={Logo} alt="Logo"></img>
+            {<Eye size={24} color='#ccc'/>}
             {isExpanded && <h2>VisionNest</h2>}
           </div>
         </div>
@@ -63,7 +55,7 @@ const Navbar: FC = () => {
           {items.map((item, index) => (
             <div className={`navbar-item ${isExpanded ? 'expand' : 'collapsed'}`} key={index}>
               <Link to={item.ref}>
-                <img src={item.icon} alt={item.item}></img>
+                {item.icon}
                 {isExpanded && <span>{item.item}</span>}
               </Link>
             </div>
@@ -74,7 +66,7 @@ const Navbar: FC = () => {
       <div className="navbar-bottom">
           <button className="logout-button" onClick={handleLogout}>
             {/* <FaUser className="icon" /> */}
-            <img src={logoutIcon} alt="logout"></img>
+            <LogOut size={20} color='#ccc'/>
             {isExpanded && <p>Logout</p>}
           </button>
         </div>

@@ -2,15 +2,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
-  /* display: flex; */
-  /* justify-content: center; */
 }
 
 .image-analysis-card {
-  width: 38rem;
+  /* width: 38rem; */
   height: auto;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1rem;
   background-color: #cccccc23;
   backdrop-filter: blur(8px);
   border-radius: 0.5rem;
@@ -34,7 +32,7 @@
 .dropzone:hover,
 .dropzone.active {
   border-color: #9b87f5;
-  background-color: rgba(155, 135, 245, 0.05);
+  /* background-color: rgba(155, 135, 245, 0.05); */
 }
 
 .dropzone-content {
@@ -46,7 +44,7 @@
 
 .emoji {
   font-size: 2.5rem;
-  background-color: rgba(255, 255, 255, 0.719);
+  background-color: rgb(255, 255, 255);
 }
 
 .dropzone-title {

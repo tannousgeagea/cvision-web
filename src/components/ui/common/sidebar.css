@@ -60,10 +60,11 @@
   }
   
 .sidebar-item.active {
-    border: 2px solid #6200ea;
+    background: #6416d198;
     color: white;
     font-weight: bold;
     transition: all 0.3s ease;
+    opacity: 90%;
   }
 
 .sidebar-item a {
@@ -86,6 +87,10 @@
   }
   
 .sidebar-item:hover {
-  background-color: rgba(240, 248, 255, 0.631);
-  opacity: 50%;
+  background-color: rgba(240, 248, 255, 0.315);
+  opacity: 70%;
+  }
+.sidebar-item.active:hover {
+  background: #6416d198;
+  opacity: 100%;
   }
