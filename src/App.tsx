@@ -36,6 +36,7 @@ const App = () => {
             </Route>
           </Route>
           <Route path='/projects/:projectId/images/annotate' element={<Index />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

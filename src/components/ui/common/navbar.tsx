@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, ReactNode } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; 
-import { Folder, Database, Upload, Brain, Rocket, Eye, X, Menu, LogOut } from "lucide-react";
+import { Folder, Database, Upload, Brain, Rocket, Eye, X, Menu, LogOut, View } from "lucide-react";
 import './navbar.css';
 
 interface NavbarItem {
@@ -46,7 +46,7 @@ const Navbar: FC = () => {
             {isExpanded ? <X size={24} color='#ccc'/> : <Menu size={24} color='#ccc' />}
           </button>
           <div className='navbar-title'>
-            {<Eye size={24} color='#ccc'/>}
+            {<View size={24} color='#ccc'/>}
             {isExpanded && <h2>VisionNest</h2>}
           </div>
         </div>

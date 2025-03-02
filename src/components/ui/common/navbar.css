@@ -10,7 +10,7 @@
   font-weight: 500;
   padding-left: .75rem;
   padding-right: .75rem;
-  transition: width 0.2s ease-in-out;
+  transition: width 0.05s ease-in-out;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -71,7 +71,7 @@
 }
 
 .navbar-item {
-  padding: 1rem 1rem;
+  padding: 0.5rem 0.5rem;
   border: none;
   border-radius: 6px;
   transition: all 0.7s ease;

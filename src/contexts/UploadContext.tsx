@@ -149,7 +149,7 @@ export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       const formData = new FormData();
       formData.append('files', image.file);
     
-      const url = `${baseURL}/api/v1/images?image_id=${image.id}`;  
+      const url = `${baseURL}/api/v1/images?image_id=${image.id}&project_id=amk_front_impurity`;  
       const xhr = new XMLHttpRequest();
       
       xhr.open('POST', url, true);
@@ -230,7 +230,7 @@ export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       console.log('All images uploaded successfully for project:', currentProject?.name);
       
       if (projectId) {
-        setTimeout(() => navigate(`/projects/${projectId}/dataset`), 2000);
+        setTimeout(() => navigate(`/projects/${projectId}/annotate`), 2000);
       }
 
     } catch (error) {
