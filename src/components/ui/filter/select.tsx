@@ -2,6 +2,7 @@ import { useState, FC } from 'react';
 import './select.css';
 import DownArrow from '@/assets/icons/down-arrow.png';
 import useToggle from '@/hooks/use-toggle';
+import { ChevronDown } from 'lucide-react';
 
 interface FilterItem {
     key: string;
@@ -36,7 +37,7 @@ const SelectFilter: FC<ScrollFilterProps> = ({ name, data, onFilterChange }) => 
                     {name}
                     <span>{count}</span>
                 </div>
-                <img src={DownArrow} alt="Button icon"/>
+                <ChevronDown />
             </button>
             {isOpen && (
                 <div className="select-filter-dropdown">

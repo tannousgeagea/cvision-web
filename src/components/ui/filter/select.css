@@ -99,10 +99,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap:0.5rem;
 }
 
 .select-filter-name span {
     font-weight: bold;
-    font-size: 1.15rem;
+    font-size: 0.875rem;
     color: #0000008e;
 }
