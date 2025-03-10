@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ProjectCard from '@/components/ui/card/project-card';
 import NewProjectButton from '@/components/ui/button/create-project-button';
 import useFetchData from '@/hooks/use-fetch-data';
+import Header from '@/components/ui/header/Header';
+import Spinner from '@/components/ui/animation/spinner';
 import './projects.css';
 
 interface Project {
@@ -26,23 +28,31 @@ const Projects: FC = () => {
     }
 
     const projectsData: Project[] = projects?.data || [];
-    
-    if (loadingProjects) return <p>Loading metadata...</p>;
     if (errorProjects) return <p>Error loading data: {errorProjects.message}</p>;
 
     return (
         <div className="projects-container">
             <div className="projects-header">
-                <h1>Projects</h1>
+                <Header
+                    title="Projects"
+                    description={``}
+                />
                 <div className="create-project">
                     <NewProjectButton onClick={() => handleCreateProject()}/>
                 </div>
             </div>
-            <div className="project-list">
-                {projectsData.map((project) => (
-                    <ProjectCard key={project.name} project={project} onView={handleViewProject} />
-                ))}
+
+            {loadingProjects ? (
+                <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
+                    <Spinner />
+                </div>
+            ) : (
+                <div className="project-list">
+                    {projectsData.map((project) => (
+                        <ProjectCard key={project.name} project={project} onView={handleViewProject} />
+                    ))}
             </div>
+            )}
         </div>
     );
 };

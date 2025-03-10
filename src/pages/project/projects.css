@@ -27,17 +27,16 @@
 }
 
 .project-list {
-    margin-top: 20px;
+    margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 3rem;
+    gap: 1.5rem;
 }
 
 .project-card {
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 1rem;
 }
 
 .project-card button {

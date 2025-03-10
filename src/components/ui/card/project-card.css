@@ -8,7 +8,7 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     margin: 10px 0;
     padding: 1rem 1rem;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
     overflow: hidden;
     width: 100%;
     max-width: 600px;
@@ -18,7 +18,8 @@
 
 .styled-project-card:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
+    border-color: #6c63ff;
 }
 
 .card-thumbnail {

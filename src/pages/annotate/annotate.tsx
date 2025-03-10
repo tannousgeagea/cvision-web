@@ -32,7 +32,7 @@ const Annotate: FC = () => {
   const query = new URLSearchParams(location.search);
   const [selectedFilter, setSelectedFilter] = useState<string>(query.get("filter") || "unannotated");
   const [currentPage, setCurrentPage] = useState<number>(parseInt(query.get("page") || "1", 10));
-  const itemsPerPage: number = 300;
+  const itemsPerPage: number = 100;
 
   const updateURL = (filter: string, page: number) => {
     navigate({
