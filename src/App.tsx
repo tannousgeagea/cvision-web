@@ -13,6 +13,7 @@ import AnalysisPage from './pages/analysis/Index';
 import Annotate from './pages/annotate/annotate';
 import UploadIndex from './pages/upload/Index';
 import NotFound from './pages/NotFound';
+import { Toaster } from './components/ui/ui/toaster';
 
 const App = () => {
   return (
@@ -34,11 +35,12 @@ const App = () => {
               <Route path="analysis" element={<AnalysisPage/>} />
               <Route path="*" element={<NotFound />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route path='/projects/:projectId/images/annotate' element={<Index />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <Toaster />
     </Router>
   );
 }

@@ -5,6 +5,8 @@ export const useDraw = (boxes, setBoxes, setSelectedBox) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentBox, setCurrentBox] = useState(null);
   const { getScaledCoordinates } = useCoordinates();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showGuideLines, setShowGuideLines] = useState(true);
 
   const startDrawing = (e, tool) => {
     if (tool !== 'draw') return;
@@ -34,6 +36,23 @@ export const useDraw = (boxes, setBoxes, setSelectedBox) => {
     });
   };
 
+  const handleMouseMove = (e, tool) => {
+    const { x, y } = getScaledCoordinates(e.clientX, e.clientY);
+    setMousePosition({ x, y });
+    
+    // Call draw for when drawing is in progress
+    draw(e, tool);
+  };
+
+  const handleMouseEnter = () => {
+    setShowGuideLines(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowGuideLines(false);
+    stopDrawing();
+  };
+
   const stopDrawing = () => {
     if (isDrawing && currentBox && Math.abs(currentBox.width) > 0.00625 && Math.abs(currentBox.height) > 0.00625) {
       const normalizedBox = {
@@ -50,5 +69,5 @@ export const useDraw = (boxes, setBoxes, setSelectedBox) => {
     setCurrentBox(null);
   };
 
-  return { startDrawing, draw, stopDrawing, currentBox };
+  return { startDrawing, draw, stopDrawing, currentBox, handleMouseMove, handleMouseEnter, handleMouseLeave, mousePosition, showGuideLines };
 };

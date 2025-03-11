@@ -1,0 +1,70 @@
+import React from 'react';
+import { Button } from '../ui/button';
+import { CheckCircle } from 'lucide-react';
+import { useImageApproval } from '@/hooks/useApproveImage';
+import { useAnnotation } from '@/contexts/AnnotationContext';
+import { toast } from '@/hooks/use-toast';
+
+interface Image {
+    image_id: string;
+    project_id: string;
+    url: string;
+  }
+  
+  interface ApproveButtonProps {
+    currentImage: Image;
+    goToNextImage: () => void;
+  }
+
+const ApproveButton:React.FC<ApproveButtonProps> = ( {currentImage, goToNextImage} ) => {
+  const { approveImage, isApproving } = useImageApproval();
+//   const { currentImage, goToNextImage } = useImage();
+  const { boxes, setBoxes, setSelectedBox } = useAnnotation();
+
+  const handleApprove = async () => {
+    if (boxes.length === 0) {
+      toast({
+        title: "No annotations",
+        description: "Please create at least one annotation before approving",
+        variant: "warning",
+      });
+      return;
+    }
+
+    try {
+      const response = await approveImage(currentImage.image_id, currentImage.project_id);
+      
+      console.log(response)
+      if (response.success) {
+        toast({
+          title: "Approved",
+          description: "Annotations approved successfully",
+          variant: "success",
+        });
+        
+        // Reset the current annotations
+        setBoxes([]);
+        setSelectedBox(null);
+        
+        // Move to the next image
+        goToNextImage();
+      }
+    } catch (error) {
+      console.error("Error approving image:", error);
+    }
+  };
+
+  return (
+    <Button 
+      onClick={handleApprove} 
+      disabled={isApproving}
+      className="absolute top-4 right-4 z-10"
+      variant="default"
+    >
+      <CheckCircle className="mr-2 h-4 w-4" />
+      {isApproving ? "Approving ..." : "Approve"}
+    </Button>
+  );
+};
+
+export default ApproveButton;

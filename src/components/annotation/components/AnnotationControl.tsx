@@ -1,5 +1,6 @@
 import React from 'react';
 import BackArrow from '../../ui/actions/BackArrow';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './AnnotationControl.css';
 
 interface AnnotationControlsProps {
@@ -19,11 +20,11 @@ const AnnotationControls: React.FC<AnnotationControlsProps> = ({ current, total,
       </div>
       <div className='annotation-controls-button'>
         <button onClick={onPrevious} disabled={current === 1}>
-          &lt;
+          <ChevronLeft />
         </button>
         <span>{`${current} / ${total}`}</span>
         <button onClick={onNext} disabled={current === total}>
-          &gt;
+          <ChevronRight />
         </button>
       </div>
 

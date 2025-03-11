@@ -5,6 +5,8 @@ import Canvas from './components/Canvas';
 import LabelPanel from './LabelPanel';
 import AnnotationControls from './components/AnnotationControl';
 import { useLocation } from 'react-router-dom';
+import ApproveButton from './components/ApproveButton';
+import MarkAsNullButton from './components/MarkAsNullButton';
 import './AnnotationTool.css';
 
 // interface ImageResponse {
@@ -61,6 +63,9 @@ const AnnotationTool = () => {
           onPrevious={handlePrevious}
           onNext={handleNext}
         />
+
+        <ApproveButton currentImage={image} goToNextImage={handleNext}/>
+        <MarkAsNullButton currentImage={image} goToNextImage={handleNext}/>
         <div className="annotation-container">
           <div className="annotation-sidebar">
             <ToolBar />

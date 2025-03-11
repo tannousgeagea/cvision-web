@@ -18,7 +18,7 @@ const Canvas = ({ image }) => {
     setSelectedBox
   } = useAnnotation();
   const canvasRef = useRef(null);
-  const { startDrawing, draw, stopDrawing, currentBox } = useDraw(boxes, setBoxes, setSelectedBox);
+  const { startDrawing, draw, stopDrawing, currentBox, handleMouseMove, handleMouseEnter, handleMouseLeave, mousePosition, showGuideLines } = useDraw(boxes, setBoxes, setSelectedBox);
   // const { fetchAnnotations, loading: annotationLoading, error: annotationError } = useFetchAnnotations();
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const { classes, loading: classesLoading, error: classerError } = useFetchAnnotationClasses(image.project_id)
@@ -81,6 +81,7 @@ const Canvas = ({ image }) => {
     ));
   };
 
+  console.log(showGuideLines)
   return (
     <div className="canvas-container">
       {selectedBox &&
@@ -95,9 +96,11 @@ const Canvas = ({ image }) => {
         ref={canvasRef}
         className="annotation-canvas"
         onMouseDown={(e) => startDrawing(e, tool)}
-        onMouseMove={(e) => draw(e, tool)}
+        onMouseMove={(e) => handleMouseMove(e, tool)}
         onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
+        // onMouseLeave={stopDrawing}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <img 
           src={image.image_url}
@@ -136,6 +139,36 @@ const Canvas = ({ image }) => {
               pointerEvents: 'cursor'
             }}
           />
+        )}
+        {showGuideLines && canvasRef.current && (
+          <>
+            {/* Vertical guide line */}
+            <div
+              style={{
+                position: 'absolute',
+                left: `${canvasRef.current ? mousePosition.x * canvasRef.current.getBoundingClientRect().width : mousePosition.x}px`,
+                top: '0',
+                width: '1px',
+                height: '100%',
+                borderLeft: '2px dashed rgb(255, 255, 255)',
+                pointerEvents: 'none',
+                zIndex: 10
+              }}
+            />
+            {/* Horizontal guide line */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '0',
+                top: `${canvasRef.current ? mousePosition.y * canvasRef.current.getBoundingClientRect().height : mousePosition.y}px`,
+                width: '100%',
+                height: '1px',
+                borderTop: '2px dashed rgb(255, 255, 255)',
+                pointerEvents: 'none',
+                zIndex: 10
+              }}
+            />
+          </>
         )}
       </div>
       {/* )} */}
