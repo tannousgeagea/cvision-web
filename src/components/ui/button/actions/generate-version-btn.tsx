@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import generateIcon from "../../../../assets/icons/actions/plus.png";
+import { Plus } from 'lucide-react';
 import './generate-version-btn.css';
 
 interface GenerateDatasetVersionProps {
@@ -17,7 +18,7 @@ const GenerateDatasetVersion: FC<GenerateDatasetVersionProps> = ({ projectId }) 
     return (
         <>
             <button className="generate-btn" onClick={() => handleGenerateVersion(projectId)}>
-                <img src={generateIcon} alt="generate-icon" />
+                <Plus />
                 Generate Version
             </button>
         </>

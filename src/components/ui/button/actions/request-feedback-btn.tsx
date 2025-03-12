@@ -3,7 +3,7 @@ import { useRequestFeedback } from '@/hooks/use-request-feedback';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
 import LoadingPopup from '../../popup/loading-popup';
-import feedbackIcon from "@/assets/icons/feedback.png";
+import { Sticker } from 'lucide-react';
 import './request-feedback-btn.css';
 
 interface RequestFeedbackBtnProps {
@@ -32,7 +32,7 @@ const RequestFeedbackBtn: FC<RequestFeedbackBtnProps> = ({ projectId }) => {
                 onClick={handleRequestFeedback}
                 disabled={loading}
             >   
-                <img src={feedbackIcon} alt="feedback-icon" />
+                <Sticker />
                 Request Feedback
             </button>
             

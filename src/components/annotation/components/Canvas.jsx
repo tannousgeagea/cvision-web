@@ -81,7 +81,6 @@ const Canvas = ({ image }) => {
     ));
   };
 
-  console.log(showGuideLines)
   return (
     <div className="canvas-container">
       {selectedBox &&

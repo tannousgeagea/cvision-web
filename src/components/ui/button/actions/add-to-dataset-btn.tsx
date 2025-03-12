@@ -6,6 +6,7 @@ import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
 import TrainValidSlider from '../../modal/TrainValidSlider';
 import { useSplitDataset } from '../../../../hooks/use-split-dataset';
+import { Plus } from 'lucide-react';
 import './add-to-dataset-btn.css'
 
 interface AddToDatasetButtonProps {
@@ -48,6 +49,7 @@ const AddToDatasetButton: React.FC<AddToDatasetButtonProps> = ({
         disabled={totalRecord === 0}
         className="add-to-dataset-btn"
       >
+        <Plus />
         {loading ? 'Adding...' : totalRecord === 1 ? `Add ${totalRecord} Image to Dataset` : `Add ${totalRecord} Images to Dataset`}
       </button>
 

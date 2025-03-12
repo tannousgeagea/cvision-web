@@ -7,6 +7,7 @@ import AnnotationControls from './components/AnnotationControl';
 import { useLocation } from 'react-router-dom';
 import ApproveButton from './components/ApproveButton';
 import MarkAsNullButton from './components/MarkAsNullButton';
+import DeleteButton from './components/DeteteButton';
 import './AnnotationTool.css';
 
 // interface ImageResponse {
@@ -63,7 +64,7 @@ const AnnotationTool = () => {
           onPrevious={handlePrevious}
           onNext={handleNext}
         />
-
+        <DeleteButton currentImage={image} goToNextImage={handleNext}/>
         <ApproveButton currentImage={image} goToNextImage={handleNext}/>
         <MarkAsNullButton currentImage={image} goToNextImage={handleNext}/>
         <div className="annotation-container">
