@@ -14,9 +14,10 @@ interface Image {
   interface MarkAsNullButtonProps {
     currentImage: Image;
     goToNextImage: () => void;
+    className?: string;
   }
 
-const MarkAsNullButton:React.FC<MarkAsNullButtonProps> = ( {currentImage, goToNextImage} ) => {
+const MarkAsNullButton:React.FC<MarkAsNullButtonProps> = ( {currentImage, goToNextImage, className} ) => {
   const { markImageAsNull, isMarkingAsNull } = useMarkImageAsNull();
 //   const { currentImage, goToNextImage } = useImage();
   const { boxes, setBoxes, setSelectedBox } = useAnnotation();
@@ -48,7 +49,7 @@ const MarkAsNullButton:React.FC<MarkAsNullButtonProps> = ( {currentImage, goToNe
     <Button 
       onClick={handleMarkAsNull} 
       disabled={isMarkingAsNull}
-      className="absolute bottom-12 right-4 z-10 bg-red-400 text-white"
+      className={className}
     >
       <Ban className="mr-1 h-4 w-4 bg-red-400" />
       {isMarkingAsNull ? "Marking ..." : "Mark null"}

@@ -14,9 +14,10 @@ interface Image {
 interface DeleteButtonProps {
   currentImage: Image;
   goToNextImage: () => void;
+  className?: string;
 }
 
-const DeleteButton:React.FC<DeleteButtonProps> = ( {currentImage, goToNextImage} ) => {
+const DeleteButton:React.FC<DeleteButtonProps> = ( {currentImage, goToNextImage, className} ) => {
   const { deleteImage, isDeleting } = useImageDeletion();
 
   const handleDelete = async () => {
@@ -53,7 +54,7 @@ const DeleteButton:React.FC<DeleteButtonProps> = ( {currentImage, goToNextImage}
     <Button 
       onClick={handleDelete} 
       disabled={isDeleting}
-      className="absolute bottom-24 right-4 z-10"
+      className={className}
       variant="destructive"
     >
       <Trash2 className="mr-2 h-4 w-4" />
