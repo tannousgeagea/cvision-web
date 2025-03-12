@@ -14,9 +14,10 @@ interface Image {
   interface ApproveButtonProps {
     currentImage: Image;
     goToNextImage: () => void;
+    className?: string;
   }
 
-const ApproveButton:React.FC<ApproveButtonProps> = ( {currentImage, goToNextImage} ) => {
+const ApproveButton:React.FC<ApproveButtonProps> = ( {currentImage, goToNextImage, className} ) => {
   const { approveImage, isApproving } = useImageApproval();
 //   const { currentImage, goToNextImage } = useImage();
   const { boxes, setBoxes, setSelectedBox } = useAnnotation();
@@ -58,7 +59,7 @@ const ApproveButton:React.FC<ApproveButtonProps> = ( {currentImage, goToNextImag
     <Button 
       onClick={handleApprove} 
       disabled={isApproving}
-      className="absolute top-4 right-4 z-10"
+      className={className}
       variant="default"
     >
       <CheckCircle className="mr-2 h-4 w-4" />
