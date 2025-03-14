@@ -2,7 +2,7 @@
 .annotation-controls {
     display: flex;
     align-items: center;
-    background-color: #1e1e2f;
+    /* background-color: #1e1e2f; */
     color: #00d1b2;
     padding: 8px 12px;
     border-radius: 4px;

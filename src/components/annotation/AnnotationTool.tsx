@@ -6,7 +6,6 @@ import LabelPanel from './LabelPanel';
 import AnnotationControls from './components/AnnotationControl';
 import { useLocation } from 'react-router-dom';
 import ActionSidebar from './components/ActionSidebar';
-import './AnnotationTool.css';
 
 // interface ImageResponse {
 //   data?: Array<{ image_id: string, image_url: string, image_name: string }>;
@@ -54,7 +53,7 @@ const AnnotationTool = () => {
   const image_name = image.image_name
   return (
     <AnnotationProvider>
-      <div className='annotation'>
+      <div className='w-full bg-card'>
         <AnnotationControls
           title={image_name}
           current={currentImageIndex + 1}
@@ -62,15 +61,15 @@ const AnnotationTool = () => {
           onPrevious={handlePrevious}
           onNext={handleNext}
         />
-        <div className="annotation-container">
-          <div className="annotation-sidebar">
+        <div className="flex h-screen">
+          <div className="w-64 bg-card p-4 border-r border-border flex flex-col gap-4">
             <ToolBar />
             <LabelPanel />
           </div>
           {totalImages === 0? (
             <p>No Image Found</p>
           ) : (
-            <div className='content-area'>
+            <div className='flex flex-1'>
              <Canvas image={image}/>
              <ActionSidebar currentImage={image} goToNextImage={handleNext} />
             </div>
