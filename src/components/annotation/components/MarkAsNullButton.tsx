@@ -19,7 +19,6 @@ interface Image {
 
 const MarkAsNullButton:React.FC<MarkAsNullButtonProps> = ( {currentImage, goToNextImage, className} ) => {
   const { markImageAsNull, isMarkingAsNull } = useMarkImageAsNull();
-//   const { currentImage, goToNextImage } = useImage();
   const { boxes, setBoxes, setSelectedBox } = useAnnotation();
 
   const handleMarkAsNull = async () => {
@@ -51,7 +50,7 @@ const MarkAsNullButton:React.FC<MarkAsNullButtonProps> = ( {currentImage, goToNe
       disabled={isMarkingAsNull}
       className={className}
     >
-      <Ban className="mr-1 h-4 w-4 bg-red-400" />
+      <Ban className="mr-1 h-4 w-4" />
       {isMarkingAsNull ? "Marking ..." : "Mark null"}
     </Button>
   );

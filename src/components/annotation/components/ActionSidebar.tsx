@@ -20,9 +20,9 @@ const ActionSidebar:React.FC<ActionSidebarProps> = ({ currentImage, goToNextImag
   const { boxes } = useAnnotation();
 
   return (
-    <div className="action-sidebar">
-      <div className="p-4 border-l border-border bg-card h-full">
-        <h2 className="text-lg font-semibold mb-6 text-white">Actions</h2>
+    <div className="w-60 border-l border-border bg-card">
+      <div className="p-4">
+        <h2 className="text-lg font-semibold mb-6">Actions</h2>
         
         <div className="space-y-4">
           <ApproveButton currentImage={currentImage} goToNextImage={goToNextImage} className="w-full" />
@@ -31,12 +31,12 @@ const ActionSidebar:React.FC<ActionSidebarProps> = ({ currentImage, goToNextImag
         </div>
         
         <div className="mt-8">
-          <h3 className="text-sm font-medium text-muted-foreground text-white mb-2">Image Info</h3>
+          <h3 className="text-sm font-medium text-muted-foreground mb-2">Image Info</h3>
           <p className="text-sm truncate text-white">{currentImage.image_id}</p>
         </div>
         
         <div className="mt-4">
-          <h3 className="text-sm font-medium text-muted-foreground mb-2 text-white">Annotations</h3>
+          <h3 className="text-sm font-medium text-muted-foreground mb-2">Annotations</h3>
           <p className="text-sm text-white">{boxes.length} bounding boxes</p>
         </div>
       </div>

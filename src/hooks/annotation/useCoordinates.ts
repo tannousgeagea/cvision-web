@@ -1,6 +1,6 @@
 export const useCoordinates = () => {
   const getScaledCoordinates = (clientX: number, clientY: number) => {
-    const canvas = document.querySelector('.annotation-canvas');
+    const canvas = document.querySelector('.annotation-canvas') as HTMLDListElement;
     if (!canvas) return { x: 0, y: 0 };
     
     const rect = canvas.getBoundingClientRect();

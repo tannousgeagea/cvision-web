@@ -7,18 +7,37 @@ import { useDraw } from '../../../hooks/annotation/useDraw';
 import useSaveAnnotation from '@/hooks/annotation/useSaveAnnotation';
 import useDeleteAnnotation from "../../../hooks/annotation/useDeleteAnnotation";
 import useFetchAnnotationClasses from "@/hooks/annotation/useFetchAnnotationClasses"
+import PolygonAnnotation from './PolygonAnnotation';
+import { toast } from '@/hooks/use-toast';
 import './Canvas.css'
 
 const Canvas = ({ image }) => {
   const {
     boxes,
+    polygons,
     selectedBox,
+    selectedPolygon,
     tool,
+    currentPolygon,
     setBoxes,
-    setSelectedBox
+    setSelectedBox,
+    setSelectedPolygon,
+    addPointToCurrentPolygon
   } = useAnnotation();
   const canvasRef = useRef(null);
-  const { startDrawing, draw, stopDrawing, currentBox, handleMouseMove, handleMouseEnter, handleMouseLeave, mousePosition, showGuideLines } = useDraw(boxes, setBoxes, setSelectedBox);
+  const { 
+    startDrawing, 
+    stopDrawing, 
+    currentBox, 
+    handleMouseMove, 
+    handleMouseEnter, 
+    handleMouseLeave, 
+    mousePosition, 
+    showGuideLines, 
+    handleCanvasClick, 
+    handleContextMenu 
+  } = useDraw(boxes, setBoxes, setSelectedBox);
+  
   // const { fetchAnnotations, loading: annotationLoading, error: annotationError } = useFetchAnnotations();
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const { classes, loading: classesLoading, error: classerError } = useFetchAnnotationClasses(image.project_id)
@@ -81,6 +100,22 @@ const Canvas = ({ image }) => {
     ));
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && tool === 'polygon' && currentPolygon) {
+        addPointToCurrentPolygon(null);
+        toast.info('Polygon drawing cancelled');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [tool, currentPolygon]);
+
+  console.log(currentPolygon)
+
   return (
     <div className="canvas-container">
       {selectedBox &&
@@ -100,6 +135,8 @@ const Canvas = ({ image }) => {
         // onMouseLeave={stopDrawing}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={(e) => handleCanvasClick(e, tool)}
+        onContextMenu={(e) => handleContextMenu(e, tool)}
       >
         <img 
           src={image.image_url}
@@ -124,6 +161,19 @@ const Canvas = ({ image }) => {
             )
           })}
 
+        {canvasRef.current && 
+          polygons.map((polygon) => {
+            return (
+              <PolygonAnnotation
+                key={polygon.id}
+                polygon={polygon}
+                isSelected={selectedPolygon === polygon.id}
+                tool={tool}
+                onSelect={() => setSelectedPolygon(polygon.id)}
+              /> 
+            )
+          })}
+
         
         {currentBox && canvasRef.current && (
           <div
@@ -139,6 +189,57 @@ const Canvas = ({ image }) => {
             }}
           />
         )}
+
+        {currentPolygon && currentPolygon.length > 0 && (
+          <svg 
+            className="polygon-svg-container"
+            width={canvasDimensions.width}
+            height={canvasDimensions.height}
+            viewBox='0 0 1 1'
+            preserveAspectRatio='none'
+          >
+            {currentPolygon.length > 1 && (
+              <polyline
+                points={currentPolygon.map(p => `${p.x},${p.y}`).join(' ')}
+                style={{
+                  fill: 'none',
+                  stroke: '#3B82F6',
+                  strokeWidth: 0.002,
+                  strokeDasharray: "0.005,0.005",
+                }}
+              />
+            )}
+            
+            {currentPolygon.length > 0 && (
+              <line
+                x1={currentPolygon[currentPolygon.length - 1].x}
+                y1={currentPolygon[currentPolygon.length - 1].y}
+                x2={mousePosition.x}
+                y2={mousePosition.y}
+                style={{
+                  stroke: '#3B82F6',
+                  strokeWidth: 0.002,
+                  strokeDasharray: "0.005,0.005",
+                }}
+              />
+            )}
+            
+            {currentPolygon.map((point, index) => (
+              <circle
+                key={index}
+                cx={point.x}
+                cy={point.y}
+                r={0.005}
+                style={{
+                  fill: '#3B82F6',
+                  stroke: 'white',
+                  strokeWidth: 0.001,
+                }}
+              />
+            ))}
+          </svg>
+        )}
+
         {showGuideLines && canvasRef.current && (
           <>
             {/* Vertical guide line */}

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useCoordinates } from '@/hooks/annotation/useCoordinates';
+import { useAnnotation } from '@/contexts/AnnotationContext';
+import { toast } from '@/hooks/use-toast';
 
 export const useDraw = (boxes, setBoxes, setSelectedBox) => {
   const [isDrawing, setIsDrawing] = useState(false);
@@ -7,6 +9,12 @@ export const useDraw = (boxes, setBoxes, setSelectedBox) => {
   const { getScaledCoordinates } = useCoordinates();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showGuideLines, setShowGuideLines] = useState(true);
+
+  const {
+    currentPolygon,
+    addPointToCurrentPolygon,
+    finalizeCurrentPolygon
+  } = useAnnotation();
 
   const startDrawing = (e, tool) => {
     if (tool !== 'draw') return;
@@ -69,5 +77,53 @@ export const useDraw = (boxes, setBoxes, setSelectedBox) => {
     setCurrentBox(null);
   };
 
-  return { startDrawing, draw, stopDrawing, currentBox, handleMouseMove, handleMouseEnter, handleMouseLeave, mousePosition, showGuideLines };
+  const handleCanvasClick = (e, tool) => {
+    if (tool !== 'polygon') return;
+    
+    e.stopPropagation();
+    const { x, y } = getScaledCoordinates(e.clientX, e.clientY);
+    
+    if (e.detail === 2 && currentPolygon && currentPolygon.length >= 2) {
+      finalizeCurrentPolygon();
+      toast.success('Polygon created');
+    } else {
+      addPointToCurrentPolygon({ x, y });
+    }
+  };
+
+  const handleContextMenu = (e, tool) => {
+    e.preventDefault();
+    
+    if (tool === 'polygon' && currentPolygon) {
+      if (currentPolygon.length >= 3) {
+        finalizeCurrentPolygon();
+        toast({
+          title: 'Polygon created',
+          variant: "success"
+        });
+      } else {
+        toast({
+          title: "Polygon Failed",
+          description: "Need at least 3 points",
+          variant: "warning",
+
+      });
+      }
+    }
+  };
+
+  return { 
+    startDrawing, 
+    draw, 
+    stopDrawing, 
+    currentBox,
+    currentPolygon,
+    handleMouseMove, 
+    handleMouseEnter, 
+    handleMouseLeave, 
+    mousePosition, 
+    showGuideLines,
+    handleCanvasClick,
+    handleContextMenu
+   };
 };

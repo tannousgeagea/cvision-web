@@ -6,9 +6,9 @@ import {
   Upload,
   Pencil,
   BarChart,
-  Database,
   Layers,
   LineChart,
+  Images,
 } from "lucide-react";
 
 interface SideBarProps {}
@@ -27,7 +27,7 @@ const SideBar: FC<SideBarProps> = () => {
     { item: "Upload Data", ref: `/projects/${projectId}/upload`, icon: <Upload size={20} /> },
     { item: "Annotate", ref: `/projects/${projectId}/annotate`, icon: <Pencil size={20} /> },
     { item: "Analysis", ref: `/projects/${projectId}/analysis`, icon: <BarChart size={20} /> },
-    { item: "Dataset", ref: `/projects/${projectId}/dataset`, icon: <Database size={20} /> },
+    { item: "Dataset", ref: `/projects/${projectId}/dataset`, icon: <Images size={20} /> },
     { item: "Version", ref: `/projects/${projectId}/versions`, icon: <Layers size={20} /> },
     { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: <LineChart size={20} /> },
   ];
