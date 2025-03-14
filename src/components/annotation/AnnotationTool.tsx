@@ -62,7 +62,7 @@ const AnnotationTool = () => {
           onNext={handleNext}
         />
         <div className="flex h-screen">
-          <div className="w-64 bg-card p-4 border-r border-border flex flex-col gap-4">
+          <div className="w-56 bg-card p-4 border-r border-border flex flex-col gap-4">
             <ToolBar />
             <LabelPanel />
           </div>

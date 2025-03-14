@@ -20,6 +20,7 @@ interface Box {
   width: number;
   height: number;
   label: string;
+  color: string;
 }
 
 interface AnnotationContextType {

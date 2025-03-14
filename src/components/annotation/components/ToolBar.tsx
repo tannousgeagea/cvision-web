@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/ui/button';
-import { Move, Square, Lasso } from 'lucide-react';
+import { Move, Square, Hexagon } from 'lucide-react';
 import { useAnnotation } from '@/contexts/AnnotationContext';
 
 const ToolBar = () => {
@@ -22,7 +22,7 @@ const ToolBar = () => {
           onClick={() => setTool('polygon')}
           className="flex-1"
         >
-          <Lasso className="w-4 h-4 mr-2" />
+          <Hexagon className="w-4 h-4 mr-2" />
           Polygon
         </Button>
         <Button
