@@ -151,7 +151,7 @@ export const FileUploader: React.FC = () => {
           </p>
           <div className="flex flex-wrap gap-2 justify-center">
             <Button 
-              variant="outline" 
+              variant="default" 
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
             >
@@ -159,7 +159,7 @@ export const FileUploader: React.FC = () => {
               Select Files
             </Button>
             <Button 
-              variant="outline" 
+              variant="default" 
               onClick={() => folderInputRef.current?.click()}
               disabled={isUploading}
             >
@@ -187,7 +187,7 @@ export const FileUploader: React.FC = () => {
           variant="outline"
           size="sm"
           onClick={clearAllImages}
-          className="text-red-500 hover:text-red-700 hover:bg-red-50"
+          className="text-red-500 bg-white hover:text-red-700 hover:bg-red-50"
           disabled={isUploading}
         >
           <X className="mr-2 h-4 w-4" />
