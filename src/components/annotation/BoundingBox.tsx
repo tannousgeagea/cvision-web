@@ -14,15 +14,13 @@ interface Box {
 
 interface Props {
   box: Box;
-  canvasWidth: number;
-  canvasHeight: number;
   isSelected: boolean;
-  tool: 'draw' | 'move';
+  tool: 'draw' | 'move' | 'polygon';
   onSelect: () => void;
   onUpdate: (id: string, updates: Partial<Box>) => void;
 }
 
-const BoundingBox: React.FC<Props> = ({ box, canvasWidth, canvasHeight, isSelected, tool, onSelect, onUpdate }) => {
+const BoundingBox: React.FC<Props> = ({ box,isSelected, tool, onSelect, onUpdate }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [resizing, setResizing] = useState<string | null>(null);
@@ -118,19 +116,14 @@ const BoundingBox: React.FC<Props> = ({ box, canvasWidth, canvasHeight, isSelect
     isSelected ? 'selected-bg' : ''
   ].filter(Boolean).join(' ');
 
-  const pixelX = Math.max(0, Math.min(box.x * canvasWidth, canvasWidth - box.width * canvasWidth));
-  const pixelY = Math.max(0, Math.min(box.y * canvasHeight, canvasHeight - box.height * canvasHeight));
-  const pixelWidth = Math.min(box.width * canvasWidth, canvasWidth - pixelX);
-  const pixelHeight = Math.min(box.height * canvasHeight, canvasHeight - pixelY);
-
   return (
     <div
       className={boxClasses}
       style={{
-        left: `${pixelX}px`,
-        top: `${pixelY}px`,
-        width: `${pixelWidth}px`,
-        height: `${pixelHeight}px`,
+        left: `${box.x * 100}%`,
+        top: `${box.y * 100}%`,
+        width: `${box.width * 100}%`,
+        height: `${box.height * 100}%`,
         borderColor: `${box.color}`,
       }}
       onMouseDown={handleMouseDown}

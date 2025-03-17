@@ -5,18 +5,15 @@
   
 .tab {
     padding: 10px 20px;
-    /* border: 1px solid #ccc; */
-    /* border-radius: 20px; */
-    /* background-color: #f9f9f9; */
     cursor: pointer;
     transition: background-color 0.3s;
     font-size: 14px;
     align-items: center;
     align-content: center;
+    color: black;
   }
   
 .tab.active {
-    color: black;
     border-bottom: 3px solid #6a0dad;
   }
   
