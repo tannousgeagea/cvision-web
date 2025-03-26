@@ -38,6 +38,24 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
     }
   }, [selectedBox, boxes]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check if the "Delete" key was pressed
+      console.log(e.key)
+      if (e.key === 'Delete' && selectedBox) {
+        deleteBox(selectedBox);
+      }
+    };
+
+    // Attach the event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener when the component unmounts or when selectedBox changes
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedBox, boxes]);
+
   const handleSaveClass = () => {
     if (selectedClass) {
       onSaveClass();
