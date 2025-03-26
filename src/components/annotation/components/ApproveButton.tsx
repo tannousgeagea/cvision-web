@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../ui/button';
 import { CheckCircle } from 'lucide-react';
 import { useImageApproval } from '@/hooks/useApproveImage';
@@ -54,6 +54,18 @@ const ApproveButton:React.FC<ApproveButtonProps> = ( {currentImage, goToNextImag
       console.error("Error approving image:", error);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for the Enter key and ensure we're not already in an approving state
+      if (event.key === "Enter" && !isApproving) {
+        handleApprove();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isApproving, boxes, currentImage]);
 
   return (
     <Button 
