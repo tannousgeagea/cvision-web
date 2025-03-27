@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useDownloadVersion } from '../../../../hooks/use-download-version';
+import { useDownloadVersion } from '../../../../hooks/useDownloadVersion';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
 import LoadingPopup from '../../popup/loading-popup';
@@ -8,7 +8,7 @@ import './download-version-btn.css';
 
 interface DownloadVersionBtnProps {
     projectId: string;
-    versionID: string;
+    versionID: number;
 }
 
 const DownloadVersionBtn: FC<DownloadVersionBtnProps> = ({ projectId, versionID }) => {
@@ -18,7 +18,7 @@ const DownloadVersionBtn: FC<DownloadVersionBtnProps> = ({ projectId, versionID 
 
     const handleDownload = async (): Promise<void> => {
         try {
-            await downloadVersion(projectId, versionID);
+            await downloadVersion(versionID);
             setSuccessMessage("Dataset Successfully downloaded !");
         } catch (error) {
             console.log(error);

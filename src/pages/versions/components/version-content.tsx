@@ -5,6 +5,7 @@ import SplitCard from '@/components/ui/card/split-card';
 import DownloadVersionBtn from '@/components/ui/button/actions/download-version-btn';
 
 interface Version {
+    id: number;
     version_number: string;
     name: string;
     created_at: string;
@@ -35,7 +36,7 @@ const VersionContent: FC<VersionContentProps> = ({ version, projectId }) => {
 
                         <DownloadVersionBtn
                             projectId={projectId}
-                            versionID={version.version_number}
+                            versionID={version.id}
                         />
                     </div>
 
