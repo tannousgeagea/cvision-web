@@ -17,7 +17,7 @@ export const useCreateVersion = () => {
     setSuccessMessage(null);
 
     try {
-      const response = await axios.post(`${baseURL}/api/v1/projects/${projectId}/versions`);
+      const response = await axios.post(`${baseURL}/api/v1/versions/${projectId}/create`);
       setSuccessMessage("Version created successfully!");
       return response.data;
     } catch (err) {
