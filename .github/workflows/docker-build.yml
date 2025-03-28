@@ -1,11 +1,10 @@
 name: Publish Docker image
 
 on:
-  push:
-    branches:
-      - main
-  release:
-    types: [created]
+  workflow_run:
+    workflows: ["Auto Tag Version"]
+    types:
+      - completed
 
 jobs:
   build:
