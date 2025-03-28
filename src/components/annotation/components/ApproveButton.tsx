@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/ui/button';
 import { CheckCircle } from 'lucide-react';
 import { useImageApproval } from '@/hooks/useApproveImage';
 import { useAnnotation } from '@/contexts/AnnotationContext';

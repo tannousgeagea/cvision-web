@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import './PolygonAnnotation.css';
+import React from 'react';
 
 interface Point {
   x: number;
@@ -29,14 +28,14 @@ const PolygonAnnotation: React.FC<Props> = ({ polygon, isSelected, tool, onSelec
   };
 
   const classNames = [
-    'polygon-annotation',
-    isSelected ? 'selected' : '',
-    tool === 'draw' || tool === 'polygon' ? 'draw-mode' : ''
+    'fill-[rgba(59,_131,_246,_0.877)] stroke-[2]',
+    isSelected ? 'fill-[rgba(59,246,190,0.377)]' : 'fill-[rgba(59,131,246,0.877)]',
+    tool === 'draw' || tool === 'polygon' ? 'pointer-events-none' : "pointer-events-auto"
   ].filter(Boolean).join(' ');
   
   return (
     <svg 
-      className="polygon-svg-container" 
+      className="absolute top-0 left-0 w-full h-full pointer-events-none" 
       onClick={handleMouseDown}
       viewBox="0 0 1 1"
       preserveAspectRatio='none'
@@ -55,7 +54,7 @@ const PolygonAnnotation: React.FC<Props> = ({ polygon, isSelected, tool, onSelec
           cx={point.x} 
           cy={point.y} 
           r={0.005} 
-          className={`polygon-point ${isSelected ? 'selected' : ''}`}
+          className={`fill-[var(--primary)] stroke-white`}
           style={{
             fill: '#3B82F6',
             stroke: 'white',
@@ -70,7 +69,7 @@ const PolygonAnnotation: React.FC<Props> = ({ polygon, isSelected, tool, onSelec
           width="0.2" 
           height="0.06"
         >
-          <div className="box-label">{polygon.label}</div>
+          <div className="bg-[rgba(128,0,255,0.822)] text-white px-1 py-[2px] rounded text-[10px]">{polygon.label}</div>
         </foreignObject>
       )}
     </svg>

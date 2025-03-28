@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useCoordinates } from '@/hooks/annotation/useCoordinates';
-import './BoundingBox.css';
 
 interface Box {
   id: string;
@@ -110,10 +109,9 @@ const BoundingBox: React.FC<Props> = ({ box,isSelected, tool, onSelect, onUpdate
   }, [isDragging, resizing]);
 
   const boxClasses = [
-    'bounding-box',
-    isSelected ? 'selected' : 'not-selected',
-    tool === 'move' ? 'move-mode' : 'draw-mode',
-    isSelected ? 'selected-bg' : ''
+    "absolute border-2 cursor-move",
+    isSelected ? "bg-[rgba(128,0,255,0.281)]" : "",
+    tool !== 'move' ? "pointer-events-none" : ""
   ].filter(Boolean).join(' ');
 
   return (
@@ -130,14 +128,37 @@ const BoundingBox: React.FC<Props> = ({ box,isSelected, tool, onSelect, onUpdate
     >
       {isSelected && tool === 'move' && (
         <>
-          <div className="resize-handle nw" onMouseDown={(e) => handleMouseDown(e, 'nw')} />
-          <div className="resize-handle ne" onMouseDown={(e) => handleMouseDown(e, 'ne')} />
-          <div className="resize-handle sw" onMouseDown={(e) => handleMouseDown(e, 'sw')} />
-          <div className="resize-handle se" onMouseDown={(e) => handleMouseDown(e, 'se')} />
+          {/* Resize handle: top left */}
+          <div 
+            className="absolute w-3 h-3 bg-[var(--primary)] border-2 border-white -translate-x-1/2 -translate-y-1/2"
+            style={{ left: 0, top: 0, cursor: "nw-resize" }}
+            onMouseDown={(e) => handleMouseDown(e, 'nw')}
+          />
+          {/* Resize handle: top right */}
+          <div 
+            className="absolute w-3 h-3 bg-[var(--primary)] border-2 border-white translate-x-1/2 -translate-y-1/2"
+            style={{ right: 0, top: 0, cursor: "ne-resize" }}
+            onMouseDown={(e) => handleMouseDown(e, 'ne')}
+          />
+          {/* Resize handle: bottom left */}
+          <div 
+            className="absolute w-3 h-3 bg-[var(--primary)] border-2 border-white -translate-x-1/2 translate-y-1/2"
+            style={{ left: 0, bottom: 0, cursor: "sw-resize" }}
+            onMouseDown={(e) => handleMouseDown(e, 'sw')}
+          />
+          {/* Resize handle: bottom right */}
+          <div 
+            className="absolute w-3 h-3 bg-[var(--primary)] border-2 border-white translate-x-1/2 translate-y-1/2"
+            style={{ right: 0, bottom: 0, cursor: "se-resize" }}
+            onMouseDown={(e) => handleMouseDown(e, 'se')}
+          />
         </>
       )}
       {box.label && (
-        <div className="box-label" style={{background: `${box.color}`}}>
+        <div 
+          className="absolute text-white py-[2px] px-[4px] rounded-[2px] text-[10px]"
+          style={{background: `${box.color}`}}
+        >
           {box.label}
         </div>
       )}

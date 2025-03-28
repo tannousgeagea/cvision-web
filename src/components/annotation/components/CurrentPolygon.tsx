@@ -15,7 +15,7 @@ const CurrentPolygon: React.FC<CurrentPolygonProps> = ({ currentPolygon, mousePo
 
   return (
     <svg 
-    className="polygon-svg-container"
+    className="absolute top-0 left-0 w-full h-full pointer-events-none"
     viewBox='0 0 1 1'
     preserveAspectRatio='none'
     >

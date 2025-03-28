@@ -1,18 +1,38 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAnnotation } from '@/contexts/AnnotationContext';
-import AnnotationEditor from './AnnotationEditor'
-import { useDraw } from '../../../hooks/annotation/useDraw';
+import { useDraw } from '@/hooks/useDraw';
 import useSaveAnnotation from '@/hooks/annotation/useSaveAnnotation';
-import useDeleteAnnotation from "../../../hooks/annotation/useDeleteAnnotation";
-import useFetchAnnotationClasses from "@/hooks/annotation/useFetchAnnotationClasses"
+import useDeleteAnnotation from "@/hooks/annotation/useDeleteAnnotation";
+import useFetchAnnotationClasses from "@/hooks/annotation/useFetchAnnotationClasses";
 import { toast } from '@/hooks/use-toast';
-import GuideLines from './GuideLines'
-import CurrentPolygon from './CurrentPolygon' 
-import DrawingBox from './DrawingBox'
-import AnnotationLayer from './AnnotationLayer'
-import './Canvas.css'
+import AnnotationEditor from './AnnotationEditor';
+import GuideLines from './GuideLines';
+import CurrentPolygon from './CurrentPolygon';
+import DrawingBox from './DrawingBox';
+import AnnotationLayer from './AnnotationLayer';
 
-const Canvas = ({ image }) => {
+interface Image {
+  image_id: string;
+  image_url: string;
+  project_id: string;
+}
+
+interface CanvasProps {
+  image: Image;
+}
+
+interface Box {
+    id: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    label: string;
+    color: string;
+  }
+  
+
+const Canvas: React.FC<CanvasProps> = ({ image }) => {
   const {
     boxes,
     polygons,
@@ -23,9 +43,10 @@ const Canvas = ({ image }) => {
     setBoxes,
     setSelectedBox,
     setSelectedPolygon,
-    addPointToCurrentPolygon
+    addPointToCurrentPolygon,
   } = useAnnotation();
-  const canvasRef = useRef(null);
+
+  const canvasRef = useRef<HTMLDivElement>(null);
   const { 
     startDrawing, 
     stopDrawing, 
@@ -37,30 +58,21 @@ const Canvas = ({ image }) => {
     showGuideLines, 
     handleCanvasClick, 
     handleContextMenu 
-  } = useDraw(boxes, setBoxes, setSelectedBox);
-  const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
-  const { classes, loading: classesLoading, error: classerError } = useFetchAnnotationClasses(image.project_id)
-  const { saveAnnotation, loading: saveLoading, error: saveError, success: saveSuccess } = useSaveAnnotation();
-  const { deleteAnnotation, loading: deleteLoading, error: deleteError, success: deleteSuccess  } = useDeleteAnnotation();
+  } = useDraw();
+  const { classes } = useFetchAnnotationClasses(image.project_id);
+  const { saveAnnotation } = useSaveAnnotation();
+  const { deleteAnnotation } = useDeleteAnnotation();
 
-  const updateCanvasDimensions = () => {
-    if (canvasRef.current) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      setCanvasDimensions({ width: rect.width, height: rect.height });
-    }
-  };
-
-  const fetchAnnotations = async (imageID, projectId) => {
+  const fetchAnnotations = async (imageID: string, projectId: string) => {
     const response = await fetch(`http://localhost:29085/api/v1/annotations/${projectId}/${imageID}`);
     const data = await response.json();
     if (data) {
-      setBoxes(data.map(box =>
-        box.data
-      ));
+      // Assuming the API returns an array of objects with a "data" property containing the box.
+      setBoxes(data.map((box: any) => box.data));
     }
   };
 
-  const getRandomColor = () => {
+  const getRandomColor = (): string => {
     const letters = "0123456789ABCDEF";
     let color = "#";
     for (let i = 0; i < 6; i++) {
@@ -71,61 +83,59 @@ const Canvas = ({ image }) => {
 
   const handleSave = async () => {
     if (image) {
-      const annotation = boxes.find((b) => b.id === selectedBox);
-      if (!annotation.color){
-        const color = getRandomColor()
-        annotation.color = color
+      const annotation = boxes.find((b: Box) => b.id === selectedBox);
+      if (annotation) {
+        if (!annotation.color) {
+          const color = getRandomColor();
+          annotation.color = color;
+        }
+        await saveAnnotation(annotation, image.project_id, image.image_id);
       }
-      await saveAnnotation(annotation, image.project_id, image.image_id);
-    };
+    }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (id) {
-      await deleteAnnotation(id)
+      await deleteAnnotation(id);
     }
-  }
+  };
 
   useEffect(() => {
-    updateCanvasDimensions();
-    window.addEventListener('resize', updateCanvasDimensions);
     if (image) fetchAnnotations(image.image_id, image.project_id);
-    return () => window.removeEventListener('resize', updateCanvasDimensions);
   }, [image]);
 
-  const updateBoxPosition = (id, updates) => {
-    setBoxes(boxes.map(box => 
+  const updateBoxPosition = (id: string, updates: Partial<Box>) => {
+    setBoxes(boxes.map((box: Box) => 
       box.id === id ? { ...box, ...updates } : box
     ));
   };
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && tool === 'polygon' && currentPolygon) {
-        addPointToCurrentPolygon(null);
-        toast.info('Polygon drawing cancelled');
+        toast({
+            title: 'Polygon drawing cancelled'
+      });
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [tool, currentPolygon]);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [tool, currentPolygon, addPointToCurrentPolygon]);
 
   return (
-    <div className="canvas-container">
-      {selectedBox &&
+    <div className="flex relative p-4 flex-1 justify-center items-center w-full">
+      {selectedBox && (
         <AnnotationEditor
           classes={classes}
           onSaveClass={handleSave}
           onDeleteClass={handleDelete}
         />
-      }
+      )}
 
       <div
         ref={canvasRef}
-        className="annotation-canvas"
+        className="annotation-canvas relative bg-[beige] justify-center items-center max-w-[1000px] cursor-crosshair"
         onMouseDown={(e) => startDrawing(e, tool)}
         onMouseMove={(e) => handleMouseMove(e, tool)}
         onMouseUp={stopDrawing}
@@ -137,7 +147,7 @@ const Canvas = ({ image }) => {
         <img 
           src={image.image_url}
           alt="Sample image"
-          className="canvas-image"
+          className="object-contain select-none w-full h-full"
           onDragStart={(e) => e.preventDefault()}
         />
 
@@ -152,9 +162,9 @@ const Canvas = ({ image }) => {
           updateBoxPosition={updateBoxPosition}
         />
         
-        <DrawingBox currentBox={currentBox}/>
+        <DrawingBox currentBox={currentBox} />
         <CurrentPolygon currentPolygon={currentPolygon} mousePosition={mousePosition} />
-        <GuideLines mousePosition={mousePosition} showGuideLines={showGuideLines}/>
+        <GuideLines mousePosition={mousePosition} showGuideLines={showGuideLines} />
       </div>
     </div>
   );

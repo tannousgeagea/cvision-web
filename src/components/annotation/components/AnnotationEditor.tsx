@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAnnotation } from '@/contexts/AnnotationContext';
-import './AnnotationEditor.css'
+import { useAnnotation } from "@/contexts/AnnotationContext";
 
 interface AnnotationClass {
   id: string;
@@ -29,7 +28,12 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
       const box = boxes.find((box) => box.id === selectedBox);
       if (box) {
         setClassName(box.label || '');
-        setSelectedClass(box)
+        setSelectedClass({
+          id: box.id,
+          label: box.label,
+          color: box.color,
+          name: box.label, // using box.label as the name
+        });
       } else {
         setClassName('');
       }
@@ -40,20 +44,12 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Check if the "Delete" key was pressed
-      console.log(e.key)
       if (e.key === 'Delete' && selectedBox) {
         deleteBox(selectedBox);
       }
     };
-
-    // Attach the event listener
     window.addEventListener('keydown', handleKeyDown);
-
-    // Clean up the event listener when the component unmounts or when selectedBox changes
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedBox, boxes]);
 
   const handleSaveClass = () => {
@@ -61,7 +57,7 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
       onSaveClass();
       setSelectedClass(null);
       setClassName("");
-      setSelectedBox(null)
+      setSelectedBox(null);
     }
   };
 
@@ -73,7 +69,7 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
     );
   };
 
-  const updateLabelAndColor = (id: string, label: string, color:string) => {
+  const updateLabelAndColor = (id: string, label: string, color: string) => {
     setBoxes(
       boxes.map((box) =>
         box.id === id ? { ...box, label, color } : box
@@ -91,41 +87,47 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
     return null;
   }
 
-  return (
-    <div className="annotation-editor">
-      <h3 className="editor-title">Annotation Editor</h3>
 
-      <div className="editor-input">
+  console.log(selectedBox)
+  return (
+    <div className="absolute top-4 left-4 z-10 w-[300px] p-4 rounded-lg bg-[#06101d] text-white font-sans">
+      <h3 className="text-[1.2rem] mb-4">Annotation Editor</h3>
+      
+      <div className="mb-4">
         <input
           type="text"
-          value={className || ""}
-          onChange={(e) => updateLabel(selectedBox, e.target.value,)}
+          value={className}
+          onChange={(e) => updateLabel(selectedBox, e.target.value)}
           placeholder="Enter annotation name"
-          className="class-input"
           required
+          className="w-full p-2 mb-4 border border-[#333] rounded bg-[#0d1f34] text-white"
         />
       </div>
-
-      <div className="editor-buttons">
-        <button onClick={() => deleteBox(selectedBox)} className="delete-button">
+      
+      <div className="flex justify-between gap-2 mb-4">
+        <button 
+          onClick={() => deleteBox(selectedBox)} 
+          className="flex-1 p-1 rounded cursor-pointer bg-[#ff4d4f] text-white"
+        >
           Delete
         </button>
-        <button onClick={handleSaveClass} className="save-button">
+        <button 
+          onClick={handleSaveClass} 
+          className="flex-1 p-1 rounded cursor-pointer bg-[#4caf50] text-white"
+        >
           Save
         </button>
       </div>
-
-      <div className="class-list">
+      
+      <div className="max-h-[200px] overflow-y-auto">
         {classes.map((cls) => (
           <div
             key={cls.id}
-            className={`class-item ${selectedClass?.label === cls.name ? "selected" : ""}`}
-            onClick={
-              () => updateLabelAndColor(selectedBox, cls.name, cls.color)
-            }
+            className={`flex items-center p-2 mb-2 cursor-pointer rounded hover:bg-[#0d1f34] ${selectedClass?.label === cls.name ? "bg-[#1a324d]" : ""}`}
+            onClick={() => updateLabelAndColor(selectedBox, cls.name, cls.color)}
           >
             <span
-              className="class-color"
+              className="w-[12px] h-[12px] rounded-full mr-2"
               style={{ backgroundColor: cls.color || "#ccc" }}
             />
             <span>{cls.name}</span>

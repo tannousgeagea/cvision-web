@@ -1,7 +1,6 @@
 import React from 'react';
 import BackArrow from '../../ui/actions/BackArrow';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import './AnnotationControl.css';
 
 interface AnnotationControlsProps {
   current: number;
@@ -13,21 +12,30 @@ interface AnnotationControlsProps {
 
 const AnnotationControls: React.FC<AnnotationControlsProps> = ({ current, total, title, onPrevious, onNext }) => {
   return (
-    <div className="annotation-controls">
-      <div className='annotation-controls-title'>
+    <div className="flex items-center justify-between text-[#00d1b2] px-3 py-2 rounded text-sm gap-2 border-b border-white/60">
+      <div className="flex items-center gap-2">
         <BackArrow />
-        <p>{title}</p>
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap font-normal text-xl w-[300px]">
+          {title}
+        </p>
       </div>
-      <div className='annotation-controls-button'>
-        <button onClick={onPrevious} disabled={current === 1}>
+      <div className="bg-[#dadceb33] rounded-lg py-[0.15rem] px-4 flex items-center justify-center mr-[15rem]">
+        <button
+          onClick={onPrevious}
+          disabled={current === 1}
+          className="bg-transparent border-none text-[#00d1b2] cursor-pointer text-[16px] disabled:text-white/30 disabled:cursor-not-allowed"
+        >
           <ChevronLeft />
         </button>
-        <span>{`${current} / ${total}`}</span>
-        <button onClick={onNext} disabled={current === total}>
+        <span className="font-bold">{`${current} / ${total}`}</span>
+        <button
+          onClick={onNext}
+          disabled={current === total}
+          className="bg-transparent border-none text-[#00d1b2] cursor-pointer text-[16px] disabled:text-white/30 disabled:cursor-not-allowed"
+        >
           <ChevronRight />
         </button>
       </div>
-
       <div></div>
     </div>
   );
