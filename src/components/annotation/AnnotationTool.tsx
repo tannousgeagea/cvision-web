@@ -30,20 +30,20 @@ const AnnotationTool = () => {
     };
   };
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') {
-        handlePrevious();
-      } else if (event.key === 'ArrowRight') {
-        handleNext();
-      }
-    };
+  // useEffect(() => {
+  //   const handleKeyDown = (event: KeyboardEvent) => {
+  //     if (event.key === 'ArrowLeft') {
+  //       handlePrevious();
+  //     } else if (event.key === 'ArrowRight') {
+  //       handleNext();
+  //     }
+  //   };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentImageIndex, totalImages]);
+  //   window.addEventListener('keydown', handleKeyDown);
+  //   return () => {
+  //     window.removeEventListener('keydown', handleKeyDown);
+  //   };
+  // }, [currentImageIndex, totalImages]);
 
   const image = images?.data[currentImageIndex];
   if (!image) {
