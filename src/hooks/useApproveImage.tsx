@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from './use-toast';
+import { baseURL } from '@/components/api/base';
 
 interface ApprovalResponse {
   success: boolean;
@@ -23,7 +24,7 @@ export const useImageApproval = (): UseImageApprovalReturn => {
     try {
       // In a real implementation, we would make the actual API call
       const response = await fetch(
-        `http://localhost:29085/api/v1/projects/${projectId}/review?image_id=${imageId}&approved=true`,
+        `${baseURL}/api/v1/projects/${projectId}/review?image_id=${imageId}&approved=true`,
         {
           method: 'POST',
           headers: {

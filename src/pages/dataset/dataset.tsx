@@ -7,7 +7,6 @@ import PaginationControls from "@/components/ui/actions/pagination-control";
 import DatasetActions from "@/components/ui/actions/dataset-actions";
 import FiltersDataset from "@/components/ui/filter/filter-dataset";
 import Header from "@/components/ui/header/Header";
-import "./dataset.css";
 
 
 interface DataResponse {
@@ -54,7 +53,6 @@ const Dataset: FC = () => {
       { state: { images: data, currentIndex: index } });
   };
 
-
   const totalRecord: number = data?.total_record || 0;
   const pages = data?.pages || 0
   const imageData = data?.data || [];
@@ -66,7 +64,7 @@ const Dataset: FC = () => {
         title="Dataset"
         description={``}
       />
-      <div className="dataset-top">
+      <div className="flex justify-between mr-2 flex-wrap gap-2 mb-4">
         <FiltersDataset 
           onSearch={(value) => {
             setSelectedFilter(value);
@@ -79,16 +77,16 @@ const Dataset: FC = () => {
       </div>
 
       {loading ? (
-        <div className="image-grid">
+        <div className="grid gap-4">
           <Spinner />
         </div>
       ) : totalRecord === 0 ? (
-        <div className="no-results">
-          <i className="info-icon">ℹ️</i>
+        <div className="flex items-center px-[20px] py-[10px] border-[1px] border-[solid] border-[#cce5ff] rounded-[8px] bg-[#f0f8ff] font-medium gap-3">
+          <i className="mr-2 text-2xl text-[#004085]">ℹ️</i>
           <span>The search returned 0 results.</span>
         </div>
       ) : (
-        <div className="image-grid">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
           {imageData.map((image, index) => (
             <ImageCard2 key={index} image={image} index={index} onClick={handleImageClick} />
           ))}

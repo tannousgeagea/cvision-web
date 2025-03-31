@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./login.css";
+import { baseURL } from "@/components/api/base";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -9,7 +10,7 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:29085/api/v1/auth/login", {
+      const response = await fetch(`${baseURL}/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

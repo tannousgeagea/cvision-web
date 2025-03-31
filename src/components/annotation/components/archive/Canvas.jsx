@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAnnotation } from '@/contexts/AnnotationContext';
-import AnnotationEditor from './AnnotationEditor'
-import { useDraw } from '../../../hooks/annotation/useDraw';
+import { useDraw } from '@/hooks/annotation/useDraw';
 import useSaveAnnotation from '@/hooks/annotation/useSaveAnnotation';
-import useDeleteAnnotation from "../../../hooks/annotation/useDeleteAnnotation";
+import useDeleteAnnotation from "@/hooks/annotation/useDeleteAnnotation";
 import useFetchAnnotationClasses from "@/hooks/annotation/useFetchAnnotationClasses"
 import { toast } from '@/hooks/use-toast';
+import AnnotationEditor from './AnnotationEditor'
 import GuideLines from './GuideLines'
 import CurrentPolygon from './CurrentPolygon' 
 import DrawingBox from './DrawingBox'
 import AnnotationLayer from './AnnotationLayer'
+import { baseURL } from '@/components/api/base';
 import './Canvas.css'
 
 const Canvas = ({ image }) => {
@@ -51,7 +52,7 @@ const Canvas = ({ image }) => {
   };
 
   const fetchAnnotations = async (imageID, projectId) => {
-    const response = await fetch(`http://localhost:29085/api/v1/annotations/${projectId}/${imageID}`);
+    const response = await fetch(`${baseURL}/api/v1/annotations/${projectId}/${imageID}`);
     const data = await response.json();
     if (data) {
       setBoxes(data.map(box =>
@@ -113,8 +114,10 @@ const Canvas = ({ image }) => {
     };
   }, [tool, currentPolygon]);
 
+
+  console.log(mousePosition)
   return (
-    <div className="canvas-container">
+    <div className="flex relative p-4 flex-1 justify-center items-center w-full">
       {selectedBox &&
         <AnnotationEditor
           classes={classes}
@@ -125,7 +128,7 @@ const Canvas = ({ image }) => {
 
       <div
         ref={canvasRef}
-        className="annotation-canvas"
+        className="relative flex bg-[#f5f5dc] justify-center items-center max-w-[1000px] cursor-crosshair h-[500px]"
         onMouseDown={(e) => startDrawing(e, tool)}
         onMouseMove={(e) => handleMouseMove(e, tool)}
         onMouseUp={stopDrawing}
@@ -137,7 +140,7 @@ const Canvas = ({ image }) => {
         <img 
           src={image.image_url}
           alt="Sample image"
-          className="canvas-image"
+          className="object-contain select-none w-full h-full"
           onDragStart={(e) => e.preventDefault()}
         />
 

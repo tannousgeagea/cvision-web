@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { toast } from './use-toast';
+import { baseURL } from '@/components/api/base';
 
 export const useImageDeletion = () => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -10,7 +11,7 @@ export const useImageDeletion = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:29085/api/v1/projects/${projectId}/delete-image?image_id=${imageId}`,
+        `${baseURL}/api/v1/projects/${projectId}/delete-image?image_id=${imageId}`,
         {
           method: 'DELETE',
           headers: {

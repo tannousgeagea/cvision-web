@@ -1,6 +1,7 @@
 import { useState, useCallback} from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageCanvas from './ui/ImageCanvas';
+import { baseURL } from '../api/base';
 import './ImageAnalysis.css';
 
 interface Prediction {
@@ -25,7 +26,7 @@ const ImageAnalysis = () => {
       const formData = new FormData();
       formData.append('file', file);
       const response = await fetch(
-        `http://localhost:29085/api/v1/analyse`,
+        `${baseURL}/api/v1/analyse`,
         {
           method: "POST",
           body: formData,
