@@ -53,7 +53,6 @@ const Dataset: FC = () => {
       { state: { images: data, currentIndex: index } });
   };
 
-
   const totalRecord: number = data?.total_record || 0;
   const pages = data?.pages || 0
   const imageData = data?.data || [];

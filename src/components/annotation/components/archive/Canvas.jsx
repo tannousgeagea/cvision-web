@@ -10,6 +10,7 @@ import GuideLines from './GuideLines'
 import CurrentPolygon from './CurrentPolygon' 
 import DrawingBox from './DrawingBox'
 import AnnotationLayer from './AnnotationLayer'
+import { baseURL } from '@/components/api/base';
 import './Canvas.css'
 
 const Canvas = ({ image }) => {
@@ -51,7 +52,7 @@ const Canvas = ({ image }) => {
   };
 
   const fetchAnnotations = async (imageID, projectId) => {
-    const response = await fetch(`http://localhost:29085/api/v1/annotations/${projectId}/${imageID}`);
+    const response = await fetch(`${baseURL}/api/v1/annotations/${projectId}/${imageID}`);
     const data = await response.json();
     if (data) {
       setBoxes(data.map(box =>

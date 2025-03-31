@@ -1,3 +1,4 @@
+import { baseURL } from "@/components/api/base";
 import { useState, useEffect } from "react";
 
 interface Image {
@@ -22,7 +23,7 @@ const useImages = () => {
             const query = Object.entries(filters)
                 .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
                 .join("&");
-            const response = await fetch(`http://localhost:29085/api/v1/images?${query}`);
+            const response = await fetch(`${baseURL}/api/v1/images?${query}`);
             const data = await response.json();
 
             if (data && data.data) {

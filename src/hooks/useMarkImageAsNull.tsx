@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from './use-toast';
+import { baseURL } from '@/components/api/base';
 
 interface MarkAsNullResponse {
   success: boolean;
@@ -23,7 +24,7 @@ export const useMarkImageAsNull = (): UseMarkImageAsNullReturn => {
     try {
       // In a real implementation, we would make the actual API call
       const response = await fetch(
-        `http://localhost:29085/api/v1/projects/${projectId}/mark_as_null?image_id=${imageId}&marked_as_null=true`,
+        `${baseURL}/api/v1/projects/${projectId}/mark_as_null?image_id=${imageId}&marked_as_null=true`,
         {
           method: 'POST',
           headers: {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { baseURL } from "@/components/api/base";
 
 interface Filter {
     key: string;
@@ -13,7 +14,7 @@ const useFilters = (): { filters: Filter[]; loading: boolean; error: Error | nul
 
     const fetchMetadata = async (): Promise<void> => {
         try {
-            const response = await fetch("http://localhost:29085/api/v1/images/metadata");
+            const response = await fetch(`${baseURL}/api/v1/images/metadata`);
             const data: { data?: { filters?: Filter[] } } = await response.json();
 
             if (data && data.data) {

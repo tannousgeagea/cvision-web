@@ -10,6 +10,7 @@ import GuideLines from './GuideLines';
 import CurrentPolygon from './CurrentPolygon';
 import DrawingBox from './DrawingBox';
 import AnnotationLayer from './AnnotationLayer';
+import { baseURL } from '@/components/api/base';
 
 interface Image {
   image_id: string;
@@ -64,7 +65,7 @@ const Canvas: React.FC<CanvasProps> = ({ image }) => {
   const { deleteAnnotation } = useDeleteAnnotation();
 
   const fetchAnnotations = async (imageID: string, projectId: string) => {
-    const response = await fetch(`http://localhost:29085/api/v1/annotations/${projectId}/${imageID}`);
+    const response = await fetch(`${baseURL}/api/v1/annotations/${projectId}/${imageID}`);
     const data = await response.json();
     if (data) {
       // Assuming the API returns an array of objects with a "data" property containing the box.
