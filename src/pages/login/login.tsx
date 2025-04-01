@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./login.css";
 import { baseURL } from "@/components/api/base";
 
 const LoginPage: React.FC = () => {
@@ -33,13 +32,34 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <h1 className="login-title">Welcome To VisionNest</h1>
-        <p className="login-subtitle">Login to your account</p>
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+    <div className="relative w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 overflow-hidden">
+      {/* Animated Floating Blobs */}
+      <div
+        className="absolute -top-20 -left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+        style={{ animation: 'blob 7s infinite', animationDelay: '0s' }}
+      ></div>
+      <div
+        className="absolute top-20 right-20 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+        style={{ animation: 'blob 7s infinite', animationDelay: '2s' }}
+      ></div>
+      <div
+        className="absolute -bottom-16 right-0 w-72 h-72 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-70"
+        style={{ animation: 'blob 7s infinite', animationDelay: '4s' }}
+      ></div>
+
+      {/* Login Card with Glassmorphism */}
+      <div className="relative z-10 p-8 rounded-xl shadow-lg bg-white/30 backdrop-blur-lg max-w-md w-full transform transition duration-500 hover:scale-105">
+        <h1 className="text-4xl font-extrabold text-center text-white mb-6 drop-shadow-lg">
+          VisionNest
+        </h1>
+        <p className="text-center text-white mb-8 tracking-wide">
+          Sign in to your account
+        </p>
+        <form onSubmit={handleLogin} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-white">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -47,10 +67,13 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               required
+              className="mt-2 w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white text-white"
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-white">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -58,10 +81,14 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              className="mt-2 w-full px-4 py-3 bg-white/20 border border-white/40 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white text-white"
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          <button  type="submit" className="login-button">
+          {error && <p className="text-red-300 text-sm text-center">{error}</p>}
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold rounded-lg shadow hover:opacity-90 transition"
+          >
             Login
           </button>
         </form>
