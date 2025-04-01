@@ -27,7 +27,7 @@ const FiltersDataset: FC<FiltersDatasetProps> = ({ onSearch }) => {
   const { filterValues, handleFilterChange, clearFilter } = useFilters({});
   useEffect(() => {
     const fetchFilters = async () => {
-      const response = await axios.get(`${baseURL}/api/v1/projects/filters`);
+      const response = await axios.get(`${baseURL}/api/v1/projects/none/filters`);
       setFilters(response.data.filters);
     };
     fetchFilters();
