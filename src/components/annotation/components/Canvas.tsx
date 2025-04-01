@@ -124,6 +124,16 @@ const Canvas: React.FC<CanvasProps> = ({ image }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [tool, currentPolygon, addPointToCurrentPolygon]);
 
+  // Zoom functionality
+  const [scale, setScale] = useState(1);
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // Adjust zoom sensitivity and clamp scale between 0.5 and 3
+    let newScale = e.deltaY < 0 ? scale * 1.1 : scale / 1.1;
+    newScale = Math.min(Math.max(newScale, 0.5), 3);
+    setScale(newScale);
+  };
+
   return (
     <div className="flex relative p-4 flex-1 justify-center items-center w-full">
       {selectedBox && (
@@ -136,6 +146,11 @@ const Canvas: React.FC<CanvasProps> = ({ image }) => {
 
       <div
         ref={canvasRef}
+        onWheel={handleWheel}
+        style={{
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center'
+        }}
         className="annotation-canvas relative bg-[beige] justify-center items-center max-w-[1000px] cursor-crosshair"
         onMouseDown={(e) => startDrawing(e, tool)}
         onMouseMove={(e) => handleMouseMove(e, tool)}
