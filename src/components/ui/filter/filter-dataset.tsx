@@ -1,4 +1,5 @@
 import { useState, useEffect, FC } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import SelectFilter from "./select";
 import { baseURL } from "@/components/api/base";
@@ -23,11 +24,12 @@ interface FiltersDatasetProps {
 }
 
 const FiltersDataset: FC<FiltersDatasetProps> = ({ onSearch }) => {
+  const { projectId } = useParams()
   const [filters, setFilters] = useState<Filter[]>([]);
   const { filterValues, handleFilterChange, clearFilter } = useFilters({});
   useEffect(() => {
     const fetchFilters = async () => {
-      const response = await axios.get(`${baseURL}/api/v1/projects/none/filters`);
+      const response = await axios.get(`${baseURL}/api/v1/projects/${projectId}/filters`);
       setFilters(response.data.filters);
     };
     fetchFilters();
