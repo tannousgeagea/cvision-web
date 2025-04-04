@@ -13,6 +13,7 @@ import AnalysisPage from './pages/analysis/Index';
 import Annotate from './pages/annotate/annotate';
 import UploadIndex from './pages/upload/Index';
 import NotFound from './pages/NotFound';
+import ClassesManagement from './pages/class_management/ClassManagement';
 import { Toaster } from './components/ui/ui/toaster';
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
               <Route path='versions/:versionID' element={<Versions mode="view" />} />
               <Route path="versions/generate" element={<Versions mode="generate" />} />
               <Route path="analysis" element={<AnalysisPage/>} />
+              <Route path='classes' element={<ClassesManagement/>} />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="*" element={<NotFound />} />

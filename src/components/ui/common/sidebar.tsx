@@ -9,6 +9,7 @@ import {
   Layers,
   LineChart,
   Images,
+  Tags,
 } from "lucide-react";
 
 interface SideBarProps {}
@@ -30,6 +31,8 @@ const SideBar: FC<SideBarProps> = () => {
     { item: "Dataset", ref: `/projects/${projectId}/dataset`, icon: <Images size={20} /> },
     { item: "Version", ref: `/projects/${projectId}/versions`, icon: <Layers size={20} /> },
     { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: <LineChart size={20} /> },
+    { item: "Classes", ref: `/projects/${projectId}/classes`, icon: <Tags size={20} /> },
+    
   ];
 
   return (
