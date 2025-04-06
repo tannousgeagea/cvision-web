@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import { useDownloadVersion } from '../../../../hooks/useDownloadVersion';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
-import LoadingPopup from '../../popup/loading-popup';
 import splitIcon from '../../../../assets/icons/actions/download.png';
+import { TaskProgressTracker } from '@/components/progress/TaskProgressTracker';
 import './download-version-btn.css';
 
 interface DownloadVersionBtnProps {
@@ -12,7 +12,7 @@ interface DownloadVersionBtnProps {
 }
 
 const DownloadVersionBtn: FC<DownloadVersionBtnProps> = ({ projectId, versionID }) => {
-    const { downloadVersion, loading, error } = useDownloadVersion();
+    const { downloadVersion, loading, error, taskId } = useDownloadVersion();
     const [showError, setShowError] = useState<boolean>(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -25,7 +25,7 @@ const DownloadVersionBtn: FC<DownloadVersionBtnProps> = ({ projectId, versionID 
             setShowError(true);
         }
     };
-
+    
     return (
         <div className='download-btn-container'>
             <button
@@ -37,8 +37,19 @@ const DownloadVersionBtn: FC<DownloadVersionBtnProps> = ({ projectId, versionID 
                 Download Dataset
             </button>
             
-
-            {loading && <LoadingPopup />}
+            {loading && taskId && (
+                <div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50'>
+                    <div className='rounded-lg px-8 py-6 text-center shadow-lg max-w-xl w-[90%]'>
+                        <TaskProgressTracker
+                            taskId={taskId || ''}
+                            title="Downloading"
+                            variant="bar"
+                            size="md"
+                            pollingInterval={1000}
+                        />
+                    </div>
+                </div>
+            )}
             {showError && <ErrorPopup message={error as string} onClose={() => setShowError(false)} />}
             {successMessage && (
                 <SuccessPopup
