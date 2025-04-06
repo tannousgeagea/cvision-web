@@ -37,4 +37,6 @@ jobs:
       with:
         context: .
         push: true
-        tags: tannousgeagea/visionnest:${{ env.RELEASE_TAG }}
+        tags: |
+          tannousgeagea/visionnest:${{ env.RELEASE_TAG }}
+          tannousgeagea/visionnest:latest

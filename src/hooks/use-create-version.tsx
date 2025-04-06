@@ -10,14 +10,27 @@ export const useCreateVersion = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [taskId, setTaskId] = useState<string | null>(null);
 
-  const createVersion = async (projectId: string): Promise<any> => {
+  const createVersion = async (projectId: string, requestId?: string): Promise<any> => {
     setLoading(true);
     setError(null);
     setSuccessMessage(null);
 
+    const generatedId = requestId || `task-${Date.now()}`;
+    setTaskId(generatedId);
+
     try {
-      const response = await axios.post(`${baseURL}/api/v1/versions/${projectId}/create`);
+      const response = await axios.post(
+        `${baseURL}/api/v1/versions/${projectId}/create`,
+        {},
+        {
+          headers: {
+            "x-request-id": generatedId,
+            "Accept": "application/json",
+          },
+        }
+      );
       setSuccessMessage("Version created successfully!");
       return response.data;
     } catch (err) {
@@ -29,5 +42,5 @@ export const useCreateVersion = () => {
     }
   };
 
-  return { createVersion, loading, error, successMessage };
+  return { createVersion, loading, error, successMessage, taskId };
 };

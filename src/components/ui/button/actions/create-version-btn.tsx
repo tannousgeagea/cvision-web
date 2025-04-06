@@ -4,6 +4,7 @@ import { useCreateVersion } from '../../../../hooks/use-create-version';
 import ErrorPopup from '../../popup/error-popup';
 import SuccessPopup from '../../popup/success-popup';
 import LoadingPopup from '../../popup/loading-popup';
+import { TaskProgressTracker } from '@/components/progress/TaskProgressTracker';
 import './create-version-btn.css';
 
 interface CreateDatasetVersionProps {
@@ -11,7 +12,7 @@ interface CreateDatasetVersionProps {
 }
 
 const CreateDatasetVersion: FC<CreateDatasetVersionProps> = ({ projectId }) => {
-    const { createVersion, loading, error } = useCreateVersion();
+    const { createVersion, loading, error, taskId } = useCreateVersion();
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [showError, setShowError] = useState<boolean>(false);
     const navigate = useNavigate()
@@ -23,7 +24,7 @@ const CreateDatasetVersion: FC<CreateDatasetVersionProps> = ({ projectId }) => {
                 console.log(newVersion)
                 setSuccessMessage("Version created successfully!");
                 setTimeout(() => {
-                  navigate(`/projects/${projectId}/versions/${newVersion.version_number}`);
+                  navigate(`/projects/${projectId}/versions`);
                 }, 2000);
               }
         } catch (err) {
@@ -38,7 +39,19 @@ const CreateDatasetVersion: FC<CreateDatasetVersionProps> = ({ projectId }) => {
                 Create Version
             </button>
 
-            {loading && <LoadingPopup />}
+            {loading && taskId && (
+                <div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50'>
+                    <div className='rounded-lg px-8 py-6 text-center shadow-lg max-w-md w-[90%]'>
+                        <TaskProgressTracker
+                            taskId={taskId || ''}
+                            title="Create Version"
+                            variant="bar"
+                            size="md"
+                            pollingInterval={1000}
+                        />
+                    </div>
+                </div>
+            )}
             {showError && <ErrorPopup message={error} onClose={() => setShowError(false)} />}
             {successMessage && (
                 <SuccessPopup
@@ -46,6 +59,7 @@ const CreateDatasetVersion: FC<CreateDatasetVersionProps> = ({ projectId }) => {
                     onClose={() => setSuccessMessage(null)}
                 />
             )}
+
         </>
     );
 };
