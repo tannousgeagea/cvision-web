@@ -53,7 +53,7 @@ const AnnotationTool = () => {
   const image_name = image.image_name
   return (
     <AnnotationProvider>
-      <div className='w-full bg-card'>
+      <div className='dark bg-background text-foreground w-full'>
         <AnnotationControls
           title={image_name}
           current={currentImageIndex + 1}
@@ -62,7 +62,7 @@ const AnnotationTool = () => {
           onNext={handleNext}
         />
         <div className="flex h-screen">
-          <div className="w-56 bg-card p-4 border-r border-border flex flex-col gap-4">
+          <div className="w-56 p-4 border-r border-border flex flex-col gap-4">
             <ToolBar />
             <LabelPanel />
           </div>

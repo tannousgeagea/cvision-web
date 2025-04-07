@@ -61,7 +61,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				
+				// Dashboard specific colors
+				"dashboard-blue": "#2563eb",
+				"dashboard-purple": "#8b5cf6",
+				"dashboard-teal": "#0d9488",
+				"dashboard-bg": "#f9fafb",
+				"dashboard-text": "#1e293b",
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -88,7 +95,8 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out'
 			}
 		}
 	},
