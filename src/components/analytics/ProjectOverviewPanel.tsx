@@ -8,7 +8,7 @@ import { Project, ProjectStats } from '@/types/dashboard';
 import { fetchProjectSummary, fetchProjectStats } from './api';
 
 interface ProjectOverviewPanelProps {
-  projectId: number;
+  projectId: string;
 }
 
 const ProjectOverviewPanel: React.FC<ProjectOverviewPanelProps> = ({ projectId }) => {

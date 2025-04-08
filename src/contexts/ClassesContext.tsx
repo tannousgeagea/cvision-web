@@ -6,6 +6,7 @@ import { useProjectId } from './ProjectContext';
 
 export interface AnnotationClass {
   id: string;
+  classId?: string;
   name: string;
   color: string;
   count: number;

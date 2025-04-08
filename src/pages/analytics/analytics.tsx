@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import ProjectOverviewPanel from '@/components/analytics/ProjectOverviewPanel';
 import ImageAnalyticsPanel from '@/components/analytics/ImageAnalyticsPanel';
 import AnnotationAnalyticsPanel from '@/components/analytics/AnnotationAnalyticsPanel';
@@ -21,6 +22,7 @@ const AnalyticsPage: React.FC = () => {
     annotationClass: null
   });
 
+  const { projectId } = useParams<{ projectId: string }>();
   const handleFilterChange = (newFilters: Filters) => {
     console.log('Filters updated:', newFilters);
     setFilters(newFilters);
@@ -37,10 +39,13 @@ const AnalyticsPage: React.FC = () => {
             </p>
           </div>
           
-          <FilterPanel onFilterChange={handleFilterChange} />
+          <FilterPanel 
+            onFilterChange={handleFilterChange} 
+            projectId={projectId || ''} 
+          />
           
           <div className="space-y-6">
-            <ProjectOverviewPanel projectId={INITIAL_PROJECT_ID} />
+            <ProjectOverviewPanel projectId={projectId || ''} />
             
             <Tabs defaultValue="images" className="w-full">
               <TabsList className="w-full justify-start">
@@ -68,31 +73,31 @@ const AnalyticsPage: React.FC = () => {
               
               <TabsContent value="images">
                 <div className="mt-4 mb-8">
-                  <ImageAnalyticsPanel projectId={INITIAL_PROJECT_ID} />
+                  <ImageAnalyticsPanel projectId={projectId || ''} />
                 </div>
               </TabsContent>
               
               <TabsContent value="annotations">
                 <div className="mt-4 mb-8">
-                  <AnnotationAnalyticsPanel projectId={INITIAL_PROJECT_ID} />
+                  <AnnotationAnalyticsPanel projectId={projectId || ''} />
                 </div>
               </TabsContent>
               
               <TabsContent value="versions">
                 <div className="mt-4 mb-8">
-                  <VersioningPanel projectId={INITIAL_PROJECT_ID} />
+                  <VersioningPanel projectId={projectId || ''} />
                 </div>
               </TabsContent>
               
               <TabsContent value="augmentations">
                 <div className="mt-4 mb-8">
-                  <AugmentationPanel projectId={INITIAL_PROJECT_ID} />
+                  <AugmentationPanel projectId={projectId || ''} />
                 </div>
               </TabsContent>
               
               <TabsContent value="groups">
                 <div className="mt-4 mb-8">
-                  <AnnotationGroupPanel projectId={INITIAL_PROJECT_ID} />
+                  <AnnotationGroupPanel projectId={projectId || ''} />
                 </div>
               </TabsContent>
             </Tabs>

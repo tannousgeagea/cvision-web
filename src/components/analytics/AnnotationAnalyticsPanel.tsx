@@ -6,7 +6,7 @@ import { AnnotationStats } from '@/types/dashboard';
 import { fetchAnnotationStats } from './api';
 
 interface AnnotationAnalyticsPanelProps {
-  projectId: number;
+  projectId: string;
 }
 
 const AnnotationAnalyticsPanel: React.FC<AnnotationAnalyticsPanelProps> = ({ projectId }) => {

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/ui/button';
 import { formatDistance } from 'date-fns';
 
 interface VersioningPanelProps {
-  projectId: number;
+  projectId: string;
 }
 
 const VersioningPanel: React.FC<VersioningPanelProps> = ({ projectId }) => {

@@ -6,7 +6,7 @@ import { AugmentationStats } from '@/types/dashboard';
 import { fetchAugmentationStats } from './api';
 
 interface AugmentationPanelProps {
-  projectId: number;
+  projectId: string;
 }
 
 const AugmentationPanel: React.FC<AugmentationPanelProps> = ({ projectId }) => {

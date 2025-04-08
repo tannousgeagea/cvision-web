@@ -26,7 +26,7 @@ export const useClassesApi = () => {
   const createClass = async (
     projectId: string,
     className: string, 
-    color: string
+    color: string,
   ): Promise<AnnotationClass | null> => {
     setIsLoading(true);
     setError(null);

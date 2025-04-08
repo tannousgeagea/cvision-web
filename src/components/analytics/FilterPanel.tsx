@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Filters } from '@/types/dashboard';
 import { Button } from '@/components/ui/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/ui/popover';
@@ -9,12 +9,14 @@ import { format } from 'date-fns';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/ui/select';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/ui/sheet';
 import { Badge } from '@/components/ui/ui/badge';
+import { fetchVersions } from './api';
 
 interface FilterPanelProps {
   onFilterChange: (filters: Filters) => void;
+  projectId: string;
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({ onFilterChange }) => {
+const FilterPanel: React.FC<FilterPanelProps> = ({ onFilterChange, projectId }) => {
   const [filters, setFilters] = useState<Filters>({
     dateRange: { start: null, end: null },
     annotationSource: 'all',
@@ -25,37 +27,36 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilterChange }) => {
   
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
+  const [versions, setVersions] = useState<Version[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   
-  const handleStartDateChange = (date: Date | undefined) => {
-    setStartDate(date);
-    const newFilters = {
-      ...filters,
-      dateRange: {
-        ...filters.dateRange,
-        start: date ? format(date, 'yyyy-MM-dd') : null
+  // Fetch versions when the component mounts or projectId changes
+  useEffect(() => {
+    const getVersions = async () => {
+      setIsLoading(true);
+      try {
+        const fetchedVersions = await fetchVersions(projectId);
+        setVersions(fetchedVersions);
+      } catch (error) {
+        console.error('Failed to fetch versions:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    
+    getVersions();
+  }, [projectId]);
+  
+  const handleStartDateChange = (date: Date | undefined) => {
+    // ... keep existing code (handling start date change)
   };
   
   const handleEndDateChange = (date: Date | undefined) => {
-    setEndDate(date);
-    const newFilters = {
-      ...filters,
-      dateRange: {
-        ...filters.dateRange,
-        end: date ? format(date, 'yyyy-MM-dd') : null
-      }
-    };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    // ... keep existing code (handling end date change)
   };
   
   const handleSourceChange = (value: 'all' | 'manual' | 'model') => {
-    const newFilters = { ...filters, annotationSource: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+    // ... keep existing code (handling source change)
   };
   
   const handleVersionChange = (value: string) => {
@@ -66,17 +67,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilterChange }) => {
   };
   
   const resetFilters = () => {
-    const defaultFilters: Filters = {
-      dateRange: { start: null, end: null },
-      annotationSource: 'all',
-      version: null,
-      annotationGroup: null,
-      annotationClass: null
-    };
-    setFilters(defaultFilters);
-    setStartDate(undefined);
-    setEndDate(undefined);
-    onFilterChange(defaultFilters);
+    // ... keep existing code (resetting filters)
   };
   
   // Count active filters
@@ -170,17 +161,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilterChange }) => {
                 <Select 
                   value={filters.version ? filters.version.toString() : 'all'} 
                   onValueChange={handleVersionChange}
+                  disabled={isLoading || versions.length === 0}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select version" />
+                    <SelectValue placeholder={isLoading ? "Loading..." : "Select version"} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Versions</SelectItem>
-                    <SelectItem value="5">v1.4.2</SelectItem>
-                    <SelectItem value="4">v1.3.0</SelectItem>
-                    <SelectItem value="3">v1.2.5</SelectItem>
-                    <SelectItem value="2">v1.1.0</SelectItem>
-                    <SelectItem value="1">v1.0.0</SelectItem>
+                    {versions.map((version) => (
+                      <SelectItem key={version.id} value={version.id.toString()}>
+                        {version.version_number}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -268,17 +260,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ onFilterChange }) => {
         <Select 
           value={filters.version ? filters.version.toString() : 'all'} 
           onValueChange={handleVersionChange}
+          disabled={isLoading || versions.length === 0}
         >
           <SelectTrigger className="h-8 w-[140px]">
-            <SelectValue placeholder="Version" />
+            <SelectValue placeholder={isLoading ? "Loading..." : "Version"} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Versions</SelectItem>
-            <SelectItem value="5">v1.4.2</SelectItem>
-            <SelectItem value="4">v1.3.0</SelectItem>
-            <SelectItem value="3">v1.2.5</SelectItem>
-            <SelectItem value="2">v1.1.0</SelectItem>
-            <SelectItem value="1">v1.0.0</SelectItem>
+            {versions.map((version) => (
+              <SelectItem key={version.id} value={version.id.toString()}>
+                {version.version_number}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         

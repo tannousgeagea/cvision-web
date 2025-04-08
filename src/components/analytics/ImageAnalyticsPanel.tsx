@@ -7,7 +7,7 @@ import { fetchImageStats } from './api';
 import { format, parseISO } from 'date-fns';
 
 interface ImageAnalyticsPanelProps {
-  projectId: number;
+  projectId: string;
 }
 
 const ImageAnalyticsPanel: React.FC<ImageAnalyticsPanelProps> = ({ projectId }) => {

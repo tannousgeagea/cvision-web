@@ -6,7 +6,7 @@ import { fetchAnnotationGroups } from './api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/ui/tabs';
 
 interface AnnotationGroupPanelProps {
-  projectId: number;
+  projectId: string;
 }
 
 const AnnotationGroupPanel: React.FC<AnnotationGroupPanelProps> = ({ projectId }) => {
