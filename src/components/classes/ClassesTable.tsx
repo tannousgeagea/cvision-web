@@ -29,9 +29,9 @@ const ClassesTable = ({
   onRefresh 
 }: ClassesTableProps) => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [sortBy, setSortBy] = useState<'name' | 'count'>('name');
+  const [sortBy, setSortBy] = useState<'name' | 'count' | 'classId'>('name');
 
-  const handleSort = (column: 'name' | 'count') => {
+  const handleSort = (column: 'name' | 'count' | 'classId') => {
     if (sortBy === column) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
@@ -45,10 +45,17 @@ const ClassesTable = ({
       return sortOrder === 'asc' 
         ? a.name.localeCompare(b.name) 
         : b.name.localeCompare(a.name);
-    } else {
+    } else if (sortBy === 'count') {
       return sortOrder === 'asc' 
         ? a.count - b.count 
         : b.count - a.count;
+    } else {
+      // Sort by classId
+      const aId = a.classId || '';
+      const bId = b.classId || '';
+      return sortOrder === 'asc'
+        ? aId.localeCompare(bId)
+        : bId.localeCompare(aId);
     }
   });
   return (
@@ -73,6 +80,15 @@ const ClassesTable = ({
         <TableHeader>
           <TableRow className="bg-gray-100/70">
             <TableHead className="w-24">COLOR</TableHead>
+            <TableHead 
+              className="cursor-pointer hover:bg-gray-100/70 transition-colors"
+              onClick={() => handleSort('classId')}
+            >
+              CLASS ID
+              <span className="inline-block ml-1">
+                {sortBy === 'classId' && (sortOrder === 'asc' ? <ArrowUp className="h-3 w-3 inline" /> : <ArrowDown className="h-3 w-3 inline" />)}
+              </span>
+            </TableHead>
             <TableHead 
               className="cursor-pointer hover:bg-gray-100/70 transition-colors"
               onClick={() => handleSort('name')}
@@ -108,7 +124,7 @@ const ClassesTable = ({
           ) : sortedClasses.length === 0 ? (
             // Empty state
             <TableRow>
-              <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
+              <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
                 No classes available. Create your first class below.
               </TableCell>
             </TableRow>

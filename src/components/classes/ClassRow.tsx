@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/ui/alert-dialog';
+import { Badge } from '@/components/ui/ui/badge';
 
 interface ClassRowProps {
   cls: AnnotationClass;
@@ -74,6 +75,11 @@ const ClassRow = ({ cls, onUpdate, onDelete, isEven }: ClassRowProps) => {
           color={cls.color} 
           onChange={handleColorChange}
         />
+      </TableCell>
+      <TableCell>
+        <Badge variant="outline" className="bg-gray-50 text-gray-700 font-mono">
+          {cls.classId || '—'}
+        </Badge>
       </TableCell>
       <TableCell>
         {isEditing ? (
