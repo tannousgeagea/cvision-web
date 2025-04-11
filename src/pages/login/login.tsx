@@ -26,7 +26,21 @@ const LoginPage: React.FC = () => {
       }
 
       const data = await response.json();
+      const token = data.access_token;
       localStorage.setItem("access_token", data.access_token);
+
+      // Fetch current user
+      const userRes = await fetch(`${baseURL}/api/v1/users/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const user = await userRes.json();
+      localStorage.setItem("current_user", JSON.stringify(user));
+
       window.location.href = "/";
     } catch (err) {
       setError("An error occurred. Please try again.");

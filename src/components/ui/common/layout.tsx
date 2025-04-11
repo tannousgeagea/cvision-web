@@ -1,5 +1,6 @@
 import { FC } from 'react';
-import Navbar from './navbar';
+// import Navbar from './navbar';
+import Navbar from '@/components/layout/AppNavBar';
 import './layout.css';
 import { Outlet } from 'react-router-dom';
 
