@@ -1,0 +1,134 @@
+import { FC, useState, useEffect, ReactNode } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  X,
+  Menu,
+  View,
+  Folder,
+  Database,
+  Upload,
+  Brain,
+  Rocket,
+  ScanEye,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { UserProfileMenu } from '../users/UserProfileMenu';
+import { getCurrentUser } from '@/utils/user';
+
+interface NavbarItem {
+  item: string;
+  ref: string;
+  icon: ReactNode;
+}
+
+const Navbar: FC = () => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const location = useLocation();
+
+  const items: NavbarItem[] = [
+    { item: "Projects", ref: "/projects", icon: <Folder size={20} /> },
+    { item: "Datalake", ref: "/datalake", icon: <Database size={20} /> },
+    { item: "Upload", ref: "/upload", icon: <Upload size={20} /> },
+    { item: "Models", ref: "/models", icon: <Brain size={20} /> },
+    { item: "Deploy", ref: "/deploy", icon: <Rocket size={20} /> },
+  ];
+
+  const toggleNavbar = (): void => {
+    setIsExpanded(!isExpanded);
+  };
+
+  useEffect(() => {
+    if (location.pathname.includes('/projects/')) {
+      setIsExpanded(false);
+    }
+  }, [location.pathname]);
+
+  const isActive = (path: string) => {
+    return location.pathname.startsWith(path);
+  };
+
+  // const currentUser = {
+  //   id: "user-1",
+  //   name: "Tannous Geagea",
+  //   email: "tannous.geagea@wasteant.com",
+  //   avatar: undefined
+  // };
+
+  const currentUser = getCurrentUser();
+  return (
+    <div
+      className={cn(
+        "transition-[width] duration-300 ease-in-out flex flex-col justify-between font-small text-white h-screen bg-gradient-to-b from-[#8315f9] via-[#7812c7] to-[#401e62] opacity-95",
+        isExpanded ? "w-[185px] px-3" : "w-[60px] px-0"
+      )}
+    >
+      <div>
+        <div className="w-full mb-4 flex flex-col justify-center items-center py-6 gap-8">
+          <button
+            className="text-lg cursor-pointer"
+            onClick={toggleNavbar}
+          >
+            {isExpanded ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <div className="flex flex-row items-center gap-2 text-violet-200">
+            <ScanEye className='w-5 h-5 mr-1'/>
+            {isExpanded && (
+              <h2 
+                className="transition-opacity duration-300 truncate"
+                style={{ maxWidth: '120px' }}
+              >
+                VisionNest
+              </h2>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2s justify-start">
+          {items.map((item, index) => (
+            <div
+              className={cn(
+                "transition-all duration-300 p-2 rounded-md",
+                isExpanded ? "" : "mx-auto"
+              )}
+              key={index}
+            >
+              <Link
+                to={item.ref}
+                className={cn(
+                  "flex items-center text-sm font-medium hover:brightness-110 hover:opacity-70 rounded-md px-2 py-1.5 transition-colors duration-200",
+                  isActive(item.ref)
+                    ? "bg-white/20 text-white"
+                    : "text-white/80"
+                )}
+              >
+                <div className={cn("transition-all duration-300", isExpanded ? "mr-3" : "")}>
+                  {item.icon}
+                </div>
+
+                {isExpanded && (
+                  <span
+                    className="transition-opacity duration-300 truncate"
+                    style={{ maxWidth: '120px' }}
+                  >
+                    {item.item}
+                  </span>
+                )}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "p-3 transition-all duration-300",
+          isExpanded ? "border-t border-sidebar-border" : "border-none"
+        )}
+      >
+        <UserProfileMenu user={currentUser} isCollapsed={!isExpanded}/>
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;

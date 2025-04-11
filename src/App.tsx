@@ -16,36 +16,47 @@ import NotFound from './pages/NotFound';
 import ClassesManagement from './pages/class_management/ClassManagement';
 import AnalyticsPage from './pages/analytics/analytics';
 import { Toaster } from './components/ui/ui/toaster';
+import { AppLayout } from './components/layout/SideBar';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path='/login' element={<LoginPage />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/projects" replace />} />
-            <Route path='/datalake' element={<Datalake />} />
-            <Route path='/projects' element={<Projects />} />
-            <Route path='projects/:projectId' element={<ProjectLayout />}>
-              <Route path='upload' element={<UploadIndex />} />
-              <Route path='dataset' element={<Dataset />} />
-              <Route path='annotate' element={<Annotate />} />
-              <Route path='versions' element={<Versions mode="view" />} />
-              <Route path='versions/:versionID' element={<Versions mode="view" />} />
-              <Route path="versions/generate" element={<Versions mode="generate" />} />
-              <Route path="analysis" element={<AnalysisPage/>} />
-              <Route path='classes' element={<ClassesManagement/>} />
-              <Route path='analytics' element={<AnalyticsPage/>} />
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path='/login' element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Navigate to="/projects" replace />} />
+              <Route path='/datalake' element={<Datalake />} />
+              <Route path='/projects' element={<Projects />} />
+              <Route path='projects/:projectId' element={<ProjectLayout />}>
+                <Route path='upload' element={<UploadIndex />} />
+                <Route path='dataset' element={<Dataset />} />
+                <Route path='annotate' element={<Annotate />} />
+                <Route path='versions' element={<Versions mode="view" />} />
+                <Route path='versions/:versionID' element={<Versions mode="view" />} />
+                <Route path="versions/generate" element={<Versions mode="generate" />} />
+                <Route path="analysis" element={<AnalysisPage/>} />
+                <Route path='classes' element={<ClassesManagement/>} />
+                <Route path='analytics' element={<AnalyticsPage/>} />
+                <Route path="*" element={<NotFound />} />
+                {/* <Route path="sidebar" element={
+                  <AppLayout>
+                    <p>test</p>
+                  </AppLayout>
+                  } /> */}
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="*" element={<NotFound />} />
+            <Route path='/projects/:projectId/images/annotate' element={<Index />} />
           </Route>
-          <Route path='/projects/:projectId/images/annotate' element={<Index />} />
-        </Route>
-      </Routes>
-      <Toaster />
-    </Router>
+        </Routes>
+        <Toaster />
+      </Router>
+    </QueryClientProvider>
   );
 }
 
