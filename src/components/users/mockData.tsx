@@ -2,7 +2,7 @@ import { Organization, OrganizationMember, Project, ProjectMember, Role, UserPro
 
 // Mock Organizations
 export const organizations: Organization[] = [
-  { id: 'org-1', name: 'Acme Corporation', userCount: 24, projectCount: 8 },
+  { id: 'org-1', name: 'WasteAnt GmbH', userCount: 24, projectCount: 8 },
   { id: 'org-2', name: 'Startup Labs', userCount: 7, projectCount: 3 },
   { id: 'org-3', name: 'Research Institute', userCount: 15, projectCount: 6 }
 ];
@@ -18,14 +18,14 @@ export const projects: Project[] = [
 
 // Mock Users
 export const users = [
-  { id: 'user-1', name: 'John Doe', email: 'john@example.com', avatar: 'https://ui-avatars.com/api/?name=John+Doe' },
-  { id: 'user-2', name: 'Jane Smith', email: 'jane@example.com', avatar: 'https://ui-avatars.com/api/?name=Jane+Smith' },
-  { id: 'user-3', name: 'Robert Johnson', email: 'robert@example.com', avatar: 'https://ui-avatars.com/api/?name=Robert+Johnson' },
-  { id: 'user-4', name: 'Emily Davis', email: 'emily@example.com', avatar: 'https://ui-avatars.com/api/?name=Emily+Davis' },
-  { id: 'user-5', name: 'Michael Wilson', email: 'michael@example.com', avatar: 'https://ui-avatars.com/api/?name=Michael+Wilson' },
-  { id: 'user-6', name: 'Sarah Brown', email: 'sarah@example.com', avatar: 'https://ui-avatars.com/api/?name=Sarah+Brown' },
-  { id: 'user-7', name: 'David Miller', email: 'david@example.com', avatar: 'https://ui-avatars.com/api/?name=David+Miller' },
-  { id: 'user-8', name: 'Jennifer Garcia', email: 'jennifer@example.com', avatar: 'https://ui-avatars.com/api/?name=Jennifer+Garcia' }
+  { id: 'user-1', username: 'John Doe', email: 'john@example.com', avatar: 'https://ui-avatars.com/api/?username=John+Doe' },
+  { id: 'user-2', username: 'Jane Smith', email: 'jane@example.com', avatar: 'https://ui-avatars.com/api/?username=Jane+Smith' },
+  { id: 'user-3', username: 'Robert Johnson', email: 'robert@example.com', avatar: 'https://ui-avatars.com/api/?username=Robert+Johnson' },
+  { id: 'user-4', username: 'Emily Davis', email: 'emily@example.com', avatar: 'https://ui-avatars.com/api/?username=Emily+Davis' },
+  { id: 'user-5', username: 'Michael Wilson', email: 'michael@example.com', avatar: 'https://ui-avatars.com/api/?username=Michael+Wilson' },
+  { id: 'user-6', username: 'Sarah Brown', email: 'sarah@example.com', avatar: 'https://ui-avatars.com/api/?username=Sarah+Brown' },
+  { id: 'user-7', username: 'David Miller', email: 'david@example.com', avatar: 'https://ui-avatars.com/api/?username=David+Miller' },
+  { id: 'user-8', username: 'Jennifer Garcia', email: 'jennifer@example.com', avatar: 'https://ui-avatars.com/api/?username=Jennifer+Garcia' }
 ];
 
 // Mock Project Memberships

@@ -62,7 +62,11 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				
+				role: {
+					admin: '#ea384c',
+					editor: '#0EA5E9',
+					viewer: '#8E9196',
+				},
 				// Dashboard specific colors
 				"dashboard-blue": "#2563eb",
 				"dashboard-purple": "#8b5cf6",

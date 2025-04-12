@@ -16,8 +16,10 @@ import NotFound from './pages/NotFound';
 import ClassesManagement from './pages/class_management/ClassManagement';
 import AnalyticsPage from './pages/analytics/analytics';
 import { Toaster } from './components/ui/ui/toaster';
-import { AppLayout } from './components/layout/SideBar';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import OrganizationPage from './pages/organiation/OrganizationPage';
+import OrganizationMembersPage from './pages/organiation/OrganizationMembersPage';
+import ProjectMembersPage from './pages/organiation/ProjectMembersPage';
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Layout />}>
               <Route index element={<Navigate to="/projects" replace />} />
+              <Route path='/organizations/:orgId' element={<OrganizationPage />} />
+              <Route path="/organizations/:orgId/members" element={<OrganizationMembersPage />} />
               <Route path='/datalake' element={<Datalake />} />
               <Route path='/projects' element={<Projects />} />
               <Route path='projects/:projectId' element={<ProjectLayout />}>
@@ -42,12 +46,8 @@ const App = () => {
                 <Route path="analysis" element={<AnalysisPage/>} />
                 <Route path='classes' element={<ClassesManagement/>} />
                 <Route path='analytics' element={<AnalyticsPage/>} />
+                <Route path='members' element={<ProjectMembersPage/>} />
                 <Route path="*" element={<NotFound />} />
-                {/* <Route path="sidebar" element={
-                  <AppLayout>
-                    <p>test</p>
-                  </AppLayout>
-                  } /> */}
               </Route>
               <Route path="*" element={<NotFound />} />
             </Route>
