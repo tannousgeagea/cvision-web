@@ -29,7 +29,7 @@ export interface ProjectMembership {
 }
 
 export interface OrganizationMember extends User {
-  projects?: ProjectMembership[];
+  role: Role
 }
 
 export interface ProjectMember extends User {

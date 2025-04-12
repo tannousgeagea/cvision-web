@@ -1,9 +1,8 @@
 import { FC, useState, useEffect, ReactNode } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   X,
   Menu,
-  View,
   Folder,
   Database,
   Upload,
@@ -14,6 +13,10 @@ import {
 import { cn } from '@/lib/utils';
 import { UserProfileMenu } from '../users/UserProfileMenu';
 import { getCurrentUser } from '@/utils/user';
+import { mockApi } from '../users/mockData';
+import { useQuery } from "@tanstack/react-query";
+import { OrganizationSection } from '@/components/organization/OrganizationSection';
+import { getUserOrganization } from '../users/api';
 
 interface NavbarItem {
   item: string;
@@ -24,6 +27,14 @@ interface NavbarItem {
 const Navbar: FC = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const location = useLocation();
+
+  const { data: organizations } = useQuery({
+    queryKey: ['organization'],
+    queryFn: async () => {
+      const org = await getUserOrganization();
+      return org; // ✅ return only the first organization
+    },
+  });
 
   const items: NavbarItem[] = [
     { item: "Projects", ref: "/projects", icon: <Folder size={20} /> },
@@ -46,13 +57,6 @@ const Navbar: FC = () => {
   const isActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
-
-  // const currentUser = {
-  //   id: "user-1",
-  //   name: "Tannous Geagea",
-  //   email: "tannous.geagea@wasteant.com",
-  //   avatar: undefined
-  // };
 
   const currentUser = getCurrentUser();
   return (
@@ -83,7 +87,7 @@ const Navbar: FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2s justify-start">
+        <div className="flex flex-col gap-1 justify-start">
           {items.map((item, index) => (
             <div
               className={cn(
@@ -119,13 +123,18 @@ const Navbar: FC = () => {
         </div>
       </div>
 
-      <div
-        className={cn(
-          "p-3 transition-all duration-300",
-          isExpanded ? "border-t border-sidebar-border" : "border-none"
-        )}
-      >
-        <UserProfileMenu user={currentUser} isCollapsed={!isExpanded}/>
+      <div className="mt-auto">
+        <div className={cn("pt-4 pb-3 transition-all duration-300", isExpanded ? "border-t border-white/30" : "border-none")}> 
+          {organizations && <OrganizationSection organization={organizations} isExpanded={isExpanded} />}
+          <div
+            className={cn(
+              "p-3 transition-all duration-300",
+              isExpanded ? "border-t border-sidebar-border" : "border-none"
+            )}
+          > 
+            <UserProfileMenu user={currentUser} isCollapsed={!isExpanded}/>
+          </div>
+        </div>
       </div>
     </div>
   );
