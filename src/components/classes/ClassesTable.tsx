@@ -51,11 +51,9 @@ const ClassesTable = ({
         : b.count - a.count;
     } else {
       // Sort by classId
-      const aId = a.classId || '';
-      const bId = b.classId || '';
       return sortOrder === 'asc'
-        ? aId.localeCompare(bId)
-        : bId.localeCompare(aId);
+        ? (a.classId || 0) - (b.classId || 0)
+        : (b.classId || 0) - (a.classId || 0);
     }
   });
   return (

@@ -20,6 +20,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import OrganizationPage from './pages/organiation/OrganizationPage';
 import OrganizationMembersPage from './pages/organiation/OrganizationMembersPage';
 import ProjectMembersPage from './pages/organiation/ProjectMembersPage';
+import JobPage from './pages/jobs/JobsPage';
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => {
                 <Route path='classes' element={<ClassesManagement/>} />
                 <Route path='analytics' element={<AnalyticsPage/>} />
                 <Route path='members' element={<ProjectMembersPage/>} />
+                <Route path='jobs' element={<JobPage/>} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="*" element={<NotFound />} />
