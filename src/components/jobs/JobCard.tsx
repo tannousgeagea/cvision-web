@@ -9,9 +9,10 @@ import { formatDistanceToNow } from "date-fns";
 interface JobCardProps {
   job: Job;
   onAssignJob: (job: Job) => void;
+  onViewJob: (job: Job) => void;
 }
 
-const JobCard = ({ job, onAssignJob }: JobCardProps) => {
+const JobCard = ({ job, onAssignJob, onViewJob }: JobCardProps) => {
   // Status badge mapping
   const getStatusBadge = (status: JobStatus) => {
     switch (status) {
@@ -64,7 +65,7 @@ const JobCard = ({ job, onAssignJob }: JobCardProps) => {
           <div className="flex gap-1">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline" size="icon" className="h-8 w-8">
+                <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onViewJob(job)}>
                   <Eye size={16} className="text-slate-700" />
                 </Button>
               </TooltipTrigger>

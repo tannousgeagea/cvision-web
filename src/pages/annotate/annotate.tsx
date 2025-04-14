@@ -26,7 +26,7 @@ interface DataResponse {
 }
 
 const Annotate: FC = () => {
-  const { projectId } = useParams<{ projectId: string }>();
+  const { projectId, jobId } = useParams<{ projectId: string, jobId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
   const query = new URLSearchParams(location.search);
@@ -54,7 +54,7 @@ const Annotate: FC = () => {
   
   const { data, loading, error, refetch }: 
     { data?: DataResponse; loading: boolean; error?: Error | null; refetch: () => void } = useFetchData(
-    `/api/v1/projects/${projectId}/images?status=${selectedFilter}&items_per_page=${itemsPerPage}&page=${currentPage}`
+    `/api/v1/jobs/${jobId}/images?status=${selectedFilter}&items_per_page=${itemsPerPage}&page=${currentPage}`
   );
 
   const handleImageClick = (index:number): void => {

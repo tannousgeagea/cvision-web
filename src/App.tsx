@@ -40,7 +40,7 @@ const App = () => {
               <Route path='projects/:projectId' element={<ProjectLayout />}>
                 <Route path='upload' element={<UploadIndex />} />
                 <Route path='dataset' element={<Dataset />} />
-                <Route path='annotate' element={<Annotate />} />
+                {/* <Route path='annotate' element={<Annotate />} /> */}
                 <Route path='versions' element={<Versions mode="view" />} />
                 <Route path='versions/:versionID' element={<Versions mode="view" />} />
                 <Route path="versions/generate" element={<Versions mode="generate" />} />
@@ -48,7 +48,8 @@ const App = () => {
                 <Route path='classes' element={<ClassesManagement/>} />
                 <Route path='analytics' element={<AnalyticsPage/>} />
                 <Route path='members' element={<ProjectMembersPage/>} />
-                <Route path='jobs' element={<JobPage/>} />
+                <Route path='annotate' element={<JobPage/>} />
+                <Route path='annotate/job/:jobId' element={<Annotate/>} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="*" element={<NotFound />} />
