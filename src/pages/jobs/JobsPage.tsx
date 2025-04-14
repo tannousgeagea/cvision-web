@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/ui/input";
 import JobsSection from "@/components/jobs/JobSection";
@@ -12,6 +14,7 @@ import { toast } from '@/hooks/use-toast';
 
 const JobPage = () => {
   const { projectId } = useParams<{ projectId: string }>()
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("");
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -49,6 +52,10 @@ const JobPage = () => {
     setSelectedJob(job);
     setIsAssignModalOpen(true);
   };
+
+  const handleViewJob = (job: Job) => {
+    navigate(`/projects/${projectId}/annotate/job/${job.id}`)
+  }
 
   const handleAssignUser = async (job: Job, userId: string | null) => {
     try {
@@ -102,6 +109,7 @@ const JobPage = () => {
               jobs={jobsByStatus.unassigned}
               status={JobStatus.UNASSIGNED}
               onAssignJob={handleOpenAssignModal}
+              onViewJob={handleViewJob}
             />
             
             <JobsSection
@@ -110,6 +118,7 @@ const JobPage = () => {
               jobs={jobsByStatus.assigned}
               status={JobStatus.ASSIGNED}
               onAssignJob={handleOpenAssignModal}
+              onViewJob={handleViewJob}
             />
             
             <JobsSection
@@ -118,6 +127,7 @@ const JobPage = () => {
               jobs={jobsByStatus.inReview}
               status={JobStatus.IN_REVIEW}
               onAssignJob={handleOpenAssignModal}
+              onViewJob={handleViewJob}
             />
             
             <JobsSection
@@ -126,6 +136,7 @@ const JobPage = () => {
               jobs={jobsByStatus.completed}
               status={JobStatus.COMPLETED}
               onAssignJob={handleOpenAssignModal}
+              onViewJob={handleViewJob}
             />
           </div>
         </div>
