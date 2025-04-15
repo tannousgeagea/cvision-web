@@ -1,6 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Link, Navigate } from "react-router-dom";
 import { mockApi } from "@/components/users/mockData";
 import { OrganizationSummaryCard } from "@/components/users/OrganizationSummaryCard";
 import { UserTable } from "@/components/users/UserTable";
@@ -34,11 +35,16 @@ export default function OrganizationPage() {
   });
 
   if (isLoadingOrg || isLoadingMembers) {
-    return <div className="flex items-center justify-center h-64">Loading organization details...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-64 space-y-4 w-full">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="text-gray-700 text-sm">Loading organization details...</div>
+      </div>
+    );
   }
 
   if (!organization || !members) {
-    return <div>Organization not found</div>;
+    return <Navigate to="/no-permission" replace />;
   }
 
   const filteredMembers = members.filter(member => 
@@ -47,20 +53,10 @@ export default function OrganizationPage() {
   );
 
 
-  console.log(members)
   // Transform organization members to project members format for UserTable component
   const usersForTable = filteredMembers.map(member => ({
     ...member,
   }));
-
-
-  console.log(usersForTable)
-  const handleViewProjects = (userId: string) => {
-    toast({
-      title: "Redirecting",
-      description: "This would redirect to the user's projects page.",
-    });
-  };
 
   return (
     <div className="space-y-6 animate-fade-in w-full p-6">

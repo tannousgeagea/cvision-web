@@ -21,6 +21,7 @@ import OrganizationPage from './pages/organiation/OrganizationPage';
 import OrganizationMembersPage from './pages/organiation/OrganizationMembersPage';
 import ProjectMembersPage from './pages/organiation/ProjectMembersPage';
 import JobPage from './pages/jobs/JobsPage';
+import NoPermissionPage from './pages/NoPermissionPage';
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Layout />}>
               <Route index element={<Navigate to="/projects" replace />} />
+              <Route path="/no-permission" element={<NoPermissionPage />} />
               <Route path='/organizations/:orgId' element={<OrganizationPage />} />
               <Route path="/organizations/:orgId/members" element={<OrganizationMembersPage />} />
               <Route path='/datalake' element={<Datalake />} />
@@ -50,6 +52,7 @@ const App = () => {
                 <Route path='members' element={<ProjectMembersPage/>} />
                 <Route path='annotate' element={<JobPage/>} />
                 <Route path='annotate/job/:jobId' element={<Annotate/>} />
+                <Route path="no-permission" element={<NoPermissionPage />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
               <Route path="*" element={<NotFound />} />

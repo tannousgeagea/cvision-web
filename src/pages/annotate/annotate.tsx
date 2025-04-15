@@ -7,6 +7,7 @@ import Spinner from '@/components/ui/animation/spinner';
 import PaginationControls from "@/components/ui/actions/pagination-control";
 import AnnotateActions from "../../components/ui/actions/annotate-actions";
 import Header from "@/components/ui/header/Header";
+import { Info } from "lucide-react";
 import "./annotate.css";
 
 
@@ -102,7 +103,7 @@ const Annotate: FC = () => {
         </div>
       ) : totalRecord === 0 ? (
         <div className="no-results">
-          <i className="info-icon">ℹ️</i>
+          <i className="info-icon"><Info /></i>
           <span>The search returned 0 results.</span>
         </div>
       ) : (
