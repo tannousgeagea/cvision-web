@@ -54,6 +54,10 @@ const JobPage = () => {
   };
 
   const handleViewJob = (job: Job) => {
+    toast({
+      title: "Redirecting",
+      description: "This would redirect to annotation page.",
+    });
     navigate(`/projects/${projectId}/annotate/job/${job.id}`)
   }
 

@@ -1,6 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Navigate } from "react-router-dom";
 import { mockApi, projects } from "@/components/users/mockData";
 import { UserTable } from "@/components/users/UserTable";
 import { EmptyState } from "@/components/users/EmptyState";
@@ -40,13 +41,17 @@ export default function OrganizationMembersPage() {
   });
 
 
-  console.log(projectsData)
   if (isLoadingOrg || isLoadingMembers) {
-    return <div className="flex items-center justify-center h-64">Loading organization members...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-64 space-y-4 w-full">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="text-gray-700 text-sm">Loading organization members...</div>
+      </div>
+    );
   }
 
   if (!organization || !members) {
-    return <div>Organization not found</div>;
+    return <Navigate to="/no-permission" replace />;
   }
 
   const filteredMembers = members.filter(member => 

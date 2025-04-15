@@ -7,7 +7,7 @@ import PaginationControls from "@/components/ui/actions/pagination-control";
 import DatasetActions from "@/components/ui/actions/dataset-actions";
 import FiltersDataset from "@/components/ui/filter/filter-dataset";
 import Header from "@/components/ui/header/Header";
-
+import { Info } from "lucide-react";
 
 interface DataResponse {
   unannotated?: number;
@@ -81,8 +81,8 @@ const Dataset: FC = () => {
           <Spinner />
         </div>
       ) : totalRecord === 0 ? (
-        <div className="flex items-center px-[20px] py-[10px] border-[1px] border-[solid] border-[#cce5ff] rounded-[8px] bg-[#f0f8ff] font-medium gap-3">
-          <i className="mr-2 text-2xl text-[#004085]">ℹ️</i>
+        <div className="flex items-center px-[20px] py-[10px] border-[1px] border-[solid] border-[#cce5ff] text-[#004085] rounded-[8px] bg-[#f0f8ff] font-medium gap-1">
+          <i className="mr-1 text-2xl text-[#004085]"><Info /></i>
           <span>The search returned 0 results.</span>
         </div>
       ) : (
