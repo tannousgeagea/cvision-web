@@ -1,18 +1,33 @@
 import { Eye, UserPlus, UserX, FileText } from "lucide-react";
-import { Job, JobStatus } from "@/types/jobs";
+import { Job, JobStatus, allowedStatusTransitions } from "@/types/jobs";
 import { Button } from "@/components/ui/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/ui/card";
 import { Badge } from "@/components/ui/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/ui/tooltip";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/ui/select";
 import { formatDistanceToNow } from "date-fns";
 
 interface JobCardProps {
   job: Job;
   onAssignJob: (job: Job) => void;
   onViewJob: (job: Job) => void;
+  onStatusChange?: (job: Job, newStatus: JobStatus) => void;
 }
 
-const JobCard = ({ job, onAssignJob, onViewJob }: JobCardProps) => {
+const JobCard = ({ job, onAssignJob, onViewJob, onStatusChange }: JobCardProps) => {
+  // Get available status transitions for current job
+  const availableTransitions = allowedStatusTransitions
+    .find(transition => transition.from === job.status)
+    ?.to || [];
+
+
+  console.log(availableTransitions)
   // Status badge mapping
   const getStatusBadge = (status: JobStatus) => {
     switch (status) {
@@ -35,7 +50,29 @@ const JobCard = ({ job, onAssignJob, onViewJob }: JobCardProps) => {
             <h3 className="font-medium text-slate-800">{job.name}</h3>
             <p className="text-xs text-slate-500">ID: {job.id}</p>
           </div>
-          <div>{getStatusBadge(job.status)}</div>
+          <div className="flex items-center gap-2">
+            {availableTransitions.length > 0 && onStatusChange && (
+              <Select
+                value={job.status}
+                onValueChange={(value) => onStatusChange(job, value as JobStatus)}
+              >
+                <SelectTrigger className="h-8 w-[140px]">
+                  <SelectValue placeholder="Change status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={job.status}>
+                    Current: {job.status.replace(/_/g, ' ').toLowerCase()}
+                  </SelectItem>
+                  {availableTransitions.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      Move to: {status.replace(/_/g, ' ').toLowerCase()}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+            {getStatusBadge(job.status)}
+          </div>
         </div>
         
         <div className="mt-3 space-y-2">

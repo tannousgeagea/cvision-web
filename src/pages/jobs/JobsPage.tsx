@@ -77,6 +77,13 @@ const JobPage = () => {
     }
   };
 
+  const handleStatusChange = (job: Job, newStatus: JobStatus) => {
+    toast({
+      title: "Status Updated",
+      description: `Job status updated to ${newStatus}`,
+    });
+  };
+
   return (
     <div className="space-y-6 p-6 w-full">
       {/* Header */}
@@ -114,6 +121,7 @@ const JobPage = () => {
               status={JobStatus.UNASSIGNED}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
             
             <JobsSection
@@ -123,6 +131,7 @@ const JobPage = () => {
               status={JobStatus.ASSIGNED}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
             
             <JobsSection
@@ -132,6 +141,7 @@ const JobPage = () => {
               status={JobStatus.IN_REVIEW}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
             
             <JobsSection
@@ -141,6 +151,7 @@ const JobPage = () => {
               status={JobStatus.COMPLETED}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
           </div>
         </div>

@@ -11,9 +11,11 @@ interface JobsSectionProps {
   status: JobStatus;
   onAssignJob: (job: Job) => void;
   onViewJob: (job: Job) => void;
+  onStatusChange?: (job: Job, newStatus: JobStatus) => void;
+  
 }
 
-const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob }: JobsSectionProps) => {
+const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob, onStatusChange }: JobsSectionProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Handle horizontal scrolling
@@ -85,7 +87,7 @@ const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob 
           <div className="flex gap-4" style={{ minWidth: "min-content" }}>
             {jobs.map((job) => (
               <div key={job.id} className="w-[280px] flex-shrink-0">
-                <JobCard job={job} onAssignJob={onAssignJob} onViewJob={onViewJob} />
+                <JobCard job={job} onAssignJob={onAssignJob} onViewJob={onViewJob} onStatusChange={onStatusChange} />
               </div>
             ))}
           </div>
