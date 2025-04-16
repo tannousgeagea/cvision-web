@@ -23,5 +23,19 @@ export interface Job {
     updatedAt: Date;
   }
 
-
+  export type AllowedTransition = {
+    from: JobStatus;
+    to: JobStatus[];
+  };
+  
+  export const allowedStatusTransitions: AllowedTransition[] = [
+    {
+      from: JobStatus.ASSIGNED,
+      to: [JobStatus.IN_REVIEW],
+    },
+    {
+      from: JobStatus.IN_REVIEW,
+      to: [JobStatus.COMPLETED],
+    },
+  ];
   

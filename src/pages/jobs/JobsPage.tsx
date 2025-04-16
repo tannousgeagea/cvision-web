@@ -10,6 +10,7 @@ import { Job, JobStatus } from "@/types/jobs";
 import { useProjectJobs } from "@/hooks/useProjectJobs";
 import { useProjectMembers } from "@/hooks/useProjectMembers";
 import { useAssignUserToJob } from "@/hooks/useAssignUserToJob";
+import { useJobStatusUpdate } from "@/hooks/useJobStatusUpdate";
 import { toast } from '@/hooks/use-toast';
 
 const JobPage = () => {
@@ -22,6 +23,8 @@ const JobPage = () => {
   const { data: users } = useProjectMembers(projectId || '')
   const { data: jobs, isLoading, error } = useProjectJobs(projectId || '');
   const assignUserToJob = useAssignUserToJob(projectId || '');
+  const { mutate: updateStatus } = useJobStatusUpdate(projectId || '');
+
 
   if (isLoading || !jobs) {
     return <div className="flex items-center justify-center h-64">Loading Project Jobs...</div>;
@@ -77,6 +80,33 @@ const JobPage = () => {
     }
   };
 
+  const handleStatusChange = (job: Job, newStatus: JobStatus) => {
+    updateStatus(
+      { jobId: job.id, newStatus },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Status Updated",
+            description:
+              newStatus === JobStatus.IN_REVIEW
+                ? "Job moved to review"
+                : newStatus === JobStatus.COMPLETED
+                ? "Job marked as completed"
+                : `Job status updated to ${newStatus}`,
+          });
+        },
+        onError: (error: Error) => {
+          toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
+      }
+    );
+  };
+  
+
   return (
     <div className="space-y-6 p-6 w-full">
       {/* Header */}
@@ -114,6 +144,7 @@ const JobPage = () => {
               status={JobStatus.UNASSIGNED}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
             
             <JobsSection
@@ -123,6 +154,7 @@ const JobPage = () => {
               status={JobStatus.ASSIGNED}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
             
             <JobsSection
@@ -132,6 +164,7 @@ const JobPage = () => {
               status={JobStatus.IN_REVIEW}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
             
             <JobsSection
@@ -141,6 +174,7 @@ const JobPage = () => {
               status={JobStatus.COMPLETED}
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
+              onStatusChange={handleStatusChange}
             />
           </div>
         </div>
