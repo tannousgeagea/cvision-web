@@ -26,7 +26,7 @@ jobs:
         id: version
         run: |
           # Get latest tag
-          LATEST_TAG=$$(git describe --tags `git rev-list --tags --max-count=1` || echo "0.0.0")
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1` || echo "0.0.0")
 
           # Remove 'v' prefix
           VERSION=${LATEST_TAG#v}
