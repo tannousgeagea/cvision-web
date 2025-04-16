@@ -86,7 +86,7 @@ const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob,
         >
           <div className="flex gap-4" style={{ minWidth: "min-content" }}>
             {jobs.map((job) => (
-              <div key={job.id} className="w-[280px] flex-shrink-0">
+              <div key={job.id} className="w-[320px] flex-shrink-0">
                 <JobCard job={job} onAssignJob={onAssignJob} onViewJob={onViewJob} onStatusChange={onStatusChange} />
               </div>
             ))}

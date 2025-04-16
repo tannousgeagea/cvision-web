@@ -45,7 +45,7 @@ const JobCard = ({ job, onAssignJob, onViewJob, onStatusChange }: JobCardProps) 
   return (
     <Card className="h-full animate-fade-in bg-white hover:shadow-md transition-shadow duration-200">
       <CardContent className="p-4">
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start gap-3">
           <div>
             <h3 className="font-medium text-slate-800">{job.name}</h3>
             <p className="text-xs text-slate-500">ID: {job.id}</p>
