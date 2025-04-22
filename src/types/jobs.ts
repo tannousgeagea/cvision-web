@@ -21,6 +21,8 @@ export interface Job {
     assignedUser: User | null;
     createdAt: Date;
     updatedAt: Date;
+    parentJobId?: string;
+    sliceNumber?: number;
   }
 
   export type AllowedTransition = {
