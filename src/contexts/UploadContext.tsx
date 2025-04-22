@@ -1,6 +1,8 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { baseURL } from '@/components/api/base';
+import { useProjectId } from './ProjectContext';
+
 export type TaskType = 'segmentation' | 'detection' | 'classification';
 export type ProjectSection = 'upload' | 'annotate' | 'dataset' | 'versions' | 'analytics';
 
@@ -14,6 +16,7 @@ export interface UploadedImage {
   progress: number;
   status: 'pending' | 'uploading' | 'success' | 'error';
   error?: string;
+  batchId?: string;
 }
 
 export interface AnnotationFile {
@@ -67,7 +70,13 @@ const MOCK_PROJECT: Project = {
 
 export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // State for project context
-  const [currentProject, setCurrentProject] = useState<Project | null>(MOCK_PROJECT);
+  const projectId = useProjectId();
+  const [currentProject, setCurrentProject] = useState<Project | null>({
+    id: projectId,
+    name: projectId,
+    description: '',
+    createdAt: new Date(), // or new Date(0)
+  });
   const [currentSection, setCurrentSection] = useState<ProjectSection>('upload');
   
   // State for uploaded files
@@ -79,6 +88,7 @@ export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const addImages = (files: File[]) => {
     if (!currentProject) return;
     
+    const batchId = `batch-${Date.now()}`;
     const newImages = files.map(file => ({
       id: Math.random().toString(36).substring(2, 9),
       file,
@@ -87,7 +97,8 @@ export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       tasks: [] as TaskType[],
       uploadedAt: new Date(),
       progress: 0,
-      status: 'pending' as const
+      status: 'pending' as const,
+      batchId: batchId
     }));
 
     setUploadedImages(prev => [...prev, ...newImages]);
@@ -149,7 +160,8 @@ export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       const formData = new FormData();
       formData.append('files', image.file);
     
-      const url = `${baseURL}/api/v1/images?image_id=${image.id}&project_id=amk_front_impurity`;  
+      console.log(image)
+      const url = `${baseURL}/api/v1/images?image_id=${image.id}&project_id=${image.projectId}&batch_id=${image.batchId}`;  
       const xhr = new XMLHttpRequest();
       
       xhr.open('POST', url, true);
