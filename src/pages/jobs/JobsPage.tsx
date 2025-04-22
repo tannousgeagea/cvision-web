@@ -11,6 +11,8 @@ import { useProjectJobs } from "@/hooks/useProjectJobs";
 import { useProjectMembers } from "@/hooks/useProjectMembers";
 import { useAssignUserToJob } from "@/hooks/useAssignUserToJob";
 import { useJobStatusUpdate } from "@/hooks/useJobStatusUpdate";
+import SplitJobModal from "@/components/jobs/SplitJobModal";
+import { useSplitJob } from '@/hooks/useSplitJob';
 import { toast } from '@/hooks/use-toast';
 
 const JobPage = () => {
@@ -18,12 +20,14 @@ const JobPage = () => {
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("");
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [isSplitModalOpen, setIsSplitModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const { data: users } = useProjectMembers(projectId || '')
   const { data: jobs, isLoading, error } = useProjectJobs(projectId || '');
   const assignUserToJob = useAssignUserToJob(projectId || '');
   const { mutate: updateStatus } = useJobStatusUpdate(projectId || '');
+  const { mutateAsync: splitJob } = useSplitJob(projectId || '');
 
 
   if (isLoading || !jobs) {
@@ -55,6 +59,13 @@ const JobPage = () => {
     setSelectedJob(job);
     setIsAssignModalOpen(true);
   };
+
+  // Open the split job modal
+  const handleOpenSplitModal = (job: Job) => {
+    setSelectedJob(job);
+    setIsSplitModalOpen(true);
+  };
+
 
   const handleViewJob = (job: Job) => {
     toast({
@@ -107,6 +118,37 @@ const JobPage = () => {
   };
   
 
+  // Split a job into multiple slices
+  const handleSplitJob = (job: Job, numberOfSlices: number, userAssignments: (string | null)[]) => {
+    try {
+      if (job.imageCount < numberOfSlices) {
+        toast({
+          title: "Error splitting job",
+          description: "Cannot split a job into more slices than it has images",
+          variant: "destructive",
+        });
+        return;
+      }
+    
+      const newJobs = splitJob({
+        jobId: job.id,
+        numberOfSlices,
+        userAssignments,
+      });
+      
+      toast({
+        title: "Job split successfully",
+        description: `${job.name} has been split into ${numberOfSlices} slices.`,
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Split failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="space-y-6 p-6 w-full">
       {/* Header */}
@@ -145,6 +187,7 @@ const JobPage = () => {
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
               onStatusChange={handleStatusChange}
+              onSplitJob={handleOpenSplitModal}
             />
             
             <JobsSection
@@ -155,6 +198,7 @@ const JobPage = () => {
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
               onStatusChange={handleStatusChange}
+              onSplitJob={handleOpenSplitModal}
             />
             
             <JobsSection
@@ -190,6 +234,17 @@ const JobPage = () => {
           onAssign={handleAssignUser}
         />
       )}
+
+      {selectedJob && (
+        <SplitJobModal
+          isOpen={isSplitModalOpen}
+          onClose={() => setIsSplitModalOpen(false)}
+          job={selectedJob}
+          users={users || []}
+          onSplitJob={handleSplitJob}
+        />
+      )}
+  
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Eye, UserPlus, UserX, FileText } from "lucide-react";
+import { Eye, UserPlus, UserX, FileText, Scissors } from "lucide-react";
 import { Job, JobStatus, allowedStatusTransitions } from "@/types/jobs";
 import { Button } from "@/components/ui/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/ui/card";
@@ -17,31 +17,43 @@ interface JobCardProps {
   job: Job;
   onAssignJob: (job: Job) => void;
   onViewJob: (job: Job) => void;
+  onSplitJob?: (job: Job) => void;
   onStatusChange?: (job: Job, newStatus: JobStatus) => void;
 }
 
-const JobCard = ({ job, onAssignJob, onViewJob, onStatusChange }: JobCardProps) => {
+const JobCard = ({ job, onAssignJob, onViewJob, onSplitJob, onStatusChange }: JobCardProps) => {
   // Get available status transitions for current job
   const availableTransitions = allowedStatusTransitions
     .find(transition => transition.from === job.status)
     ?.to || [];
 
+// Status badge mapping
+const getStatusBadge = (status: JobStatus) => {
+  switch (status) {
+    case JobStatus.UNASSIGNED:
+      return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">Unassigned</Badge>;
+    case JobStatus.ASSIGNED:
+      return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">Assigned</Badge>;
+    case JobStatus.IN_REVIEW:
+      return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">In Review</Badge>;
+    case JobStatus.COMPLETED:
+      return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Completed</Badge>;
+  }
+};
 
-  console.log(availableTransitions)
-  // Status badge mapping
-  const getStatusBadge = (status: JobStatus) => {
-    switch (status) {
-      case JobStatus.UNASSIGNED:
-        return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">Unassigned</Badge>;
-      case JobStatus.ASSIGNED:
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">Assigned</Badge>;
-      case JobStatus.IN_REVIEW:
-        return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">In Review</Badge>;
-      case JobStatus.COMPLETED:
-        return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Completed</Badge>;
+  // Show slice info if this is a split job
+  const renderSliceInfo = () => {
+    if (job.sliceNumber !== undefined && job.parentJobId) {
+      return (
+        <div className="mt-2 flex items-center">
+          <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
+            Slice #{job.sliceNumber}
+          </span>
+        </div>
+      );
     }
+    return null;
   };
-
   return (
     <Card className="h-full animate-fade-in bg-white hover:shadow-md transition-shadow duration-200">
       <CardContent className="p-4">
@@ -121,6 +133,24 @@ const JobCard = ({ job, onAssignJob, onViewJob, onStatusChange }: JobCardProps) 
                 <p>View Details</p>
               </TooltipContent>
             </Tooltip>
+
+            {onSplitJob && job.imageCount >= 2 && job.status === JobStatus.UNASSIGNED && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="icon" 
+                      className="h-8 w-8"
+                      onClick={() => onSplitJob(job)}
+                    >
+                      <Scissors size={16} className="text-slate-700" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Split Job</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
           </div>
         
           <div>
