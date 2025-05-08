@@ -1,12 +1,13 @@
 import { useState, FC } from "react";
-import useFetchData from "@/hooks/use-fetch-data";
-import ImageCard2 from "@/components/ui/card/image-card2";
+import ImageCard from "@/components/image/ImageCard";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Spinner from '@/components/ui/animation/spinner';
 import PaginationControls from "@/components/ui/actions/pagination-control";
 import DatasetActions from "@/components/ui/actions/dataset-actions";
 import FiltersDataset from "@/components/ui/filter/filter-dataset";
 import Header from "@/components/ui/header/Header";
+import { useProjectImages } from "@/hooks/useProjectImages";
+import useFetchData from "@/hooks/use-fetch-data";
 import { Info } from "lucide-react";
 
 interface DataResponse {
@@ -42,9 +43,17 @@ const Dataset: FC = () => {
     updateURL(selectedFilter, newPage);
   };
   
-  const { data, loading, error, refetch }: 
-    { data?: DataResponse; loading: boolean; error?: Error | null; refetch: () => void } = useFetchData(
-    `/api/v1/projects/${projectId}/images?status=dataset&user_filters=${selectedFilter}&items_per_page=${itemsPerPage}&page=${currentPage}`
+  // const { data, loading, error, refetch }: 
+  //   { data?: DataResponse; loading: boolean; error?: Error | null; refetch: () => void } = useFetchData(
+  //   `/api/v1/projects/${projectId}/images?status=dataset&user_filters=${selectedFilter}&items_per_page=${itemsPerPage}&page=${currentPage}`
+  // );
+
+  const { data, isLoading: loading, error } = useProjectImages(
+    projectId!,
+    "dataset",
+    selectedFilter,
+    currentPage,
+    itemsPerPage
   );
 
   const handleImageClick = (index:number): void => {
@@ -88,7 +97,13 @@ const Dataset: FC = () => {
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
           {imageData.map((image, index) => (
-            <ImageCard2 key={index} image={image} index={index} onClick={handleImageClick} />
+            // <ImageCard2 key={index} image={image} index={index} onClick={handleImageClick} />
+            <ImageCard
+              key={image.image_id}
+              image={image}
+              index={index}
+              onClick={handleImageClick}
+          />
           ))}
         </div>
       )}

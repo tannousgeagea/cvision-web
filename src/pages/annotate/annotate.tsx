@@ -1,6 +1,6 @@
 import { useState, FC } from "react";
 import useFetchData from "@/hooks/use-fetch-data";
-import ImageCard2 from "../../components/ui/card/image-card2";
+import ImageCard from "@/components/image/ImageCard";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import FilterTabs from "@/components/ui/filter/filter-tabs";
 import Spinner from '@/components/ui/animation/spinner';
@@ -33,7 +33,7 @@ const Annotate: FC = () => {
   const query = new URLSearchParams(location.search);
   const [selectedFilter, setSelectedFilter] = useState<string>(query.get("filter") || "unannotated");
   const [currentPage, setCurrentPage] = useState<number>(parseInt(query.get("page") || "1", 10));
-  const itemsPerPage: number = 100;
+  const itemsPerPage: number = 50;
 
   const updateURL = (filter: string, page: number) => {
     navigate({
@@ -107,9 +107,9 @@ const Annotate: FC = () => {
           <span>The search returned 0 results.</span>
         </div>
       ) : (
-        <div className="image-grid">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
           {imageData.map((image, index) => (
-            <ImageCard2 key={index} image={image} index={index} onClick={handleImageClick} />
+            <ImageCard key={index} image={image} index={index} onClick={handleImageClick} />
           ))}
         </div>
       )}
