@@ -1,3 +1,5 @@
+
+import { memo } from 'react'
 import { FC, useState, useEffect, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -13,7 +15,6 @@ import {
 import { cn } from '@/lib/utils';
 import { UserProfileMenu } from '../users/UserProfileMenu';
 import { getCurrentUser } from '@/utils/user';
-import { mockApi } from '../users/mockData';
 import { useQuery } from "@tanstack/react-query";
 import { OrganizationSection } from '@/components/organization/OrganizationSection';
 import { getUserOrganization } from '../users/api';
@@ -28,12 +29,19 @@ const Navbar: FC = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const location = useLocation();
 
+  useEffect(() => {
+    if (location.pathname.includes('/projects/')) {
+      setIsExpanded(false);
+    }
+  }, [location.pathname]);
+
   const { data: organizations } = useQuery({
     queryKey: ['organization'],
     queryFn: async () => {
       const org = await getUserOrganization();
       return org; // ✅ return only the first organization
     },
+    staleTime: 1000 * 60 * 5,
   });
 
   const items: NavbarItem[] = [
@@ -48,12 +56,6 @@ const Navbar: FC = () => {
     setIsExpanded(!isExpanded);
   };
 
-  useEffect(() => {
-    if (location.pathname.includes('/projects/')) {
-      setIsExpanded(false);
-    }
-  }, [location.pathname]);
-
   const isActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
@@ -62,7 +64,7 @@ const Navbar: FC = () => {
   return (
     <div
       className={cn(
-        "transition-[width] duration-300 ease-in-out flex flex-col justify-between font-small text-white h-screen bg-gradient-to-b from-[#8315f9] via-[#7812c7] to-[#401e62] opacity-95",
+        "will-change-[width] transition-[width] duration-300 ease-in-out flex flex-col justify-between font-small text-white h-screen bg-gradient-to-b from-[#8315f9] via-[#7812c7] to-[#401e62] opacity-95",
         isExpanded ? "w-[185px] px-3" : "w-[60px] px-0"
       )}
     >
@@ -140,4 +142,4 @@ const Navbar: FC = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);
