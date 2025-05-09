@@ -17,7 +17,7 @@ export const authService = {
     const data = await res.json();
     return {
       token: data.access_token,
-      refreshToken: data.access_token
+      refreshToken: data.refresh_token
     };
 
     // return res.json(); // { access_token, refresh_token }
@@ -40,9 +40,21 @@ export const authService = {
   },
 
   refreshToken: async (refreshToken: string) => {
-    const response = await axios.post(`${baseURL}/api/v1/auth/refresh/`, {
-      refresh: refreshToken,
+    const response = await fetch(`${baseURL}/api/v1/auth/refresh/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refresh_token: refreshToken }),
     });
-    return response.data; // Expected: { token, refreshToken }
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || "Invalid credentials");
+    }
+
+    const data = await response.json();
+    return {
+      token: data.access_token,
+      refreshToken: data.refresh_token
+    }
   },
 };

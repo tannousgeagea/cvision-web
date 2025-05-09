@@ -3,12 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '@/hooks/useAuth';
 import { User } from '@/types/membership';
 
-// export interface User {
-//   id: string;
-//   email: string;
-//   name: string;
-// }
-
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -21,7 +15,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Mock API for demo purposes
-const mockAuthAPI = {
+// const mockAuthAPI = {
   // login: async (email: string, password: string): Promise<{ user: User; token: string; refreshToken: string }> => {
   //   return new Promise((resolve, reject) => {
   //     setTimeout(() => {
@@ -38,17 +32,17 @@ const mockAuthAPI = {
   //     }, 800);
   //   });
   // },
-  refreshToken: async (refreshToken: string): Promise<{ token: string; refreshToken: string }> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          token: localStorage.getItem('token') || sessionStorage.getItem('token') || '',
-          refreshToken: localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken') || ''
-        });
-      }, 500);
-    });
-  }
-};
+//   refreshToken: async (refreshToken: string): Promise<{ token: string; refreshToken: string }> => {
+//     return new Promise((resolve) => {
+//       setTimeout(() => {
+//         resolve({
+//           token: localStorage.getItem('token') || sessionStorage.getItem('token') || '',
+//           refreshToken: localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken') || ''
+//         });
+//       }, 500);
+//     });
+//   }
+// };
 
 export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -127,7 +121,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
         return false;
       }
       
-      const { token, refreshToken: newRefreshToken } = await mockAuthAPI.refreshToken(currentRefreshToken)
+      const { token, refreshToken: newRefreshToken } = await authService.refreshToken(currentRefreshToken)
       
       // Update token in the storage that currently has it
       if (localStorage.getItem('refreshToken')) {
