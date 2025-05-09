@@ -35,7 +35,7 @@ const Projects: FC = () => {
             <div className="projects-header">
                 <Header
                     title="Projects"
-                    description={``}
+                    description={`Organize and manage your visual data`}
                 />
                 <div className="create-project">
                     <NewProjectButton onClick={() => handleCreateProject()}/>
