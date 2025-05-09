@@ -62,6 +62,12 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				visionNest: {
+					purple: '#9b87f5',
+					orange: '#F97316',
+					blue: '#3B82F6',
+					navy: '#0f172a',
+				},
 				role: {
 					admin: '#ea384c',
 					editor: '#0EA5E9',
@@ -95,12 +101,25 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'gradient-flow': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.3s ease-out'
+				'fade-in': 'fade-in 0.3s ease-out',
+				'gradient-flow': 'gradient-flow 8s ease infinite'
+			},
+			backgroundImage: {
+				'vision-gradient': 'linear-gradient(135deg, #9b87f5 0%, #F97316 100%)',
 			}
 		}
 	},

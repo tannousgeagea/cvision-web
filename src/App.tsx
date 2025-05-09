@@ -1,14 +1,12 @@
 import './App.css';
-// import Datalake from './pages/datalake/datalake';
 import Projects from './pages/project/projects';
 import Layout from './components/ui/common/layout';
 import Dataset from './pages/dataset/dataset';
 import Versions from './pages/versions/versions';
-import LoginPage from './pages/login/login';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import ProjectLayout from './components/ui/common/project-layout';
 import Index from './pages/annotate-tool/annotate-tool';
-import ProtectedRoute from './pages/login/ProtectedRoute';
+import { ProtectedRoute, PublicRoute} from './pages/login/ProtectedRoute';
 import AnalysisPage from './pages/analysis/Index';
 import Annotate from './pages/annotate/annotate';
 import UploadIndex from './pages/upload/Index';
@@ -23,6 +21,8 @@ import ProjectMembersPage from './pages/organiation/ProjectMembersPage';
 import JobPage from './pages/jobs/JobsPage';
 import NoPermissionPage from './pages/NoPermissionPage';
 import DataLake from './pages/datalake/DataLakeNew';
+import Login from './pages/Login';
+import { AuthProvider } from './contexts/AuthContext';
 
 const queryClient = new QueryClient();
 
@@ -30,38 +30,40 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <Routes>
-          <Route path='/login' element={<LoginPage />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Navigate to="/projects" replace />} />
-              <Route path="/no-permission" element={<NoPermissionPage />} />
-              <Route path='/organizations/:orgId' element={<OrganizationPage />} />
-              <Route path="/organizations/:orgId/members" element={<OrganizationMembersPage />} />
-              <Route path='/datalake' element={<DataLake />} />
-              <Route path='/projects' element={<Projects />} />
-              <Route path='projects/:projectId' element={<ProjectLayout />}>
-                <Route path='upload' element={<UploadIndex />} />
-                <Route path='dataset' element={<Dataset />} />
-                {/* <Route path='annotate' element={<Annotate />} /> */}
-                <Route path='versions' element={<Versions mode="view" />} />
-                <Route path='versions/:versionID' element={<Versions mode="view" />} />
-                <Route path="versions/generate" element={<Versions mode="generate" />} />
-                <Route path="analysis" element={<AnalysisPage/>} />
-                <Route path='classes' element={<ClassesManagement/>} />
-                <Route path='analytics' element={<AnalyticsPage/>} />
-                <Route path='members' element={<ProjectMembersPage/>} />
-                <Route path='annotate' element={<JobPage/>} />
-                <Route path='annotate/job/:jobId' element={<Annotate/>} />
-                <Route path="no-permission" element={<NoPermissionPage />} />
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Navigate to="/projects" replace />} />
+                <Route path="/no-permission" element={<NoPermissionPage />} />
+                <Route path='/organizations/:orgId' element={<OrganizationPage />} />
+                <Route path="/organizations/:orgId/members" element={<OrganizationMembersPage />} />
+                <Route path='/datalake' element={<DataLake />} />
+                <Route path='/projects' element={<Projects />} />
+                <Route path='projects/:projectId' element={<ProjectLayout />}>
+                  <Route path='upload' element={<UploadIndex />} />
+                  <Route path='dataset' element={<Dataset />} />
+                  {/* <Route path='annotate' element={<Annotate />} /> */}
+                  <Route path='versions' element={<Versions mode="view" />} />
+                  <Route path='versions/:versionID' element={<Versions mode="view" />} />
+                  <Route path="versions/generate" element={<Versions mode="generate" />} />
+                  <Route path="analysis" element={<AnalysisPage/>} />
+                  <Route path='classes' element={<ClassesManagement/>} />
+                  <Route path='analytics' element={<AnalyticsPage/>} />
+                  <Route path='members' element={<ProjectMembersPage/>} />
+                  <Route path='annotate' element={<JobPage/>} />
+                  <Route path='annotate/job/:jobId' element={<Annotate/>} />
+                  <Route path="no-permission" element={<NoPermissionPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
                 <Route path="*" element={<NotFound />} />
               </Route>
-              <Route path="*" element={<NotFound />} />
+              <Route path='/projects/:projectId/images/annotate' element={<Index />} />
             </Route>
-            <Route path='/projects/:projectId/images/annotate' element={<Index />} />
-          </Route>
-        </Routes>
-        <Toaster />
+          </Routes>
+          <Toaster />
+        </AuthProvider>
       </Router>
     </QueryClientProvider>
   );
