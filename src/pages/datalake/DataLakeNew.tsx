@@ -11,6 +11,8 @@ import SortControl from "@/components/datalake/SortControl";
 import TagFilter from "@/components/datalake/TagFilter";
 import SelectionHeader from "@/components/datalake/SelectionHeader";
 import ImageGrid from "@/components/datalake/ImageGrid";
+import ImageTable from "@/components/datalake/ImageTable";
+import ViewToggle from "@/components/datalake/ViewToggle";
 import NoResults from "@/components/datalake/NoResults";
 import { Loader } from "lucide-react";
 import { parseQueryString, formatQueryAsTagParams, ParsedQuery } from "@/utils/queryParse";
@@ -29,6 +31,7 @@ const DataLake: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<string>("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [parsedQuery, setParsedQuery] = useState<ParsedQuery>({});
+  const [view, setView] = useState<"grid" | "table">("grid");
 
   const navigate = useNavigate();
 
@@ -158,7 +161,7 @@ const DataLake: React.FC = () => {
   // console.log("Tag Filter: ", combinedTagFilters)
   // console.log("Parsed Query: ", parsedQuery)
   return (
-    <div className="space-y-6 p-6 w-full animate-fade-in h-full">
+    <div className="space-y-6 p-6 w-full animate-fade-in h-full mb-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Data Lake</h1>
@@ -184,7 +187,11 @@ const DataLake: React.FC = () => {
             setFilterSource={setFilterSource} 
             sources={sources} 
           />
-          <SortControl sortOrder={sortOrder} setSortOrder={setSortOrder} />
+          {/* <SortControl sortOrder={sortOrder} setSortOrder={setSortOrder} /> */}
+          <div className="flex items-center justify-between gap-2">
+            <SortControl sortOrder={sortOrder} setSortOrder={setSortOrder} />
+            <ViewToggle view={view} setView={setView} />
+          </div>
         </div>
         
         <TagFilter 
@@ -224,12 +231,25 @@ const DataLake: React.FC = () => {
 
       {/* Images grid */}
       {!isLoading && sortedImages.length > 0 ? (
-        <ImageGrid 
-          images={sortedImages} 
-          selectedImages={selectedImages} 
-          onImageClick={handleImageClick}
-          toggleImageSelection={toggleImageSelection}
-        />
+        <>
+          {view === "grid" ? (
+            <ImageGrid 
+              images={sortedImages} 
+              selectedImages={selectedImages} 
+              onImageClick={handleImageClick}
+              toggleImageSelection={toggleImageSelection}
+            />
+          ) : (
+            <ImageTable
+              images={sortedImages}
+              selectedImages={selectedImages}
+              onImageClick={handleImageClick}
+              toggleImageSelection={toggleImageSelection}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+            />
+          )}
+        </>
       ) : (
         !isLoading && <NoResults onClearFilters={handleClearFilters} />
       )}
