@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/ui/input";
 import { Checkbox } from "@/components/ui/ui/checkbox";
 import { Label } from "@/components/ui/ui/label";
 import { Card } from "@/components/ui/ui/card";
-import { Eye, EyeOff, ScanEye } from 'lucide-react';
+import { Eye, EyeOff, ScanEye, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 // Array of welcome messages to rotate through
@@ -100,6 +100,9 @@ const Login = () => {
               <div className="space-y-2">
                 <Label htmlFor="email" className="dark:text-gray-300">Email</Label>
                 <div className="relative group">
+                < div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail size={18} className="text-gray-400" />
+                  </div>
                   <Input
                     id="email"
                     type="email"
@@ -107,7 +110,7 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="border-gray-300 dark:border-gray-700 focus:border-visionNest-purple focus:ring-visionNest-purple dark:bg-gray-800 dark:text-white transition-all duration-200 group-hover:border-visionNest-purple"
+                    className="block w-full pl-10 pr-3 py-2 border-gray-300 dark:border-gray-700 focus:border-visionNest-purple focus:ring-visionNest-purple dark:bg-gray-800 dark:text-white transition-all duration-200 group-hover:border-visionNest-purple"
                   />
                   <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-visionNest-purple transition-all duration-300 group-hover:w-full"></div>
                 </div>
@@ -116,6 +119,9 @@ const Login = () => {
               <div className="space-y-2">
                 <Label htmlFor="password" className="dark:text-gray-300">Password</Label>
                 <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock size={18} className="text-gray-400" />
+                  </div>
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
@@ -123,7 +129,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="pr-10 border-gray-300 dark:border-gray-700 focus:border-visionNest-purple focus:ring-visionNest-purple dark:bg-gray-800 dark:text-white transition-all duration-200 group-hover:border-visionNest-purple"
+                    className="block w-full pl-10 py-2 pr-10 border-gray-300 dark:border-gray-700 focus:border-visionNest-purple focus:ring-visionNest-purple dark:bg-gray-800 dark:text-white transition-all duration-200 group-hover:border-visionNest-purple"
                   />
                   <button 
                     type="button"
