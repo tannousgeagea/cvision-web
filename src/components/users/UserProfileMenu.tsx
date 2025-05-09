@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { LogOut, Settings } from "lucide-react";
 import { UserAvatar } from "@/components/users/UserAvatar";
 import { User as UserType } from "@/types/membership";
@@ -9,6 +8,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/ui/popover";
 import { Button } from "@/components/ui/ui/button";
+import { useAuth } from '@/contexts/AuthContext';
+
 
 interface UserProfileMenuProps {
   user: UserType;
@@ -17,12 +18,7 @@ interface UserProfileMenuProps {
 
 export function UserProfileMenu({ user, isCollapsed }: UserProfileMenuProps) {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    navigate("/login");
-  };
+  const { logout } = useAuth();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -71,7 +67,7 @@ export function UserProfileMenu({ user, isCollapsed }: UserProfileMenuProps) {
           <Button 
             variant="ghost" 
             className="w-full justify-start text-sm text-red-500 hover:text-red-600 hover:bg-red-50"
-            onClick={handleLogout}
+            onClick={logout}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Sign Out
