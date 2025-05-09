@@ -64,7 +64,7 @@ const Navbar: FC = () => {
   return (
     <div
       className={cn(
-        "will-change-[width] transition-[width] duration-300 ease-in-out flex flex-col justify-between font-small text-white h-screen bg-gradient-to-b from-[#8315f9] via-[#7812c7] to-[#401e62] opacity-95",
+        "will-change-[width] transition-[width] duration-300 ease-in-out flex flex-col justify-between font-small text-white h-screen bg-gradient-to-b from-blue-600 via-indigo-500 to-purple-500 text-white",
         isExpanded ? "w-[185px] px-3" : "w-[60px] px-0"
       )}
     >
