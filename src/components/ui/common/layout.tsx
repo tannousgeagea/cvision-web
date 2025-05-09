@@ -10,7 +10,7 @@ const Layout: FC = () => {
       <div className='layout-navbar'>
         <Navbar />
       </div>
-      <div className="layout-main">
+      <div className="flex-1 overflow-auto">
           <div className='layout-content'>
             <Outlet />
           </div>

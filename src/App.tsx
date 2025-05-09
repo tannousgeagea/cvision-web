@@ -1,5 +1,5 @@
 import './App.css';
-import Datalake from './pages/datalake/datalake';
+// import Datalake from './pages/datalake/datalake';
 import Projects from './pages/project/projects';
 import Layout from './components/ui/common/layout';
 import Dataset from './pages/dataset/dataset';
@@ -22,6 +22,7 @@ import OrganizationMembersPage from './pages/organiation/OrganizationMembersPage
 import ProjectMembersPage from './pages/organiation/ProjectMembersPage';
 import JobPage from './pages/jobs/JobsPage';
 import NoPermissionPage from './pages/NoPermissionPage';
+import DataLake from './pages/datalake/DataLakeNew';
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,7 @@ const App = () => {
               <Route path="/no-permission" element={<NoPermissionPage />} />
               <Route path='/organizations/:orgId' element={<OrganizationPage />} />
               <Route path="/organizations/:orgId/members" element={<OrganizationMembersPage />} />
-              <Route path='/datalake' element={<Datalake />} />
+              <Route path='/datalake' element={<DataLake />} />
               <Route path='/projects' element={<Projects />} />
               <Route path='projects/:projectId' element={<ProjectLayout />}>
                 <Route path='upload' element={<UploadIndex />} />
