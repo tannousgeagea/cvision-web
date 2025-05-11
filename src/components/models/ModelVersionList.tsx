@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Download, Check, TagIcon } from "lucide-react";
+import { Download, Check, TagIcon, Database } from "lucide-react";
 import { Model, ModelVersion, VersionTag } from "@/types/models";
 import { ModelService } from "./ModelService";
 import { Button } from "@/components/ui/ui/button";
@@ -23,6 +23,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/ui/dropdown-menu";
 import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/ui/tooltip";
 
 interface ModelVersionsListProps {
   model: Model;
@@ -41,6 +47,13 @@ const ModelVersionsList: React.FC<ModelVersionsListProps> = ({ model, projectId 
       month: "short",
       day: "numeric",
     });
+  };
+
+  // Format dataset info for display
+  const formatDatasetInfo = (version: ModelVersion) => {
+    if (!version.datasetUsed) return "Unknown dataset";
+    const { name, itemCount } = version.datasetUsed;
+    return itemCount ? `${name} (${itemCount} items)` : name;
   };
 
   // Get badge for version status
@@ -142,6 +155,7 @@ const ModelVersionsList: React.FC<ModelVersionsListProps> = ({ model, projectId 
               <TableHead className="w-12"></TableHead>
               <TableHead>Version</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Dataset</TableHead>
               <TableHead>Created</TableHead>
               <TableHead>By</TableHead>
               <TableHead>Tags</TableHead>
@@ -165,6 +179,39 @@ const ModelVersionsList: React.FC<ModelVersionsListProps> = ({ model, projectId 
                     v{version.versionNumber}
                   </TableCell>
                   <TableCell>{getStatusBadge(version.status)}</TableCell>
+                  <TableCell>
+                    {version.datasetUsed ? (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="flex items-center gap-1">
+                              <Database className="h-3.5 w-3.5 text-muted-foreground" />
+                              <span className="truncate max-w-[120px]">
+                                {version.datasetUsed.name}
+                              </span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-sm">
+                            <div className="space-y-1">
+                              <p className="font-medium">{version.datasetUsed.name}</p>
+                              {version.datasetUsed.itemCount && (
+                                <p className="text-xs text-muted-foreground">
+                                  {version.datasetUsed.itemCount} items
+                                </p>
+                              )}
+                              {version.datasetUsed.createdAt && (
+                                <p className="text-xs text-muted-foreground">
+                                  Created: {formatDate(version.datasetUsed.createdAt)}
+                                </p>
+                              )}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ) : (
+                      <span className="text-muted-foreground text-sm">Unknown</span>
+                    )}
+                  </TableCell>
                   <TableCell>{formatDate(version.createdAt)}</TableCell>
                   <TableCell className="max-w-[120px] truncate">
                     {version.createdBy}

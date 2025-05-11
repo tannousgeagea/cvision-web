@@ -1,6 +1,6 @@
 
-import { Model, ModelType, ModelVersion } from "@/types/models";
-import { getModelById, getModelsByProjectId, mockModels } from "./mockModels";
+import { Model, ModelType, ModelVersion, Dataset } from "@/types/models";
+import { getModelById, getModelsByProjectId, mockModels, mockDatasets, getDatasetById } from "./mockModels";
 
 // Service for fetching and managing models
 export const ModelService = {
@@ -36,6 +36,28 @@ export const ModelService = {
     });
   },
 
+  // Get all datasets
+  getAllDatasets: async (): Promise<Dataset[]> => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(mockDatasets), 500);
+    });
+  },
+
+  // Get dataset by ID
+  getDatasetById: async (id: string): Promise<Dataset> => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const dataset = getDatasetById(id);
+        if (dataset) {
+          resolve(dataset);
+        } else {
+          reject(new Error(`Dataset with ID ${id} not found`));
+        }
+      }, 500);
+    });
+  },
+
+
   // Train a new model version (mock)
   trainNewVersion: async (
     modelId: string,
@@ -53,6 +75,14 @@ export const ModelService = {
         const newVersionNumber = Math.max(...model.versions.map(v => v.versionNumber), 0) + 1;
         const newVersionId = `v${newVersionNumber}-${modelId}`;
         
+        // Get dataset if provided
+        let datasetUsed = null;
+        if (config.datasetId) {
+          datasetUsed = mockDatasets.find(d => d.id === config.datasetId) || null;
+        } else if (config.dataset) {
+          datasetUsed = config.dataset;
+        }
+
         const newVersion: ModelVersion = {
           id: newVersionId,
           versionNumber: newVersionNumber,
@@ -61,7 +91,8 @@ export const ModelService = {
           status: "training",
           metrics: {},
           tags: [],
-          config
+          config,
+          datasetUsed
         };
 
         // In a real app, this would be added to the model in the database
