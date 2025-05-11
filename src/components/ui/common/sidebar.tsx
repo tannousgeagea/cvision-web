@@ -10,6 +10,7 @@ import {
   LineChart,
   Images,
   Tags,
+  Brain,
   Briefcase
 } from "lucide-react";
 
@@ -33,6 +34,7 @@ const SideBar: FC<SideBarProps> = () => {
     { item: "Version", ref: `/projects/${projectId}/versions`, icon: <Layers size={20} /> },
     { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: <LineChart size={20} /> },
     { item: "Classes", ref: `/projects/${projectId}/classes`, icon: <Tags size={20} /> },
+    { item: "Models", ref: `/projects/${projectId}/models`, icon: <Brain size={20} /> },
     
   ];
 

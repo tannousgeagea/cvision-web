@@ -4,9 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { baseURL } from '@/components/api/base';
 
 export async function fetchProjectJobs(projectId: string): Promise<Job[]> {
+  const token = localStorage.getItem("token") || sessionStorage.getItem('token');
   const response = await fetch(`${baseURL}/api/v1/projects/${projectId}/jobs`, {
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     }
   });
