@@ -23,6 +23,7 @@ import {
 import { ModelService } from "@/components/models/ModelService";
 import { Model, ModelType } from "@/types/models";
 import { Skeleton } from "@/components/ui/ui/skeleton";
+import { useModelsByProject } from "@/hooks/useModelsByProject";
 
 const ModelsList: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -30,15 +31,17 @@ const ModelsList: React.FC = () => {
   const [modelTypeFilter, setModelTypeFilter] = useState<string>("all");
 
   // Fetch models for this project
-  const {
-    data: models,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["models", projectId],
-    queryFn: () => ModelService.getModelsByProjectId(projectId || ""),
-    enabled: !!projectId,
-  });
+  // const {
+  //   data: models,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["models", projectId],
+  //   queryFn: () => ModelService.getModelsByProjectId(projectId || ""),
+  //   enabled: !!projectId,
+  // });
+
+  const { data: models, isLoading, error } = useModelsByProject(projectId || '');
 
   // Filter models based on search query and type filter
   const filteredModels = models
@@ -200,7 +203,7 @@ const ModelsList: React.FC = () => {
             >
               <Card className="hover:shadow-md transition-shadow overflow-hidden h-full">
                 <CardHeader>
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-start w-full">
                     <CardTitle className="line-clamp-1">{model.name}</CardTitle>
                     <Badge
                       variant="outline"

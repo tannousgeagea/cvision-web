@@ -21,16 +21,20 @@ import ModelVersionsList from "@/components/models/ModelVersionList";
 import ModelVisualResults from "@/components/models/ModelVisualResults";
 import ModelMetricsView from "@/components/models/ModelMetricView";
 import ModelDeploymentView from "@/components/models/ModelDeploymentView";
+import { useModelById } from "@/hooks/useModelById";
 
 const ModelDetail: React.FC = () => {
   const { projectId, modelId } = useParams<{ projectId: string; modelId: string }>();
   
-  const { data: model, isLoading, error } = useQuery({
-    queryKey: ["model", modelId],
-    queryFn: () => ModelService.getModelById(modelId || ""),
-    enabled: !!modelId
-  });
+  // const { data: model, isLoading, error } = useQuery({
+  //   queryKey: ["model", modelId],
+  //   queryFn: () => ModelService.getModelById(modelId || ""),
+  //   enabled: !!modelId
+  // });
 
+  const { data: model, isLoading, error } = useModelById(modelId || "");
+
+  console.log(model)
   // Format date for display
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
