@@ -1,5 +1,34 @@
 
-import { Model, ModelType, ModelVersion, VersionTag } from "@/types/models";
+import { Model, ModelType, ModelVersion, VersionTag, Dataset } from "@/types/models";
+
+
+// Mock datasets
+export const mockDatasets: Dataset[] = [
+  {
+    id: "dataset-001",
+    name: "Product Images (Labeled)",
+    itemCount: 1250,
+    createdAt: "2023-03-10T08:45:00Z"
+  },
+  {
+    id: "dataset-002",
+    name: "Factory Defects Dataset",
+    itemCount: 875,
+    createdAt: "2023-04-22T14:30:00Z"
+  },
+  {
+    id: "dataset-003",
+    name: "Retail Inventory",
+    itemCount: 2100,
+    createdAt: "2023-06-15T11:20:00Z" 
+  },
+  {
+    id: "dataset-004",
+    name: "Augmented Product Dataset",
+    itemCount: 3500,
+    createdAt: "2023-09-05T16:40:00Z"
+  }
+];
 
 // Helper to create a model version
 const createModelVersion = (
@@ -7,7 +36,8 @@ const createModelVersion = (
   versionNumber: number,
   status: ModelVersion['status'],
   tags: VersionTag[] = [],
-  metrics: Record<string, number> = {}
+  metrics: Record<string, number> = {},
+  datasetId: string = "dataset-001"
 ): ModelVersion => {
   const date = new Date();
   date.setDate(date.getDate() - versionNumber * 2); // Each version is 2 days apart
@@ -20,6 +50,7 @@ const createModelVersion = (
     status,
     metrics,
     tags,
+    datasetUsed: mockDatasets.find(d => d.id === datasetId),
     artifacts: {
       onnx: versionNumber % 2 === 0 ? `model_v${versionNumber}.onnx` : undefined,
       weights: `weights_v${versionNumber}.bin`,
@@ -69,13 +100,15 @@ export const mockModels: Model[] = [
     createdBy: "john.doe@example.com",
     projectId: "amk_front_impurity",
     versions: [
-      createModelVersion("v1-model-001", 1, "trained", ["baseline"], classificationMetrics),
+      createModelVersion("v1-model-001", 1, "trained", ["baseline"], classificationMetrics, "dataset-001"),
       createModelVersion("v2-model-001", 2, "trained", ["production"], {
         ...classificationMetrics,
         accuracy: 0.95,
         precision: 0.93
-      }),
-      createModelVersion("v3-model-001", 3, "failed", [], {})
+      },
+      "dataset-004"
+    ),
+      createModelVersion("v3-model-001", 3, "failed", [], {}, "dataset-004")
     ],
     currentProductionVersion: "v2-model-001",
     tags: ["retail", "products", "classification"]
@@ -90,12 +123,12 @@ export const mockModels: Model[] = [
     createdBy: "sarah.smith@example.com",
     projectId: "amk_front_impurity",
     versions: [
-      createModelVersion("v1-model-002", 1, "trained", ["baseline"], objectDetectionMetrics),
+      createModelVersion("v1-model-002", 1, "trained", ["baseline"], objectDetectionMetrics, "dataset-002"),
       createModelVersion("v2-model-002", 2, "trained", ["production"], {
         ...objectDetectionMetrics,
         mAP: 0.83,
         precision: 0.88
-      })
+      }, "dataset-002")
     ],
     currentProductionVersion: "v2-model-002",
     tags: ["defects", "quality-control", "manufacturing"]
@@ -110,7 +143,7 @@ export const mockModels: Model[] = [
     createdBy: "alex.wong@example.com",
     projectId: "amk_front_impurity",
     versions: [
-      createModelVersion("v1-model-003", 1, "trained", ["baseline", "production"], segmentationMetrics)
+      createModelVersion("v1-model-003", 1, "trained", ["baseline", "production"], segmentationMetrics, "dataset-003")
     ],
     currentProductionVersion: "v1-model-003",
     tags: ["segmentation", "retail", "shelves"]
@@ -125,8 +158,8 @@ export const mockModels: Model[] = [
     createdBy: "rachel.green@example.com",
     projectId: "project-002",
     versions: [
-      createModelVersion("v1-model-004", 1, "trained", ["baseline"], llmMetrics),
-      createModelVersion("v2-model-004", 2, "training", [], {})
+      createModelVersion("v1-model-004", 1, "trained", ["baseline"], llmMetrics, "dataset-004"),
+      createModelVersion("v2-model-004", 2, "training", [], {}, "dataset-004")
     ],
     currentProductionVersion: "v1-model-004",
     tags: ["nlp", "description", "generation", "multimodal"]
@@ -141,4 +174,9 @@ export const getModelById = (id: string): Model | undefined => {
 // Helper function to get models by project ID
 export const getModelsByProjectId = (projectId: string): Model[] => {
   return mockModels.filter(model => model.projectId === projectId);
+};
+
+// Helper function to get a dataset by ID
+export const getDatasetById = (id: string): Dataset | undefined => {
+  return mockDatasets.find(dataset => dataset.id === id);
 };

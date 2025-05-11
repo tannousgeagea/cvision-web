@@ -3,8 +3,7 @@ import { baseURL } from "@/components/api/base";
 import { useQuery } from '@tanstack/react-query';
 
 export const getProjectMembers = async (projectId: string): Promise<ProjectMember[]> => {
-  const token = localStorage.getItem("access_token");
-
+  const token = localStorage.getItem("token") || sessionStorage.getItem('token');
   const response = await fetch(`${baseURL}/api/v1/projects/${projectId}/members`, {
     headers: {
       Authorization: `Bearer ${token}`,
