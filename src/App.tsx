@@ -23,6 +23,9 @@ import NoPermissionPage from './pages/NoPermissionPage';
 import DataLake from './pages/datalake/DataLakeNew';
 import Login from './pages/Login';
 import { AuthProvider } from './contexts/AuthContext';
+import ModelsList from "./pages/models/ModelsList";
+import ModelDetail from "./pages/models/ModelDetail";
+import ModelTraining from "./pages/models/ModelTraining";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +56,9 @@ const App = () => {
                   <Route path='analytics' element={<AnalyticsPage/>} />
                   <Route path='members' element={<ProjectMembersPage/>} />
                   <Route path='annotate' element={<JobPage/>} />
+                  <Route path="models" element={<ModelsList />} />
+                  <Route path="models/:modelId" element={<ModelDetail />} />
+                  <Route path="models/:modelId/train" element={<ModelTraining />} />
                   <Route path='annotate/job/:jobId' element={<Annotate/>} />
                   <Route path="no-permission" element={<NoPermissionPage />} />
                   <Route path="*" element={<NotFound />} />

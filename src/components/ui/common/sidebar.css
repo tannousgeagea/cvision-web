@@ -43,7 +43,7 @@
   display: flex;
   /* margin-bottom: .25rem;
   margin-top: .25rem; */
-  padding-left: .75rem;
+  padding-left: .25rem;
   padding-right: .75rem;
   width: auto;
   font-family: SF Mono, monospace;
@@ -52,7 +52,7 @@
 }
 
 .sidebar-item {
-  padding: 0.5rem 0.5rem;
+  padding: 0.25rem 0.25rem;
   border: none;
   border-radius: 6px;
   transition: all 0.5s ease-in-out;
