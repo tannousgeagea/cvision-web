@@ -4,10 +4,11 @@ import { baseURL } from '@/components/api/base';
 import { JobStatus } from '@/types/jobs';
 
 export async function updateJobStatus(jobId: string, newStatus: JobStatus): Promise<void> {
+  const token = localStorage.getItem("token") || sessionStorage.getItem('token');
     const res = await fetch(`${baseURL}/api/v1/jobs/${jobId}/status`, {
       method: "PATCH",
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+        "Authorization": `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ status: newStatus }),

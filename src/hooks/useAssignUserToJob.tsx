@@ -3,10 +3,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { baseURL } from '@/components/api/base';
 
 export async function assignUserToJob(jobId: string, userId: string | null): Promise<void> {
+  const token = localStorage.getItem("token") || sessionStorage.getItem('token');
   const response = await fetch(`${baseURL}/api/v1/jobs/${jobId}/assign`, {
     method: 'PATCH',
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ user_id: userId })
