@@ -116,6 +116,7 @@ export const useDraw = (
     }
     setIsDrawing(false);
     setCurrentBox(null);
+    setShowGuideLines(true);
   };
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLElement>, tool: Tool) => {
