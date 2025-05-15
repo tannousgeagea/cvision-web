@@ -10,8 +10,7 @@ interface SplitJobInput {
 }
 
 async function splitJob({ jobId, numberOfSlices, userAssignments }: SplitJobInput): Promise<Job[]> {
-  const token = localStorage.getItem('access_token');
-
+  const token = localStorage.getItem("token") || sessionStorage.getItem('token');
   const response = await fetch(`${baseURL}/api/v1/jobs/${jobId}/split`, {
     method: 'POST',
     headers: {
