@@ -19,7 +19,7 @@ const ModelTraining: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6  p-6 w-full">
         <div className="flex justify-between items-start">
           <div className="space-y-2">
             <Skeleton className="h-8 w-64" />
@@ -33,7 +33,7 @@ const ModelTraining: React.FC = () => {
 
   if (error || !model) {
     return (
-      <div className="bg-destructive/10 p-6 rounded-lg">
+      <div className="bg-destructive/10 p-6 rounded-lg w-full">
         <h3 className="font-bold text-destructive mb-2">Error Loading Model</h3>
         <p className="mb-4">We couldn't load the model details. Please try again.</p>
         <Button asChild>
@@ -44,7 +44,7 @@ const ModelTraining: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 w-full">
       <div>
         <Button 
           variant="ghost" 

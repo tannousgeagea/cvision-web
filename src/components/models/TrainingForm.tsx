@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { 
   Cpu, 
@@ -8,7 +7,8 @@ import {
   FileCode2, 
   Loader2, 
   Sliders, 
-  Upload
+  Upload,
+  FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/ui/button";
 import {
@@ -41,8 +41,9 @@ import {
 } from "@/components/ui/ui/select";
 import { Switch } from "@/components/ui/ui/switch";
 import { Label } from "@/components/ui/ui/label";
-import { Model } from "@/types/models";
+import { Model, Dataset } from "@/types/models";
 import { ModelService } from "./ModelService";
+import { mockDatasets } from "./mockModels";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 
@@ -54,6 +55,14 @@ interface TrainingFormProps {
 const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>("basic");
+  const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(null);
+
+  // Fetch datasets
+  const { data: datasets = mockDatasets } = useQuery({
+    queryKey: ["datasets"],
+    queryFn: () => Promise.resolve(mockDatasets),
+    initialData: mockDatasets
+  });
 
   // Form configuration
   const form = useForm({
@@ -78,18 +87,32 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
     progress: 0,
   });
 
-  // Mock datasets
-  const mockDatasets = [
-    { id: "dataset-001", name: "Product Images (Labeled)" },
-    { id: "dataset-002", name: "Factory Defects Dataset" },
-    { id: "dataset-003", name: "Retail Inventory" }
-  ];
+  // Handle dataset selection
+  const handleDatasetChange = (datasetId: string) => {
+    const dataset = datasets.find(d => d.id === datasetId) || null;
+    setSelectedDataset(dataset);
+    form.setValue('datasetId', datasetId);
+  };
+
+  // Format date for display
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
 
   // Mutation for starting a training job
   const trainMutation = useMutation({
     mutationFn: async (formValues: any) => {
       // First simulate the API call to create a new version
-      await ModelService.trainNewVersion(model.id, formValues);
+      await ModelService.trainNewVersion(model.id, {
+        ...formValues,
+        dataset: datasets.find(d => d.id === formValues.datasetId)
+      });
 
       // Then simulate the training process
       setTrainingStatus({
@@ -100,9 +123,10 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
 
       // Simulate progress updates
       return new Promise<void>((resolve) => {
+        const datasetName = datasets.find(d => d.id === formValues.datasetId)?.name || "unknown dataset";
         let progress = 0;
         const logMessages = [
-          "Loading dataset...",
+          `Loading dataset: ${datasetName}...`,
           "Preprocessing images...",
           "Building model architecture...",
           "Starting training loop...",
@@ -338,7 +362,7 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
                             <SelectValue placeholder="Select a version" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Start from scratch</SelectItem>
+                            <SelectItem value="start-new">Start from scratch</SelectItem>
                             {model.versions
                               .filter(v => v.status === "trained")
                               .sort((a, b) => b.versionNumber - a.versionNumber)
@@ -366,14 +390,14 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
                         <FormLabel>Training Dataset</FormLabel>
                         <Select
                           value={field.value}
-                          onValueChange={field.onChange}
+                          onValueChange={(value) => handleDatasetChange(value)}
                           disabled={isTraining}
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a dataset" />
                           </SelectTrigger>
                           <SelectContent>
-                            {mockDatasets.map(dataset => (
+                            {datasets.map(dataset => (
                               <SelectItem key={dataset.id} value={dataset.id}>
                                 {dataset.name}
                               </SelectItem>
@@ -387,6 +411,33 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
                       </FormItem>
                     )}
                   />
+
+                  {selectedDataset && (
+                    <div className="rounded-md bg-muted/50 p-4 mt-2">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-primary/10 p-2 rounded-full">
+                          <FileText className="h-4 w-4 text-primary" />
+                        </div>
+                        <div className="space-y-1">
+                          <h4 className="font-medium">{selectedDataset.name}</h4>
+                          <dl className="text-sm text-muted-foreground space-y-1">
+                            {selectedDataset.itemCount && (
+                              <div className="flex gap-2">
+                                <dt className="font-medium">Items:</dt>
+                                <dd>{selectedDataset.itemCount.toLocaleString()}</dd>
+                              </div>
+                            )}
+                            {selectedDataset.createdAt && (
+                              <div className="flex gap-2">
+                                <dt className="font-medium">Created:</dt>
+                                <dd>{formatDate(selectedDataset.createdAt)}</dd>
+                              </div>
+                            )}
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="params" className="pt-4 space-y-6">
@@ -551,13 +602,13 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
                       <FormLabel>Raw Configuration</FormLabel>
                       <Textarea
                         placeholder="# YAML configuration
-                                epochs: 10
-                                batch_size: 32
-                                learning_rate: 0.001
-                                model_config:
-                                architecture: resnet50
-                                pretrained: true
-                                freeze_layers: 5"
+epochs: 10
+batch_size: 32
+learning_rate: 0.001
+model_config:
+  architecture: resnet50
+  pretrained: true
+  freeze_layers: 5"
                         className="font-mono text-sm"
                         rows={10}
                         disabled={isTraining}
