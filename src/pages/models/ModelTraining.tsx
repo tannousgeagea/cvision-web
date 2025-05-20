@@ -6,7 +6,8 @@ import { ArrowLeft } from "lucide-react";
 import { ModelService } from "@/components/models/ModelService";
 import { Button } from "@/components/ui/ui/button";
 import { Skeleton } from "@/components/ui/ui/skeleton";
-import TrainingForm from "@/components/models/TrainingForm";
+// import TrainingForm from "@/components/models/TrainingForm";
+import TrainingForm from "@/components/training/TrainingForm";
 
 const ModelTraining: React.FC = () => {
   const { projectId, modelId } = useParams<{ projectId: string; modelId: string }>();
