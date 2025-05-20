@@ -10,6 +10,15 @@ import { Button } from "@/components/ui/ui/button";
 import { Form } from "@/components/ui/ui/form";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/ui/card";
 import { Model, Dataset } from "@/types/models";
+import { 
+  Cpu, 
+  Database, 
+  FileCode2, 
+  Loader2, 
+  Sliders, 
+  Upload,
+  FileText
+} from "lucide-react";
 
 interface Props {
   model: Model;
@@ -49,12 +58,20 @@ const TrainingTabs: React.FC<Props> = ({
         <Form {...form}>
           <form id="training-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-4 w-full max-w-2xl">
-                <TabsTrigger value="basic" disabled={isTraining}>Dataset</TabsTrigger>
-                <TabsTrigger value="params" disabled={isTraining}>Parameters</TabsTrigger>
-                <TabsTrigger value="compute" disabled={isTraining}>Compute</TabsTrigger>
-                <TabsTrigger value="advanced" disabled={isTraining}>Advanced</TabsTrigger>
-              </TabsList>
+                <TabsList className="grid grid-cols-4 w-full max-w-2xl">
+                  <TabsTrigger value="basic" disabled={isTraining}>
+                    <Database className="w-4 h-4 mr-2" /> Dataset
+                  </TabsTrigger>
+                  <TabsTrigger value="params" disabled={isTraining}>
+                    <Sliders className="w-4 h-4 mr-2" /> Parameters
+                  </TabsTrigger>
+                  <TabsTrigger value="compute" disabled={isTraining}>
+                    <Cpu className="w-4 h-4 mr-2" /> Compute
+                  </TabsTrigger>
+                  <TabsTrigger value="advanced" disabled={isTraining}>
+                    <FileCode2 className="w-4 h-4 mr-2" /> Advanced
+                  </TabsTrigger>
+                </TabsList>
 
               <TabsContent value="basic" className="pt-4 space-y-6">
                 <DatasetTab
