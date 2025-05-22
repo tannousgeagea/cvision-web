@@ -99,3 +99,20 @@ export interface Project {
     annotationClass: number | null;
   }
   
+
+  export interface EvaluationStats {
+    total: number;
+    tp: number;
+    fp: number;
+    fn: number;
+    precision: number;
+    recall: number;
+    f1_score: number;
+    mean_average_precision: number;
+    confusion_matrix: {
+      class: string;
+      TP: number;
+      FP: number;
+      FN: number;
+    }[];
+  }
