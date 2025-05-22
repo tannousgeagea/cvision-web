@@ -1,23 +1,16 @@
 
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { ModelService } from "@/components/models/ModelService";
 import { Button } from "@/components/ui/ui/button";
 import { Skeleton } from "@/components/ui/ui/skeleton";
+import { useModelById } from "@/hooks/useModelById";
 // import TrainingForm from "@/components/models/TrainingForm";
 import TrainingForm from "@/components/training/TrainingForm";
 
 const ModelTraining: React.FC = () => {
   const { projectId, modelId } = useParams<{ projectId: string; modelId: string }>();
-  
-  const { data: model, isLoading, error } = useQuery({
-    queryKey: ["model", modelId],
-    queryFn: () => ModelService.getModelById(modelId || ""),
-    enabled: !!modelId
-  });
-
+  const { data: model, isLoading, error } = useModelById(modelId || "");
   if (isLoading) {
     return (
       <div className="space-y-6  p-6 w-full">

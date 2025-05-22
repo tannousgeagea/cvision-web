@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-
+import { Loader2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/ui/card";
 import { Model, Dataset } from "@/types/models";
-import { mockDatasets } from "@/components/models/mockModels";
+import { useProjectDatasets } from "@/hooks/useProjectDatasets";
 import TrainingTabs from "./TrainingTabs";
 import TrainingProgress from "./TrainingProgress";
 import { ModelService } from "@/components/models/ModelService";
@@ -19,17 +20,12 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("basic");
   const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(null);
-
-  const { data: datasets = mockDatasets } = useQuery({
-    queryKey: ["datasets"],
-    queryFn: () => Promise.resolve(mockDatasets),
-    initialData: mockDatasets,
-  });
+  const { data: datasets = [], isLoading: datasetsLoading } = useProjectDatasets(projectId);
 
   const form = useForm({
     defaultValues: {
       baseVersion: model.versions.length > 0 ? model.versions[0].id : "",
-      datasetId: "dataset-001",
+      datasetId: datasets.length > 0 ? datasets[0].id : "",
       epochs: 10,
       batchSize: 32,
       learningRate: 0.001,
@@ -108,7 +104,17 @@ const TrainingForm: React.FC<TrainingFormProps> = ({ model, projectId }) => {
   };
 
   const isTraining = trainingStatus.active || trainMutation.isPending;
-
+  if (datasetsLoading) {
+    return (
+      <Card>
+        <CardContent className="flex items-center justify-center h-40">
+          <Loader2 className="w-6 h-6 mr-2 animate-spin text-muted-foreground" />
+          <span className="text-muted-foreground">Loading datasets...</span>
+        </CardContent>
+      </Card>
+    );
+  }
+  
   return (
     <div className="space-y-6">
       <TrainingTabs
