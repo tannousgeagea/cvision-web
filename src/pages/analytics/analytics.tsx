@@ -6,6 +6,7 @@ import AnnotationAnalyticsPanel from '@/components/analytics/AnnotationAnalytics
 import VersioningPanel from '@/components/analytics/VersioningPanel';
 import AugmentationPanel from '@/components/analytics/AugmentationPanel';
 import AnnotationGroupPanel from '@/components/analytics/AnnotationGroupPanel';
+import EvaluationAnalyticsPanel from '@/components/analytics/EvaluationAnalyticsPanel';
 import FilterPanel from '@/components/analytics/FilterPanel';
 import { Filters } from '@/types/dashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/ui/tabs';
@@ -69,6 +70,10 @@ const AnalyticsPage: React.FC = () => {
                   <Layers className="h-4 w-4" />
                   <span>Groups</span>
                 </TabsTrigger>
+                <TabsTrigger value="evaluations" className="flex items-center gap-1">
+                  <Layers className="h-4 w-4" />
+                  <span>Evaluation</span>
+                </TabsTrigger>
               </TabsList>
               
               <TabsContent value="images">
@@ -98,6 +103,12 @@ const AnalyticsPage: React.FC = () => {
               <TabsContent value="groups">
                 <div className="mt-4 mb-8">
                   <AnnotationGroupPanel projectId={projectId || ''} />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="evaluations">
+                <div className="mt-4 mb-8">
+                  <EvaluationAnalyticsPanel projectId={projectId || ''} />
                 </div>
               </TabsContent>
             </Tabs>
