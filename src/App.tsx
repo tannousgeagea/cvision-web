@@ -26,6 +26,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ModelsList from "./pages/models/ModelsList";
 import ModelDetail from "./pages/models/ModelDetail";
 import ModelTraining from "./pages/models/ModelTraining";
+import SessionsPage from './pages/training_sessions/TrainingSession';
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => {
                   <Route path="models" element={<ModelsList />} />
                   <Route path="models/:modelId" element={<ModelDetail />} />
                   <Route path="models/:modelId/train" element={<ModelTraining />} />
+                  <Route path="sessions" element={<SessionsPage />} />
                   <Route path='annotate/job/:jobId' element={<Annotate/>} />
                   <Route path="no-permission" element={<NoPermissionPage />} />
                   <Route path="*" element={<NotFound />} />
