@@ -11,7 +11,7 @@ import {
   Images,
   Tags,
   Brain,
-  Briefcase
+  ActivitySquare
 } from "lucide-react";
 
 interface SideBarProps {}
@@ -35,6 +35,7 @@ const SideBar: FC<SideBarProps> = () => {
     { item: "Analytics", ref: `/projects/${projectId}/analytics`, icon: <LineChart size={20} /> },
     { item: "Classes", ref: `/projects/${projectId}/classes`, icon: <Tags size={20} /> },
     { item: "Models", ref: `/projects/${projectId}/models`, icon: <Brain size={20} /> },
+    { item: "Training", ref: `/projects/${projectId}/sessions`, icon: <ActivitySquare size={20} /> },
     
   ];
 
