@@ -4,12 +4,14 @@ import Badge from './ui/Badge';
 import ProgressBar from './ui/ProgressBar';
 import { Calendar, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/ui/button";
 
 interface SessionCardProps {
   session: TrainingSession;
+  onViewSession: (session: TrainingSession) => void;
 }
 
-const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
+const SessionCard: React.FC<SessionCardProps> = ({ session, onViewSession }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -67,12 +69,13 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
           </div>
         )}
 
-        <Link
-          to={`/sessions/${session.id}`}
+        <Button
+          // to={`/sessions/${session.id}`}
+          onClick={() => onViewSession(session)}
           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
         >
           View Details
-        </Link>
+        </Button>
       </div>
     </div>
   );

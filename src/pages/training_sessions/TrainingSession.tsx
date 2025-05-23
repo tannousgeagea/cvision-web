@@ -1,9 +1,13 @@
 import React, { useState, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import SessionFilters from '@/components/training_sessions/SearchFilters';
-import SessionList from '@/components/training_sessions/ui/SessionList';
+import SessionList from '@/components/training_sessions/SessionList';
 import { projects,  models, mockTrainingSessions } from '@/components/training_sessions/mockData';
+import { TrainingSession } from '@/types/training_session';
 
 const SessionsPage: React.FC = () => {
+  const { projectId } = useParams<{ projectId: string }>()
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedModel, setSelectedModel] = useState('');
@@ -33,6 +37,10 @@ const SessionsPage: React.FC = () => {
 
   const isFiltered = searchQuery !== '' || selectedProject !== '' || selectedModel !== '' || selectedStatus !== '';
 
+
+  const handleViewSession = (session: TrainingSession) => {
+    navigate(`/projects/${projectId}/sessions/${session.id}`)
+  }
   return (
     <div className="space-y-6 p-6 w-full">
       <div className="mb-8">
@@ -51,7 +59,7 @@ const SessionsPage: React.FC = () => {
         />
       </div>
 
-      <SessionList sessions={filteredSessions} isFiltered={isFiltered} />
+      <SessionList sessions={filteredSessions} isFiltered={isFiltered} onViewSession={handleViewSession} />
     </div>
   );
 };

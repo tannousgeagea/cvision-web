@@ -27,6 +27,7 @@ import ModelsList from "./pages/models/ModelsList";
 import ModelDetail from "./pages/models/ModelDetail";
 import ModelTraining from "./pages/models/ModelTraining";
 import SessionsPage from './pages/training_sessions/TrainingSession';
+import SessionDetailPage from './pages/training_sessions/TrainingSessionDetails';
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => {
                   <Route path="models/:modelId" element={<ModelDetail />} />
                   <Route path="models/:modelId/train" element={<ModelTraining />} />
                   <Route path="sessions" element={<SessionsPage />} />
+                  <Route path="sessions/:sessionId" element={<SessionDetailPage />} />
                   <Route path='annotate/job/:jobId' element={<Annotate/>} />
                   <Route path="no-permission" element={<NoPermissionPage />} />
                   <Route path="*" element={<NotFound />} />
