@@ -12,7 +12,6 @@ import {
   Settings, 
   Tag
 } from "lucide-react";
-import { ModelService } from "@/components/models/ModelService";
 import { Badge } from "@/components/ui/ui/badge";
 import { Button } from "@/components/ui/ui/button";
 import { Skeleton } from "@/components/ui/ui/skeleton";
@@ -25,16 +24,8 @@ import { useModelById } from "@/hooks/useModelById";
 
 const ModelDetail: React.FC = () => {
   const { projectId, modelId } = useParams<{ projectId: string; modelId: string }>();
-  
-  // const { data: model, isLoading, error } = useQuery({
-  //   queryKey: ["model", modelId],
-  //   queryFn: () => ModelService.getModelById(modelId || ""),
-  //   enabled: !!modelId
-  // });
-
   const { data: model, isLoading, error } = useModelById(modelId || "");
-
-  console.log(model)
+  
   // Format date for display
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
