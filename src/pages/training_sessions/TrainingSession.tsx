@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import SessionFilters from '@/components/training_sessions/SearchFilters';
 import SessionList from '@/components/training_sessions/SessionList';
-import { projects,  models, mockTrainingSessions } from '@/components/training_sessions/mockData';
+import { projects,  models } from '@/components/training_sessions/mockData';
 import { TrainingSession } from '@/types/training_session';
+import { useTrainingSessions } from '@/hooks/useTrainingSessions';
+import { Loader2 } from 'lucide-react';
 
 const SessionsPage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>()
@@ -13,34 +15,24 @@ const SessionsPage: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
 
-  const filteredSessions = useMemo(() => {
-    return mockTrainingSessions.filter((session) => {
-      // Filter by search query
-      const matchesSearch =
-        searchQuery === '' ||
-        session.modelName.toLowerCase().includes(searchQuery.toLowerCase());
-
-      // Filter by project
-      const matchesProject =
-        selectedProject === '' || session.projectName === projects.find(p => p.id === selectedProject)?.name;
-
-      // Filter by model
-      const matchesModel =
-        selectedModel === '' || session.modelName === models.find(m => m.id === selectedModel)?.name;
-
-      // Filter by status
-      const matchesStatus = selectedStatus === '' || session.status === selectedStatus;
-
-      return matchesSearch && matchesProject && matchesModel && matchesStatus;
-    });
-  }, [searchQuery, selectedProject, selectedModel, selectedStatus]);
+  const {
+    data,
+    isLoading,
+    isError,
+    error
+  } = useTrainingSessions({
+    projectId: selectedProject || undefined,
+    modelId: selectedModel || undefined,
+    search: searchQuery || undefined,
+    limit: 50,
+    offset: 0,
+  });
 
   const isFiltered = searchQuery !== '' || selectedProject !== '' || selectedModel !== '' || selectedStatus !== '';
-
-
   const handleViewSession = (session: TrainingSession) => {
     navigate(`/projects/${projectId}/sessions/${session.id}`)
   }
+  
   return (
     <div className="space-y-6 p-6 w-full">
       <div className="mb-8">
@@ -59,7 +51,16 @@ const SessionsPage: React.FC = () => {
         />
       </div>
 
-      <SessionList sessions={filteredSessions} isFiltered={isFiltered} onViewSession={handleViewSession} />
+      {isLoading ? (
+        <div className="flex items-center justify-center py-10 text-muted-foreground">
+          <Loader2 className="animate-spin mr-2 h-5 w-5" />
+          Loading sessions...
+        </div>
+      ) : isError ? (
+        <p className="text-red-600">Error: {(error as Error).message}</p>
+      ) : (
+        <SessionList sessions={data?.results || []} isFiltered={isFiltered} onViewSession={handleViewSession} />
+      )}
     </div>
   );
 };
