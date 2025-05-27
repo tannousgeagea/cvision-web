@@ -101,24 +101,24 @@ import {
   };
   
   export const fetchEvaluationStats = async (projectId: string): Promise<EvaluationStats> => {
-    // return fetch(`${API_URL}/api/v1/analytics/annotationstats?project_id=${projectId}`).then(res => res.json());
+    return fetch(`${API_URL}/api/v1/analytics/evaluationstats?project_id=${projectId}`).then(res => res.json());
     // Mock data
-    return {
-      total: 500,
-      tp: 320,
-      fp: 80,
-      fn: 100,
-      precision: 0.80,
-      recall: 0.76,
-      f1_score: 0.78,
-      mean_average_precision: 0.74,
-      confusion_matrix: [
-        { class: 'Plastic', TP: 100, FP: 20, FN: 10 },
-        { class: 'Metal', TP: 90, FP: 15, FN: 25 },
-        { class: 'Wood', TP: 60, FP: 30, FN: 40 },
-        { class: 'Glass', TP: 70, FP: 15, FN: 25 },
-      ],
-  };
+  //   return {
+  //     total: 500,
+  //     tp: 320,
+  //     fp: 80,
+  //     fn: 100,
+  //     precision: 0.80,
+  //     recall: 0.76,
+  //     f1_score: 0.78,
+  //     mean_average_precision: 0.74,
+  //     confusion_matrix: [
+  //       { class: 'Plastic', TP: 100, FP: 20, FN: 10 },
+  //       { class: 'Metal', TP: 90, FP: 15, FN: 25 },
+  //       { class: 'Wood', TP: 60, FP: 30, FN: 40 },
+  //       { class: 'Glass', TP: 70, FP: 15, FN: 25 },
+  //     ],
+  // };
   };
 
   export const fetchVersions = async (projectId: string): Promise<Version[]> => {

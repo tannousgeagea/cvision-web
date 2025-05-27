@@ -43,7 +43,7 @@ const ImageCard: React.FC<ImageCardProps> = ({
         <img 
           src={image.image_url}
           alt={image.image_name}
-          className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 
+          className={`absolute inset-0 w-full h-full object-fill transition-all duration-300 
             ${isLoaded ? 'opacity-100' : 'opacity-0'} 
             ${isHovered ? 'brightness-90' : 'brightness-95'}`}
           loading="lazy"
