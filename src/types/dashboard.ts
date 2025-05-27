@@ -110,7 +110,7 @@ export interface Project {
     f1_score: number;
     mean_average_precision: number;
     confusion_matrix: {
-      class: string;
+      class_name: string;
       TP: number;
       FP: number;
       FN: number;

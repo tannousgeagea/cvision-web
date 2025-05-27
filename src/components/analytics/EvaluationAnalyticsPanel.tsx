@@ -59,7 +59,7 @@ const EvaluationAnalyticsPanel: React.FC<EvaluationAnalyticsPanelProps> = ({ pro
   ];
 
   const confusionData = stats.confusion_matrix.map(entry => ({
-    class: entry.class,
+    class: entry.class_name,
     TP: entry.TP,
     FP: entry.FP,
     FN: entry.FN,
