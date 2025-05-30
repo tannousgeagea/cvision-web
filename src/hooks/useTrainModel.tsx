@@ -35,9 +35,13 @@ export const useTrainModel = (
         },
       };
 
+      const token = localStorage.getItem("token") || sessionStorage.getItem('token');
       const res = await fetch(`http://localhost:29082/api/v1/train`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json" 
+        },
         body: JSON.stringify(payload),
       });
 

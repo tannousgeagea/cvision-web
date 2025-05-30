@@ -204,7 +204,7 @@ const ModelsList: React.FC = () => {
               <Card className="hover:shadow-md transition-shadow overflow-hidden h-full">
                 <CardHeader>
                   <div className="flex justify-between items-start w-full">
-                    <CardTitle className="line-clamp-1">{model.name}</CardTitle>
+                    <CardTitle className="truncate">{model.name}</CardTitle>
                     <Badge
                       variant="outline"
                       className={`${getModelTypeColor(model.type)} border-0`}
