@@ -21,7 +21,7 @@ const SessionsPage: React.FC = () => {
     isError,
     error
   } = useTrainingSessions({
-    projectId: selectedProject || undefined,
+    projectId: projectId,
     modelId: selectedModel || undefined,
     search: searchQuery || undefined,
     limit: 50,

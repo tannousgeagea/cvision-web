@@ -46,7 +46,7 @@ const SessionFilters: React.FC<SessionFiltersProps> = ({
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:flex-1">
-        <SelectFilter
+        {/* <SelectFilter
           label="Project"
           options={projects}
           value={selectedProject}
@@ -58,7 +58,7 @@ const SessionFilters: React.FC<SessionFiltersProps> = ({
           options={models}
           value={selectedModel}
           onChange={onModelChange}
-        />
+        /> */}
         
         <SelectFilter
           label="Status"
