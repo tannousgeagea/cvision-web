@@ -1,4 +1,4 @@
-import { baseURL } from "@/components/api/base";
+import { trainURL } from "@/components/api/base";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
 interface TrainModelPayload {
@@ -36,7 +36,7 @@ export const useTrainModel = (
       };
 
       const token = localStorage.getItem("token") || sessionStorage.getItem('token');
-      const res = await fetch(`http://localhost:29082/api/v1/train`, {
+      const res = await fetch(`${trainURL}/api/v1/train`, {
         method: "POST",
         headers: { 
           'Authorization': `Bearer ${token}`,
