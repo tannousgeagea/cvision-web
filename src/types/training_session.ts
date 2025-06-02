@@ -1,5 +1,10 @@
 export type Status = 'running' | 'completed' | 'failed' | 'pending';
 
+interface MetricPoint {
+  epoch: number;
+  [key: string]: number;
+}
+
 export interface TrainingSession {
   id: string;
   modelName: string;
@@ -23,6 +28,7 @@ export interface TrainingSession {
     [key: string]: number | string;
   };
   logs?: string[];
+  metricsData?: MetricPoint[]
 }
 
 export interface Project {

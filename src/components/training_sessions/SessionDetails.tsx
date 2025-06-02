@@ -3,6 +3,7 @@ import { TrainingSession } from '@/types/training_session'
 import Badge from './ui/Badge';
 import ProgressBar from './ui/ProgressBar';
 import MetricCard from './ui/MetricCard';
+import MetricsVisualization from './MetricsVisualization';
 import { ArrowLeft, Calendar, Clock, Download, RefreshCw } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
@@ -45,6 +46,19 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session }) => {
     });
   };
 
+  //   // Generate mock training metrics data
+  // const metricsData = Array.from({ length: session.configuration?.epochs || 0 }, (_, i) => ({
+  //   epoch: i + 1,
+  //   loss: Math.max(0.1, 1 - (i * 0.05) + Math.random() * 0.1),
+  //   accuracy: Math.min(1, 0.5 + (i * 0.03) + Math.random() * 0.05),
+  //   precision: Math.min(1, 0.6 + (i * 0.02) + Math.random() * 0.05),
+  //   recall: Math.min(1, 0.55 + (i * 0.025) + Math.random() * 0.05),
+  //   f1Score: Math.min(1, 0.58 + (i * 0.023) + Math.random() * 0.05),
+  //   map: Math.min(1, 0.58 + (i * 0.023) + Math.random() * 0.05),
+  // })).slice(0, Math.ceil((session.progress / 100) * (session.configuration?.epochs || 0)));
+
+  // console.log(metricsData)
+  const metricsData = session?.metricsData || []
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -77,6 +91,15 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session }) => {
             <ProgressBar progress={session.progress} status={session.status} />
             <p className="text-xs text-gray-500 mt-1 text-right">{session.progress}% complete</p>
           </div>
+
+          {metricsData.length > 0 && (
+            <div className="mb-8">
+              <MetricsVisualization
+                data={metricsData}
+                // metrics={['loss', 'accuracy', 'precision', 'recall', 'mAP']}
+              />
+            </div>
+          )}
 
           {session.metrics && Object.keys(session.metrics).length > 0 && (
             <div className="mb-8">
