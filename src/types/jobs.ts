@@ -23,6 +23,7 @@ export interface Job {
     updatedAt: Date;
     parentJobId?: string;
     sliceNumber?: number;
+    projectId?: string
   }
 
   export type AllowedTransition = {

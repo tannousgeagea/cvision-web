@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProjectCard from '@/components/ui/card/project-card';
-import NewProjectButton from '@/components/ui/button/create-project-button';
 import useFetchData from '@/hooks/use-fetch-data';
 import Header from '@/components/ui/header/Header';
 import Spinner from '@/components/ui/animation/spinner';
-import './projects.css';
+import { SidebarProvider, SidebarInset } from "@/components/ui/ui/sidebar";
+import { NotificationSidebar } from "@/components/jobs/NotificationSidebar";
 
 interface Project {
     name: string;
@@ -23,36 +23,29 @@ const Projects: FC = () => {
         navigate(`/projects/${projectId}/dataset`, { state: { projects } });
     };
 
-    const handleCreateProject = (): void => {
-        console.log('do nothing')
-    }
-
     const projectsData: Project[] = projects?.data || [];
     if (errorProjects) return <p>Error loading data: {errorProjects.message}</p>;
 
     return (
-        <div className="projects-container">
-            <div className="projects-header">
-                <Header
-                    title="Projects"
-                    description={`Organize and manage your visual data`}
-                />
-                <div className="create-project">
-                    <NewProjectButton onClick={() => handleCreateProject()}/>
-                </div>
-            </div>
+        <div className="p-6 w-full">
+            <Header
+                title="Projects"
+                description={`Organize and manage your visual data`}
+            />
 
             {loadingProjects ? (
                 <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
                     <Spinner />
                 </div>
             ) : (
-                <div className="project-list">
+                <div className="flex flex-wrap gap-2 mt-1">
                     {projectsData.map((project) => (
                         <ProjectCard key={project.name} project={project} onView={handleViewProject} />
                     ))}
             </div>
             )}
+
+            <NotificationSidebar />
         </div>
     );
 };
