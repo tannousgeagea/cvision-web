@@ -143,7 +143,12 @@ import { UserProgress, ProgressSummary } from "@/types/progress";
  */
 const fetchUserProgress = async (org_id: string): Promise<UserProgress[]> => {
   // Construct the API endpoint URL with the provided organization ID
-  const response = await fetch(`${baseURL}/api/v1/organizations/${org_id}/progress`);
+  const token = localStorage.getItem("token") || sessionStorage.getItem('token');
+  const response = await fetch(`${baseURL}/api/v1/organizations/${org_id}/progress`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   // Check if the request was successful
   if (!response.ok) {
