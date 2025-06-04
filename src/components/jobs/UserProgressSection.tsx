@@ -11,7 +11,13 @@ import { Skeleton } from "@/components/ui/ui/skeleton";
 import { useUserProgress, useProgressSummary } from "@/hooks/useUserProgress";
 import { UserProgress } from "@/types/progress";
 
+
+interface ProgressSummaryCardsProps {
+  orgId: string;
+}
+
 interface UserProgressSectionProps {
+  orgId: string;
   onUserClick?: (userId: string) => void;
 }
 
@@ -92,8 +98,12 @@ const UserProgressCard = ({
   );
 };
 
-const ProgressSummaryCards = () => {
-  const { data: summary, isLoading } = useProgressSummary();
+const ProgressSummaryCards = ({
+  orgId
+} : {
+  orgId: string;
+}) => {
+  const { data: summary, isLoading } = useProgressSummary(orgId);
 
   if (isLoading) {
     return (
@@ -181,8 +191,8 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export const UserProgressSection = ({ onUserClick }: UserProgressSectionProps) => {
-  const { data: userProgress, isLoading, error } = useUserProgress();
+export const UserProgressSection = ({ orgId, onUserClick }: UserProgressSectionProps) => {
+  const { data: userProgress, isLoading, error } = useUserProgress(orgId);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
@@ -231,7 +241,7 @@ export const UserProgressSection = ({ onUserClick }: UserProgressSectionProps) =
           </div>
         </div>
 
-        <ProgressSummaryCards />
+        <ProgressSummaryCards orgId={orgId}/>
 
         {isLoading ? (
           <LoadingSkeleton />
