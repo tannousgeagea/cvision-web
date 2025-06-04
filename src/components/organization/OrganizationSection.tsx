@@ -1,4 +1,4 @@
-import { Building2, Users } from "lucide-react";
+import { Building2, Users, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
@@ -47,6 +47,19 @@ export const OrganizationSection = ({ organization, isExpanded }: OrgSectionProp
         >
           <Users size={18} />
           {isExpanded && <span className="truncate max-w-[120px]">Members</span>}
+        </Link>
+      </div>
+
+      <div className={cn("w-full", isExpanded ? "px-2" : "flex justify-center")}>
+        <Link
+          to={`/organizations/${organization.id}/progress`}
+          className={cn(
+            "flex items-center text-sm font-medium text-white hover:opacity-80 p-2",
+            isExpanded ? "gap-2" : "justify-center"
+          )}
+        >
+          <Activity size={18} />
+          {isExpanded && <span className="truncate max-w-[120px]">Progress</span>}
         </Link>
       </div>
     </div>

@@ -28,6 +28,7 @@ import ModelDetail from "./pages/models/ModelDetail";
 import ModelTraining from "./pages/models/ModelTraining";
 import SessionsPage from './pages/training_sessions/TrainingSession';
 import SessionDetailPage from './pages/training_sessions/TrainingSessionDetails';
+import TeamProgress from './pages/team_progress/TeamProgress';
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => {
                 <Route path="/no-permission" element={<NoPermissionPage />} />
                 <Route path='/organizations/:orgId' element={<OrganizationPage />} />
                 <Route path="/organizations/:orgId/members" element={<OrganizationMembersPage />} />
+                <Route path='/organizations/:orgId/progress' element={<TeamProgress />} />
                 <Route path='/datalake' element={<DataLake />} />
                 <Route path='/projects' element={<Projects />} />
                 <Route path='projects/:projectId' element={<ProjectLayout />}>
