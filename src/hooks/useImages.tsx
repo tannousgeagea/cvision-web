@@ -5,6 +5,7 @@ import { mockImages } from "@/components/datalake/mockImages";
 
 export interface ImageItem {
   id: string;
+  image_id: string;
   name: string;
   src: string;
   tags: string[];

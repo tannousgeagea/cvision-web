@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/ui/button";
 import { toast } from "@/components/ui/ui/use-toast";
 import { useImages } from "@/hooks/useImages";
-import { mockImages, mockProjectOptions, sources } from "@/components/datalake/mockImages"
+import { mockImages, sources } from "@/components/datalake/mockImages"
 import SearchFilter from "@/components/datalake/SearchFilter";
 import SourceFilter from "@/components/datalake/SourceFilter";
 import SortControl from "@/components/datalake/SortControl";
@@ -15,7 +15,15 @@ import ImageTable from "@/components/datalake/ImageTable";
 import ViewToggle from "@/components/datalake/ViewToggle";
 import NoResults from "@/components/datalake/NoResults";
 import { Loader } from "lucide-react";
+import useFetchData from "@/hooks/use-fetch-data";
+import { useAddImagesToProject } from '@/hooks/useAddImagesToProject';
 import { parseQueryString, formatQueryAsTagParams, ParsedQuery } from "@/utils/queryParse";
+
+
+interface Project {
+    id: string;
+    name: string;
+}
 
 // Available tags from all images
 const allTags = Array.from(
@@ -32,13 +40,13 @@ const DataLake: React.FC = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [parsedQuery, setParsedQuery] = useState<ParsedQuery>({});
   const [view, setView] = useState<"grid" | "table">("grid");
+  const { mutate: addImagesToProject } = useAddImagesToProject();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-      // Parse the search term whenever it changes
       setParsedQuery(parseQueryString(searchTerm));
     }, 300);
 
@@ -68,20 +76,24 @@ const DataLake: React.FC = () => {
 
   // Extract text search term if present
   const textSearchTerm = parsedQuery.text || '';
+  const { data: projects, loading: loadingProjects, error: errorProjects } = useFetchData('/api/v1/projects');
+  const projectsData: Project[] = projects?.data || [];
 
+  const isSearching = searchTerm.trim() !== "" || filterTags.length > 0 || Object.keys(parsedQuery).length > 0;
+  const dynamicLimit = isSearching ? 500 : 50;
   const { data: images, isLoading, isError } = useImages({
     source: filterSource,
     name: textSearchTerm || undefined,
     tag: filterTags.length > 0 ? filterTags[0] : undefined,
-    limit: 50,
+    limit: dynamicLimit,
     parsedQuery: combinedTagFilters,
   });  
 
-  const toggleImageSelection = (id: string) => {
+  const toggleImageSelection = (image_id: string) => {
     setSelectedImages(prev => 
-      prev.includes(id) 
-        ? prev.filter(imgId => imgId !== id)
-        : [...prev, id]
+      prev.includes(image_id) 
+        ? prev.filter(imgId => imgId !== image_id)
+        : [...prev, image_id]
     );
   };
 
@@ -90,7 +102,7 @@ const DataLake: React.FC = () => {
     if (selectedImages.length === displayedImages.length) {
       setSelectedImages([]);
     } else {
-      setSelectedImages(displayedImages.map(img => img.id));
+      setSelectedImages(displayedImages.map(img => img.image_id));
     }
   };
 
@@ -121,27 +133,31 @@ const DataLake: React.FC = () => {
       });
     }
   };
-  
+
   const handleAddToProject = () => {
     if (selectedImages.length === 0 || !selectedProject) {
       toast({
-        title: "Selection required",
-        description: "Please select images and a project first.",
-        variant: "destructive",
+        title: 'Selection required',
+        description: 'Please select images and a project first.',
+        variant: 'destructive',
         duration: 3000,
       });
       return;
     }
-    
-    toast({
-      title: "Images added to project",
-      description: `Added ${selectedImages.length} image(s) to ${mockProjectOptions.find(p => p.id === selectedProject)?.name}`,
-      duration: 3000,
-    });
-    
-    // Clear selection after adding
-    setSelectedImages([]);
-    setSelectedProject("");
+
+    addImagesToProject(
+      {
+        project_id: selectedProject,
+        image_ids: selectedImages,
+      },
+      {
+        onSuccess: () => {
+          // Clear selections after successful addition
+          setSelectedImages([]);
+          setSelectedProject('');
+        },
+      }
+    );
   };
 
   const displayedImages = images?.data || []
@@ -156,10 +172,6 @@ const DataLake: React.FC = () => {
   // Check if any filters are active
   const hasActiveFilters = searchTerm !== "" || filterSource !== undefined || filterTags.length > 0;
 
-
-  // console.log("Text Search: ", textSearchTerm)
-  // console.log("Tag Filter: ", combinedTagFilters)
-  // console.log("Parsed Query: ", parsedQuery)
   return (
     <div className="space-y-6 p-6 w-full animate-fade-in h-full mb-6">
       <div className="flex items-center justify-between">
@@ -187,7 +199,6 @@ const DataLake: React.FC = () => {
             setFilterSource={setFilterSource} 
             sources={sources} 
           />
-          {/* <SortControl sortOrder={sortOrder} setSortOrder={setSortOrder} /> */}
           <div className="flex items-center justify-between gap-2">
             <SortControl sortOrder={sortOrder} setSortOrder={setSortOrder} />
             <ViewToggle view={view} setView={setView} />
@@ -210,9 +221,22 @@ const DataLake: React.FC = () => {
         toggleSelectAll={toggleSelectAll}
         selectedProject={selectedProject}
         setSelectedProject={setSelectedProject}
-        projectOptions={mockProjectOptions}
+        projectOptions={projectsData}
         handleAddToProject={handleAddToProject}
       />
+
+      {loadingProjects && (
+        <div className="flex flex-col items-center justify-center p-12">
+          <Loader className="animate-spin h-8 w-8 mb-4 text-primary" />
+          <p className="text-muted-foreground">Loading Project...</p>
+        </div>
+      )}
+
+      {errorProjects && (
+        <div className="text-center p-12">
+          <p className="text-destructive font-medium mb-2">Failed to load projects</p>
+        </div>
+      )}
 
       {isLoading && (
         <div className="flex flex-col items-center justify-center p-12">

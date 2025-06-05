@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { useClassesApi } from '@/hooks/useClassesApi';
 import { toast } from '@/hooks/use-toast';
 import { useParams } from 'react-router-dom';
-import { useProjectId } from './ProjectContext';
+import { useProject } from './ProjectContext';
 
 export interface AnnotationClass {
   id: string;
@@ -41,7 +41,7 @@ const DEFAULT_COLORS = [
 ];
 
 export const ClassesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const projectId = useProjectId();
+  const { projectId } = useProject();
   const [classes, setClasses] = useState<AnnotationClass[]>([]);
   const [classesLocked, setClassesLocked] = useState<boolean>(false);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);

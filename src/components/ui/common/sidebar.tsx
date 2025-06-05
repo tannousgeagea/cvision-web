@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
+import { useProject } from "@/contexts/ProjectContext";
 import "./sidebar.css";
 
 import {
@@ -25,6 +26,7 @@ interface Item {
 const SideBar: FC<SideBarProps> = () => {
   const { projectId } = useParams<string>();
   const location = useLocation();
+  const { project } = useProject()
 
   const items: Item[] = [
     { item: "Upload Data", ref: `/projects/${projectId}/upload`, icon: <Upload size={20} /> },
@@ -40,34 +42,40 @@ const SideBar: FC<SideBarProps> = () => {
   ];
 
   return (
-    <div className="sidebar">
-      <div className="top-info">
-        <div className="project-thumbnail">
-          <img 
-            src="https://wacoreblob.blob.core.windows.net/cvisionops/media/images/AMK_gate03_front_2024-12-20_07-03-35_78e6ac1e-59ca-4771-97f2-95d5662f396b.jpg?se=2025-01-21T13%3A15%3A41Z&sp=r&sv=2025-01-05&sr=b&sig=X3/hpnffG7ApioooYobFiaL%2BYj1REBZzRHlYlj0vB%2Bg%3D" 
-            alt="project-thumbnail">
-          </img>
-        </div>
-        <div className="project-name">
-          <h2>{projectId}</h2>
+    <div className="w-64 bg-white border-r border-slate-200 shadow-sm flex flex-col h-screen">
+      {/* Project Info */}
+      <div className="flex items-center gap-3 p-4 border-b border-slate-200">
+        <img
+          src={project?.thumbnail_url || "https://via.placeholder.com/40"}
+          alt="project-thumbnail"
+          className="w-12 h-12 rounded object-cover border border-slate-300 shadow-sm"
+        />
+        <div>
+          <h2 className="text-base font-semibold text-slate-700">{project?.name || "Project"}</h2>
+          <p className="text-xs text-slate-400">ID: {projectId}</p>
         </div>
       </div>
 
-      <div className="sidebar-content">
-        <h3>Data</h3>
-        {items.map((item, index) => (
-          <div
-            className={`sidebar-item ${
-              location.pathname.includes(item.ref) ? "active" : ""
-            }`}
-            key={index}
-          >
-            <Link to={item.ref}>
-              {item.icon}
+      {/* Navigation Links */}
+      <div className="flex flex-col gap-2 p-4">
+        <h3 className="text-xs uppercase text-slate-400 tracking-wider font-medium">Data</h3>
+        {items.map((item, index) => {
+          const isActive = location.pathname.includes(item.ref);
+          return (
+            <Link
+              to={item.ref}
+              key={index}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors 
+                ${isActive 
+                  ? "bg-accent text-white" 
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`}
+            >
+              <span className="flex-shrink-0">{item.icon}</span>
               <span>{item.item}</span>
             </Link>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
