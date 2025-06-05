@@ -27,21 +27,25 @@ const Projects: FC = () => {
     if (errorProjects) return <p>Error loading data: {errorProjects.message}</p>;
 
     return (
-        <div className="p-6 w-full">
+        <div className="p-6 w-full min-h-screen bg-slate-50">
             <Header
-                title="Projects"
-                description={`Organize and manage your visual data`}
+            title="Projects"
+            description="Organize and manage your visual data"
             />
 
             {loadingProjects ? (
-                <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex justify-center items-center">
-                    <Spinner />
-                </div>
+            <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <Spinner />
+            </div>
             ) : (
-                <div className="flex flex-wrap gap-2 mt-1">
-                    {projectsData.map((project) => (
-                        <ProjectCard key={project.name} project={project} onView={handleViewProject} />
-                    ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+                {projectsData.map((project) => (
+                <ProjectCard
+                    key={project.name}
+                    project={project}
+                    onView={handleViewProject}
+                />
+                ))}
             </div>
             )}
 
