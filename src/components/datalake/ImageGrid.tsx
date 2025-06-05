@@ -5,6 +5,7 @@ import ImageCard from "@/components/common/ImageCard";
 interface ImageGridProps {
   images: Array<{
     id: string;
+    image_id:string;
     src: string;
     name: string;
     tags?: string[];
@@ -32,10 +33,10 @@ const ImageGrid: React.FC<ImageGridProps> = ({
           name={image.name}
           tags={image.tags}
           source={image.source}
-          selected={selectedImages.includes(image.id)}
+          selected={selectedImages.includes(image.image_id)}
           onClick={() => {
             if (selectedImages.length > 0) {
-              toggleImageSelection(image.id);
+              toggleImageSelection(image.image_id);
             } else {
               onImageClick(image);
             }
