@@ -52,12 +52,12 @@ const ImageTable: React.FC<ImageTableProps> = ({
                 onCheckedChange={() => {
                   if (selectedImages.length === images.length) {
                     // Clear all selections
-                    selectedImages.forEach(id => toggleImageSelection(id));
+                    selectedImages.forEach(image_id => toggleImageSelection(image_id));
                   } else {
                     // Select all images that aren't already selected
                     images
-                      .filter(img => !selectedImages.includes(img.id))
-                      .forEach(img => toggleImageSelection(img.id));
+                      .filter(img => !selectedImages.includes(img.image_id))
+                      .forEach(img => toggleImageSelection(img.image_id));
                   }
                 }}
               />
@@ -80,7 +80,7 @@ const ImageTable: React.FC<ImageTableProps> = ({
         </TableHeader>
         <TableBody>
           {images.map((image) => {
-            const isSelected = selectedImages.includes(image.id);
+            const isSelected = selectedImages.includes(image.image_id);
             const relativeDate = formatDistance(new Date(image.date), new Date(), { addSuffix: true });
 
             return (
@@ -88,7 +88,7 @@ const ImageTable: React.FC<ImageTableProps> = ({
                 <TableCell>
                   <Checkbox
                     checked={isSelected}
-                    onCheckedChange={() => toggleImageSelection(image.id)}
+                    onCheckedChange={() => toggleImageSelection(image.image_id)}
                   />
                 </TableCell>
                 <TableCell>

@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { baseURL } from '@/components/api/base';
-import { useProjectId } from './ProjectContext';
+import { useProject } from './ProjectContext';
 
 export type TaskType = 'segmentation' | 'detection' | 'classification';
 export type ProjectSection = 'upload' | 'annotate' | 'dataset' | 'versions' | 'analytics';
@@ -70,7 +70,7 @@ const MOCK_PROJECT: Project = {
 
 export const UploadProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // State for project context
-  const projectId = useProjectId();
+  const { projectId } = useProject();
   const [currentProject, setCurrentProject] = useState<Project | null>({
     id: projectId,
     name: projectId,
