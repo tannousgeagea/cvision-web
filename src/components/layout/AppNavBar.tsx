@@ -11,6 +11,7 @@ import {
   Brain,
   Rocket,
   ScanEye,
+  Scan,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { UserProfileMenu } from '../users/UserProfileMenu';
@@ -48,6 +49,7 @@ const Navbar: FC = () => {
     { item: "Projects", ref: "/projects", icon: <Folder size={20} /> },
     { item: "Datalake", ref: "/datalake", icon: <Database size={20} /> },
     { item: "Upload", ref: "/upload", icon: <Upload size={20} /> },
+    { item: "Inference", ref: "/inference", icon: <Scan size={20} /> },
     { item: "Models", ref: "/models", icon: <Brain size={20} /> },
     { item: "Deploy", ref: "/deploy", icon: <Rocket size={20} /> },
   ];

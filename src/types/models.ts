@@ -57,3 +57,13 @@ export interface Model {
   currentProductionVersion?: string;
   tags: string[];
 }
+
+export interface ModelItem {
+  id: string;
+  name: string;
+  version: string;
+  category: string;
+  description: string;
+  accuracy: number;
+  speed: 'fast' | 'medium' | 'slow';
+}
