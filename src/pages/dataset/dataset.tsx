@@ -69,53 +69,56 @@ const Dataset: FC = () => {
 
   return (
     <div className="space-y-6 p-6 w-full">
-      <Header
-        title="Dataset"
-        description={``}
-      />
-      <div className="flex justify-between mr-2 flex-wrap gap-2 mb-4">
-        <FiltersDataset 
-          onSearch={(value) => {
-            setSelectedFilter(value);
-            updateURL(value, currentPage);
-          }}
-        />
-        <DatasetActions 
-          projectId={projectId || ""}
-        />
-      </div>
-
-      {loading ? (
-        <div className="grid gap-4">
-          <Spinner />
-        </div>
-      ) : totalRecord === 0 ? (
-        <div className="flex items-center px-[20px] py-[10px] border-[1px] border-[solid] border-[#cce5ff] text-[#004085] rounded-[8px] bg-[#f0f8ff] font-medium gap-1">
-          <i className="mr-1 text-2xl text-[#004085]"><Info /></i>
-          <span>The search returned 0 results.</span>
-        </div>
-      ) : (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
-          {imageData.map((image, index) => (
-            // <ImageCard2 key={index} image={image} index={index} onClick={handleImageClick} />
-            <ImageCard
-              key={image.image_id}
-              image={image}
-              index={index}
-              onClick={handleImageClick}
+      <div className="flex flex-col justify-between h-full">
+        <div>
+          <Header
+            title="Dataset"
+            description={``}
           />
-          ))}
-        </div>
-      )}
+          <div className="flex justify-between mr-2 flex-wrap gap-2 mb-4">
+            <FiltersDataset 
+              onSearch={(value) => {
+                setSelectedFilter(value);
+                updateURL(value, currentPage);
+              }}
+            />
+            <DatasetActions 
+              projectId={projectId || ""}
+            />
+          </div>
 
-      {totalRecord > 0 && (
-        <PaginationControls
-          currentPage={currentPage}
-          totalPages={pages}
-          onNext={() => handlePageChange(currentPage + 1)}
-          onPrevious={() => setCurrentPage((prev) => prev - 1)}
-        />
-      )}
+          {loading ? (
+            <div className="grid gap-4">
+              <Spinner />
+            </div>
+          ) : totalRecord === 0 ? (
+            <div className="flex items-center px-[20px] py-[10px] border-[1px] border-[solid] border-[#cce5ff] text-[#004085] rounded-[8px] bg-[#f0f8ff] font-medium gap-1">
+              <i className="mr-1 text-2xl text-[#004085]"><Info /></i>
+              <span>The search returned 0 results.</span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
+              {imageData.map((image, index) => (
+                // <ImageCard2 key={index} image={image} index={index} onClick={handleImageClick} />
+                <ImageCard
+                  key={image.image_id}
+                  image={image}
+                  index={index}
+                  onClick={handleImageClick}
+              />
+              ))}
+            </div>
+          )}
+        </div>
+        {totalRecord > 0 && (
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={pages}
+            onNext={() => handlePageChange(currentPage + 1)}
+            onPrevious={() => setCurrentPage((prev) => prev - 1)}
+          />
+        )}
+      </div>
     </div>
    );
 };

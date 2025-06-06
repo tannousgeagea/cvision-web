@@ -79,40 +79,43 @@ const Annotate: FC = () => {
 
   return (
     <div className="space-y-6 p-6 w-full">
-      <Header
-        title="Annotate"
-        description={`Annotate your images.`}
-      />
-      <div className="tabs">
-        <FilterTabs 
-          filters={filters}
-          selectedFilter={selectedFilter}
-          onSelectFilter={handleFilterChange}
-        />
+      <div className="flex flex-col justify-between h-full">
+        <div>
+          <Header
+            title="Annotate"
+            description={`Annotate your images.`}
+          />
+          <div className="tabs">
+            <FilterTabs 
+              filters={filters}
+              selectedFilter={selectedFilter}
+              onSelectFilter={handleFilterChange}
+            />
 
-        <AnnotateActions 
-          projectId={projectId || ''}
-          totalRecord={totalReviewed}
-          onSuccess={refetch}
-        />
-      </div>
+            <AnnotateActions 
+              projectId={projectId || ''}
+              totalRecord={totalReviewed}
+              onSuccess={refetch}
+            />
+          </div>
 
-      {loading ? (
-        <div className="image-grid">
-          <Spinner />
+          {loading ? (
+            <div className="image-grid">
+              <Spinner />
+            </div>
+          ) : totalRecord === 0 ? (
+            <div className="no-results">
+              <i className="info-icon"><Info /></i>
+              <span>The search returned 0 results.</span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
+              {imageData.map((image, index) => (
+                <ImageCard key={index} image={image} index={index} onClick={handleImageClick} />
+              ))}
+            </div>
+          )}
         </div>
-      ) : totalRecord === 0 ? (
-        <div className="no-results">
-          <i className="info-icon"><Info /></i>
-          <span>The search returned 0 results.</span>
-        </div>
-      ) : (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(125px,1fr))] gap-4 w-full rounded">
-          {imageData.map((image, index) => (
-            <ImageCard key={index} image={image} index={index} onClick={handleImageClick} />
-          ))}
-        </div>
-      )}
 
       {totalRecord > 0 && (
         <PaginationControls
@@ -122,6 +125,7 @@ const Annotate: FC = () => {
           onPrevious={() => setCurrentPage((prev) => prev - 1)}
         />
       )}
+      </div>
     </div>
    );
 };
