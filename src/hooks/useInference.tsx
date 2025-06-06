@@ -41,7 +41,7 @@ export const useInference = ({ confidenceThreshold, maxDetections = 100 }: UseIn
       const formData = new FormData();
       formData.append("file", file);
 
-      const primaryUrl = `${baseURL}/api/v1/infer/10?confidence_threshold=${confidenceThreshold}&max_detections=${maxDetections}`;
+      const primaryUrl = `${baseURL}/api/v1/infer/18?confidence_threshold=${confidenceThreshold}&max_detections=${maxDetections}`;
       const primaryResponse = await fetch(primaryUrl, {
         method: "POST",
         headers: { accept: "application/json" },
@@ -80,7 +80,7 @@ export const useInference = ({ confidenceThreshold, maxDetections = 100 }: UseIn
         const comparisonFormData = new FormData();
         comparisonFormData.append("file", file);
 
-        const comparisonUrl = `http://localhost:29085/api/v1/infer/18?confidence_threshold=${confidenceThreshold}&max_detections=${maxDetections}`;
+        const comparisonUrl = `${baseURL}/api/v1/infer/11?confidence_threshold=${confidenceThreshold}&max_detections=${maxDetections}`;
         const comparisonResponse = await fetch(comparisonUrl, {
           method: "POST",
           headers: { accept: "application/json" },
