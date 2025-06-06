@@ -31,7 +31,12 @@ const JobPage = () => {
 
 
   if (isLoading || !jobs) {
-    return <div className="flex items-center justify-center h-64">Loading Project Jobs...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-64 space-y-4 w-full">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="text-gray-700 text-sm">Loading Jobs ...</div>
+      </div>
+    );
   }
 
   if (error) {

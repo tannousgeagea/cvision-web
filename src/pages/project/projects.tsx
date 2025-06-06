@@ -27,7 +27,7 @@ const Projects: FC = () => {
     if (errorProjects) return <p>Error loading data: {errorProjects.message}</p>;
 
     return (
-        <div className="p-6 w-full min-h-screen bg-slate-50">
+        <div className="p-6 w-full overflow-auto bg-slate-50">
             <Header
             title="Projects"
             description="Organize and manage your visual data"
