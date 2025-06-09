@@ -78,10 +78,40 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
     checkAuth();
   }, []);
 
+
+  // ✅ Automatic token refresh effect
+  useEffect(() => {
+    if (!user) return;
+
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) return;
+
+  
+    const expiryString = localStorage.getItem('tokenExpiry') || sessionStorage.getItem('tokenExpiry');
+    if (!expiryString) return;
+
+    const expiryTime = new Date(expiryString).getTime();
+    const now = Date.now();
+    const bufferTime = 5 * 60 * 1000; // 5 minutes buffer
+    const interval = expiryTime - now - bufferTime;
+
+    if (interval <= 0) {
+      console.warn('Token already expired or too close to expiry!');
+      return;
+    }
+    
+    console.log("Exprity Time: ", interval)
+    const refreshInterval = setInterval(() => {
+      refreshToken();
+    }, interval); // 15 minutes
+
+    return () => clearInterval(refreshInterval);
+  }, [user]);
+
   const login = async (email: string, password: string, rememberMe = false): Promise<boolean> => {
     try {
       setIsLoading(true);
-      const { token, refreshToken } = await authService.login(email, password);
+      const { token, refreshToken, expires_at } = await authService.login(email, password);
       const user = await authService.getUser(token);
       
       // Store auth data in the appropriate storage
@@ -89,6 +119,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
       storage.setItem('token', token);
       storage.setItem('refreshToken', refreshToken);
       storage.setItem('user', JSON.stringify(user));
+      storage.setItem('tokenExpiry', expires_at);
       
       setUser(user);
       return true;
@@ -121,15 +152,17 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
         return false;
       }
       
-      const { token, refreshToken: newRefreshToken } = await authService.refreshToken(currentRefreshToken)
+      const { token, refreshToken: newRefreshToken, expires_at } = await authService.refreshToken(currentRefreshToken)
       
       // Update token in the storage that currently has it
       if (localStorage.getItem('refreshToken')) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', newRefreshToken);
+        localStorage.setItem('tokenExpiry', expires_at);
       } else {
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('refreshToken', newRefreshToken);
+        localStorage.setItem('tokenExpiry', expires_at);
       }
       
       return true;
