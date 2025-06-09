@@ -15,9 +15,11 @@ export const authService = {
     }
 
     const data = await res.json();
+    console.log(data)
     return {
       token: data.access_token,
-      refreshToken: data.refresh_token
+      refreshToken: data.refresh_token,
+      expires_at: data.expires_at,
     };
 
     // return res.json(); // { access_token, refresh_token }
@@ -54,7 +56,8 @@ export const authService = {
     const data = await response.json();
     return {
       token: data.access_token,
-      refreshToken: data.refresh_token
+      refreshToken: data.refresh_token,
+      expires_at: data.expires_at,
     }
   },
 };
