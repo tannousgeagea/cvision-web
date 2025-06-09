@@ -1,10 +1,8 @@
 import React from 'react';
 import { TrainingSession } from '@/types/training_session'
-import Badge from './ui/Badge';
-import ProgressBar from './ui/ProgressBar';
 import MetricCard from './ui/MetricCard';
 import MetricsVisualization from './MetricsVisualization';
-import { ArrowLeft, Calendar, Clock, Download, RefreshCw } from 'lucide-react';
+import { ArrowLeft, Download, RefreshCw } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
 interface SessionDetailProps {
@@ -12,7 +10,7 @@ interface SessionDetailProps {
 }
 
 const SessionDetail: React.FC<SessionDetailProps> = ({ session }) => {
-  const { projectId, sessionId } = useParams<{ projectId: string; sessionId: string }>();
+  const { sessionId } = useParams<{ sessionId: string }>();
   
   if (!session) {
     return (
@@ -27,71 +25,11 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session }) => {
     );
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
-
-  //   // Generate mock training metrics data
-  // const metricsData = Array.from({ length: session.configuration?.epochs || 0 }, (_, i) => ({
-  //   epoch: i + 1,
-  //   loss: Math.max(0.1, 1 - (i * 0.05) + Math.random() * 0.1),
-  //   accuracy: Math.min(1, 0.5 + (i * 0.03) + Math.random() * 0.05),
-  //   precision: Math.min(1, 0.6 + (i * 0.02) + Math.random() * 0.05),
-  //   recall: Math.min(1, 0.55 + (i * 0.025) + Math.random() * 0.05),
-  //   f1Score: Math.min(1, 0.58 + (i * 0.023) + Math.random() * 0.05),
-  //   map: Math.min(1, 0.58 + (i * 0.023) + Math.random() * 0.05),
-  // })).slice(0, Math.ceil((session.progress / 100) * (session.configuration?.epochs || 0)));
-
-  // console.log(metricsData)
   const metricsData = session?.metricsData || []
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <Link to={`/projects/${projectId}/sessions`} className="inline-flex items-center text-gray-500 hover:text-gray-700">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back to sessions
-        </Link>
-        <Badge status={session.status} />
-      </div>
-
       <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">{session.modelName}</h2>
-          <p className="text-gray-600 mt-1">{session.projectName}</p>
-        </div>
-
         <div className="p-6">
-          <div className="flex flex-wrap items-center text-sm text-gray-500 mb-4 space-x-4">
-            <div className="flex items-center">
-              <Calendar className="h-4 w-4 mr-1" />
-              <span>Created: {formatDate(session.createdAt)}</span>
-            </div>
-            <div className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" />
-              <span>Time: {formatTime(session.createdAt)}</span>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <p className="text-sm font-medium text-gray-500 mb-2">Progress</p>
-            <ProgressBar progress={session.progress} status={session.status} />
-            <p className="text-xs text-gray-500 mt-1 text-right">{session.progress}% complete</p>
-          </div>
-
           {metricsData.length > 0 && (
             <div className="mb-8">
               <MetricsVisualization
@@ -117,37 +55,6 @@ const SessionDetail: React.FC<SessionDetailProps> = ({ session }) => {
                 {session.metrics.recall && (
                   <MetricCard label="Recall" value={session.metrics.recall} suffix="%" />
                 )}
-              </div>
-            </div>
-          )}
-
-          {session.configuration && (
-            <div className="mb-8">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Configuration</h3>
-              <div className="bg-gray-50 rounded-lg p-4">
-                <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
-                  {Object.entries(session.configuration).map(([key, value]) => (
-                    <div key={key} className="sm:col-span-1">
-                      <dt className="text-sm font-medium text-gray-500 capitalize">
-                        {key.replace(/([A-Z])/g, ' $1').trim()}
-                      </dt>
-                      <dd className="mt-1 text-sm text-gray-900">{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-          )}
-
-          {session.logs && session.logs.length > 0 && (
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Logs</h3>
-              <div className="bg-gray-50 rounded-lg p-4 h-64 overflow-y-auto font-mono text-sm">
-                {session.logs.map((log, index) => (
-                  <div key={index} className="py-1">
-                    {log}
-                  </div>
-                ))}
               </div>
             </div>
           )}
