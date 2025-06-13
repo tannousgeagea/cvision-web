@@ -3,6 +3,7 @@ import { baseURL } from '@/components/api/base';
 export interface ProgressData {
   percentage: number;
   status: string;
+  message?:string;
   isComplete: boolean;
   error?: string;
 }

@@ -5,6 +5,7 @@ import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 interface ProgressBarProps {
   percentage: number;
   status: string;
+  message?:string;
   variant?: 'bar' | 'circle';
   size?: 'sm' | 'md' | 'lg';
   error?: string;
@@ -12,9 +13,11 @@ interface ProgressBarProps {
   title?: string;
 }
 
+
 export const ProgressBar: React.FC<ProgressBarProps> = ({
   percentage,
   status,
+  message,
   variant = 'bar',
   size = 'md',
   error,
@@ -27,6 +30,23 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     lg: 'h-6 text-lg'
   };
 
+  const getBarColor = () => {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-500';
+      case 'running':
+        return 'bg-amber-500';
+      case 'failed':
+        return 'bg-red-500';
+      case 'pending':
+        return 'bg-gray-300';
+      default:
+        return 'bg-blue-500';
+    }
+  };
+
+
+  const barColor = getBarColor()
   if (variant === 'circle') {
     return (
       <div className="flex flex-col items-center">
@@ -86,14 +106,14 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           className={`w-full bg-gray-200 rounded-full overflow-hidden ${sizeClasses[size]}`}
         >
           <motion.div
-            className="bg-blue-600 h-full rounded-full"
+            className={`${barColor} h-full rounded-full`}
             initial={{ width: 0 }}
             animate={{ width: `${percentage}%` }}
             transition={{ duration: 0.5 }}
           />
         </div>
         <div className="mt-2 flex items-center justify-between">
-          <span className="text-gray-600">{status}</span>
+          <span className="text-gray-600">{status}: {message}</span>
           <div className="flex items-center">
             {error ? (
               <AlertCircle className="h-5 w-5 text-red-500 mr-2" />

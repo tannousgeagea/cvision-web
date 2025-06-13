@@ -1,14 +1,5 @@
 import { Badge } from "@/components/ui/ui/badge";
-
-interface BoundingBox {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  label: string;
-  confidence: number;
-  type: 'prediction' | 'groundTruth';
-}
+import { BoundingBox } from "@/types/validation";
 
 interface ImageOverlayProps {
   boundingBoxes: BoundingBox[];
@@ -34,7 +25,7 @@ const ImageOverlay = ({
     <div className="absolute inset-0 pointer-events-none">
       {filteredBoxes.map((box, index) => (
         <div
-          key={index}
+          key={`${box.label}-${box.x}-${box.y}-${box.type}`}
           className={`absolute border-2 ${
             box.type === 'prediction' 
               ? 'border-blue-500' 
@@ -48,7 +39,7 @@ const ImageOverlay = ({
           }}
         >
           <Badge 
-            className={`absolute -top-6 left-0 text-xs ${
+            className={`absolute -top-6 left-0 text-ms ${
               box.type === 'prediction' 
                 ? 'bg-blue-500 text-white' 
                 : 'bg-green-500 text-white'

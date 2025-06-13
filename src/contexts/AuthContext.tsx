@@ -85,7 +85,6 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
 
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (!token) return;
-
   
     const expiryString = localStorage.getItem('tokenExpiry') || sessionStorage.getItem('tokenExpiry');
     if (!expiryString) return;
@@ -162,7 +161,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
       } else {
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('refreshToken', newRefreshToken);
-        localStorage.setItem('tokenExpiry', expires_at);
+        sessionStorage.setItem('tokenExpiry', expires_at);
       }
       
       return true;
