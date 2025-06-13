@@ -1,23 +1,9 @@
 import { Badge } from "@/components/ui/ui/badge";
 import ImageOverlay from "./ImageOverlay";
-
-interface BoundingBox {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  label: string;
-  confidence: number;
-  type: 'prediction' | 'groundTruth';
-}
+import { BoundingBox, ValidationImage } from "@/types/validation";
 
 interface ValidationImageCardProps {
-  image: {
-    id: number;
-    original: string;
-    confidence: number;
-    boundingBoxes: BoundingBox[];
-  };
+  image: ValidationImage;
   showPredictions: boolean;
   showGroundTruth: boolean;
 }
@@ -29,15 +15,15 @@ const ValidationImageCard = ({ image, showPredictions, showGroundTruth }: Valida
         <img 
           src={image.original} 
           alt={`Validation ${image.id}`}
-          className="w-full h-48 object-cover transition-transform group-hover:scale-105"
+          className="w-full object-fill transition-transform group-hover:scale-105"
         />
         
         <ImageOverlay 
           boundingBoxes={image.boundingBoxes}
           showPredictions={showPredictions}
           showGroundTruth={showGroundTruth}
-          imageWidth={400}
-          imageHeight={300}
+          imageWidth={image.width}
+          imageHeight={image.height}
         />
         
         {/* Status indicators */}

@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import SessionDetail from '@/components/training_sessions/SessionDetails';
 import SessionHeader from '@/components/training_sessions/SessionHeader';
@@ -7,20 +9,28 @@ import { useTrainingSessionDetail } from '@/hooks/useTrainingSessionDetail';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/ui/tabs";
 import ValidationImages from '@/components/validation/ValidationImages';
 import ConfigurationLogs from '@/components/training_sessions/ConfigurationLogs';
-import { validationImages } from '@/components/training_sessions/mockData';
+import { useValidationImages } from "@/hooks/useValidationImages";
 
 const SessionDetailPage: React.FC = () => {
   const { projectId, sessionId } = useParams<{ projectId: string, sessionId: string }>();
-  
 
   const {
     data: session,
     isLoading,
     isError,
     error,
+    refetch,
   } = useTrainingSessionDetail(sessionId || '');
 
-  if (isLoading) {
+  const modelVersionId = session?.model_version?.id;
+  const {
+    data: validationData,
+    isLoading: imagesLoading,
+    isError: imagesError,
+    error: imagesErrorMsg,
+  } = useValidationImages(modelVersionId, 50, 0);
+
+  if (isLoading || !session) {
     return (
       <div className="flex items-center justify-center py-10 text-muted-foreground">
         <Loader2 className="animate-spin mr-2 h-5 w-5" />
@@ -33,6 +43,19 @@ const SessionDetailPage: React.FC = () => {
     return (
       <div className="text-red-500 py-10 text-center">
         Error: {(error as Error).message}
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="bg-white shadow rounded-lg p-6">
+        <div className="text-center py-8">
+          <p className="text-gray-500">Session with ID {sessionId} not found</p>
+          <Link to="/" className="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800">
+            <ArrowLeft className="w-4 h-4 mr-1" /> Back to sessions list
+          </Link>
+        </div>
       </div>
     );
   }
@@ -52,7 +75,22 @@ const SessionDetailPage: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="images" className="space-y-6">
-          <ValidationImages validationImages={validationImages} />
+          {imagesLoading ? (
+            <div className="flex items-center justify-center text-muted-foreground">
+              <Loader2 className="animate-spin mr-2 h-4 w-4" />
+              Loading validation images...
+            </div>
+          ) : imagesError ? (
+            <div className="text-red-500 text-center">
+              {(imagesErrorMsg as Error).message}
+            </div>
+          ) : (
+            <ValidationImages 
+              validationImages={validationData?.results || []} 
+              modelVersionId={modelVersionId}
+              onValidationComplete={() => refetch()}
+            />
+          )}
         </TabsContent>
 
         <TabsContent value="logs" className="space-y-6">

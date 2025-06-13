@@ -5,6 +5,11 @@ interface MetricPoint {
   [key: string]: number;
 }
 
+interface ModelVersion {
+  id: number;
+  version: number;
+} 
+
 export interface TrainingSession {
   id: string;
   modelName: string;
@@ -28,6 +33,7 @@ export interface TrainingSession {
     [key: string]: number | string;
   };
   logs?: string[];
+  model_version: ModelVersion;
   metricsData?: MetricPoint[]
 }
 
