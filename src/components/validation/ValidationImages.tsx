@@ -5,6 +5,8 @@ import ImageControls from "./ImageControls";
 import ValidationImageCard from "./ValidationImageCard";
 import { ValidationImage } from "@/types/validation";
 import TriggerValidationButton from "./TriggerValidationButton";
+import PaginationControls from "../common/PaginationControls";
+import { usePagination } from "@/hooks/usePagination";
 
 interface ValidationImagesProps {
   validationImages: ValidationImage[]
@@ -16,6 +18,24 @@ const ValidationImages = ({ validationImages, modelVersionId, onValidationComple
   if (!modelVersionId) return null
   const [showPredictions, setShowPredictions] = useState(true);
   const [showGroundTruth, setShowGroundTruth] = useState(true);
+
+  const {
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    paginatedData,
+    goToPage,
+    goToNextPage,
+    goToPreviousPage,
+    changeItemsPerPage,
+    hasNextPage,
+    hasPreviousPage,
+    totalItems
+  } = usePagination({
+    data: validationImages,
+    defaultItemsPerPage: 10
+  });
+
 
   if (validationImages.length == 0){
   return (
@@ -45,11 +65,11 @@ const ValidationImages = ({ validationImages, modelVersionId, onValidationComple
       <Card>
         <CardHeader>
           <CardTitle>Validation Results</CardTitle>
-          <CardDescription>Sample predictions with overlays</CardDescription>
+          <CardDescription>Sample predictions with overlays - Page {currentPage} of {totalPages}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-6">
-            {validationImages.map((image) => (
+            {paginatedData.map((image) => (
               <ValidationImageCard
                 key={image.id}
                 image={image}
@@ -58,6 +78,19 @@ const ValidationImages = ({ validationImages, modelVersionId, onValidationComple
               />
             ))}
           </div>
+  
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPage={itemsPerPage}
+            totalItems={totalItems}
+            hasNextPage={hasNextPage}
+            hasPreviousPage={hasPreviousPage}
+            onPageChange={goToPage}
+            onNextPage={goToNextPage}
+            onPreviousPage={goToPreviousPage}
+            onItemsPerPageChange={changeItemsPerPage}
+          />
         </CardContent>
       </Card>
     </div>
