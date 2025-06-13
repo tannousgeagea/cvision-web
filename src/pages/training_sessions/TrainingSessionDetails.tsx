@@ -28,7 +28,7 @@ const SessionDetailPage: React.FC = () => {
     isLoading: imagesLoading,
     isError: imagesError,
     error: imagesErrorMsg,
-  } = useValidationImages(modelVersionId, 50, 0);
+  } = useValidationImages(modelVersionId, 100, 0);
 
   if (isLoading || !session) {
     return (
