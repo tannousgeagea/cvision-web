@@ -21,6 +21,7 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
   onDeleteClass,
   onSaveClass,
 }) => {
+  const [originalBox, setOriginalBox] = useState<any | null>(null);
   const [className, setClassName] = useState<string>('');
   const [selectedClass, setSelectedClass] = useState<AnnotationClass | null>(null);
   const [visible, setVisible] = useState<boolean>(true);
@@ -29,8 +30,12 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
   useEffect(() => {
     if (selectedBox) {
       const box = boxes.find((box) => box.id === selectedBox);
+      if (!originalBox) {
+        setOriginalBox({ ...box });
+      }
+
       if (box) {
-        setClassName(box.label || '');
+        setClassName(box.label);
         setSelectedClass({
           id: box.id,
           label: box.label,
@@ -63,6 +68,7 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
       setClassName("");
       setSelectedBox(null);
       setVisible(false);
+      setOriginalBox(null)
     }
   };
 
@@ -82,6 +88,20 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
     );
   };
 
+
+  const handleClose = () => {
+    if (originalBox) {
+      const updatedBoxes = boxes.map((b) =>
+        b.id === originalBox.id ? originalBox : b
+      );
+      setBoxes(updatedBoxes);
+    }
+    
+    setOriginalBox(null)
+    setVisible(false);
+    setSelectedBox(null);
+  };
+
   const deleteBox = (id: string) => {
     setBoxes(boxes.filter((box) => box.id !== id));
     onDeleteClass(id);
@@ -95,7 +115,7 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
     <div className="absolute top-4 left-4 z-10 w-[300px] p-4 rounded-xl bg-[#06101d] text-white font-sans shadow-xl border border-[#1f2a3c]">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold">Annotation Editor</h3>
-        <button onClick={() => setVisible(false)} className="text-gray-400 hover:text-white">
+        <button onClick={handleClose} className="text-gray-400 hover:text-white">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -119,7 +139,11 @@ const AnnotationEditor: React.FC<AnnotationEditorProps> = ({
         </button>
         <button
           onClick={handleSaveClass}
-          className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white text-sm"
+          disabled={!className.trim()}
+          className={`flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded text-white text-sm transition 
+            ${!className.trim() 
+              ? 'bg-gray-500 cursor-not-allowed' 
+              : 'bg-green-600 hover:bg-green-700 cursor-pointer'}`}
         >
           <Save className="w-4 h-4" />
           Save

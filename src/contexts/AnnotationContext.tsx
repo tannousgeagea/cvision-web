@@ -13,7 +13,7 @@ interface Polygon {
 
 type AnnotationTool = 'draw' | 'move' | 'polygon';
 
-interface Box {
+export interface Box {
   id: string;
   x: number;
   y: number;
