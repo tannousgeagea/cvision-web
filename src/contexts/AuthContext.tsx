@@ -152,7 +152,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
       }
       
       const { token, refreshToken: newRefreshToken, expires_at } = await authService.refreshToken(currentRefreshToken)
-      
+      console.log("Refreshing Token")
       // Update token in the storage that currently has it
       if (localStorage.getItem('refreshToken')) {
         localStorage.setItem('token', token);

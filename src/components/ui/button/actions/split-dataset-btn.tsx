@@ -43,13 +43,13 @@ const SplitDatasetButton: FC<SplitDatasetButtonProps> = ({ projectId, onSplitCom
                 Split Dataset
             </button>
             
-            {showModal && (
-                <TrainValidSlider
-                    onChange={setTrainPercentage}
-                    onClick={handleSplitDataset}
-                />
-            )
-            }
+            <TrainValidSlider
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                defaultTrain={70}
+                onChange={setTrainPercentage}
+                onClick={handleSplitDataset}
+            />
 
             {loading && <LoadingPopup />}
             {showError && <ErrorPopup message={error} onClose={() => setShowError(false)} />}

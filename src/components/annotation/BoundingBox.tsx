@@ -154,14 +154,14 @@ const BoundingBox: React.FC<Props> = ({ box,isSelected, tool, onSelect, onUpdate
           />
         </>
       )}
-      {box.label && (
+      {/* {box.label && (
         <div 
           className="absolute text-white py-[2px] px-[4px] rounded-[2px] text-[10px]"
           style={{background: `${box.color}`}}
         >
           {box.label}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
