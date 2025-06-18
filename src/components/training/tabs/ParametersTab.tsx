@@ -137,7 +137,7 @@ const ParametersTab: React.FC<ParametersTabProps> = ({ model, form, isTraining }
             <FormControl>
               <Slider
                 defaultValue={[field.value]}
-                max={100}
+                max={250}
                 min={1}
                 step={1}
                 disabled={isTraining}

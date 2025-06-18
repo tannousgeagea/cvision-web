@@ -53,12 +53,13 @@ const AddToDatasetButton: React.FC<AddToDatasetButtonProps> = ({
         {loading ? 'Adding...' : totalRecord === 1 ? `Add ${totalRecord} Image to Dataset` : `Add ${totalRecord} Images to Dataset`}
       </button>
 
-      {showModal && (
-                <TrainValidSlider
-                    onChange={setTrainPercentage}
-                    onClick={handleClick}
-                />
-            )}
+      <TrainValidSlider
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        defaultTrain={70}
+        onChange={setTrainPercentage}
+        onClick={handleClick}
+      />
 
       {loading && <LoadingPopup />}
       {showError && <ErrorPopup message={error} onClose={() => setShowError(false)} />}
