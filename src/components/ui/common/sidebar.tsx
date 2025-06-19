@@ -50,9 +50,9 @@ const SideBar: FC<SideBarProps> = () => {
           alt="project-thumbnail"
           className="w-12 h-12 rounded object-cover border border-slate-300 shadow-sm"
         />
-        <div>
-          <h2 className="text-base font-semibold text-slate-700">{project?.name || "Project"}</h2>
-          <p className="text-xs text-slate-400">ID: {projectId}</p>
+        <div className="min-w-0">
+          <h2 className="text-base font-semibold text-slate-700 truncate">{project?.name || "Project"}</h2>
+          <p className="text-xs text-slate-400 truncate">ID: {projectId}</p>
         </div>
       </div>
 
