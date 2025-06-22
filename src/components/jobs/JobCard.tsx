@@ -12,6 +12,12 @@ import {
   SelectValue,
 } from "@/components/ui/ui/select";
 import { formatDistanceToNow } from "date-fns";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/ui/dropdown-menu";
 
 interface JobCardProps {
   job: Job;
@@ -19,9 +25,11 @@ interface JobCardProps {
   onViewJob: (job: Job) => void;
   onSplitJob?: (job: Job) => void;
   onStatusChange?: (job: Job, newStatus: JobStatus) => void;
+  onEditJob?: (job: Job) => void;
+  onDeleteJob?: (job: Job) => void;
 }
 
-const JobCard = ({ job, onAssignJob, onViewJob, onSplitJob, onStatusChange }: JobCardProps) => {
+const JobCard = ({ job, onAssignJob, onViewJob, onSplitJob, onStatusChange, onEditJob, onDeleteJob }: JobCardProps) => {
   // Get available status transitions for current job
   const availableTransitions = allowedStatusTransitions
     .find(transition => transition.from === job.status)
@@ -151,6 +159,31 @@ const getStatusBadge = (status: JobStatus) => {
                   </TooltipContent>
                 </Tooltip>
               )}
+
+            {(onEditJob || onDeleteJob) && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon" className="h-8 w-8">
+                    <span className="text-slate-700">⋯</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  {onEditJob && (
+                    <DropdownMenuItem onClick={() => onEditJob(job)}>
+                      Edit Job
+                    </DropdownMenuItem>
+                  )}
+                  {onDeleteJob && (
+                    <DropdownMenuItem 
+                      onClick={() => onDeleteJob(job)}
+                      className="text-red-600 focus:text-red-600"
+                    >
+                      Delete Job
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         
           <div>

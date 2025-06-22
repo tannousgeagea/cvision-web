@@ -13,10 +13,12 @@ interface JobsSectionProps {
   onViewJob: (job: Job) => void;
   onSplitJob?: (job: Job) => void;
   onStatusChange?: (job: Job, newStatus: JobStatus) => void;
+  onEditJob?: (job: Job) => void;
+  onDeleteJob?: (job: Job) => void;
   
 }
 
-const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob, onSplitJob, onStatusChange }: JobsSectionProps) => {
+const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob, onSplitJob, onStatusChange, onEditJob, onDeleteJob }: JobsSectionProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Handle horizontal scrolling
@@ -94,6 +96,8 @@ const JobsSection = ({ title, description, jobs, status, onAssignJob, onViewJob,
                   onViewJob={onViewJob}
                   onSplitJob={onSplitJob}
                   onStatusChange={onStatusChange}
+                  onEditJob={onEditJob}
+                  onDeleteJob={onDeleteJob}
                 />
               </div>
             ))}

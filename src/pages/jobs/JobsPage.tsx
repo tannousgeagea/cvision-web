@@ -12,7 +12,11 @@ import { useProjectMembers } from "@/hooks/useProjectMembers";
 import { useAssignUserToJob } from "@/hooks/useAssignUserToJob";
 import { useJobStatusUpdate } from "@/hooks/useJobStatusUpdate";
 import SplitJobModal from "@/components/jobs/SplitJobModal";
+import EditJobModal from "@/components/jobs/EditJobodal";
+import DeleteJobModal from "@/components/jobs/DeleteJobModal";
 import { useSplitJob } from '@/hooks/useSplitJob';
+import { useEditJob } from "@/hooks/useEditJob";
+import { useDeleteJob } from "@/hooks/useDeleteJob";
 import { toast } from '@/hooks/use-toast';
 
 const JobPage = () => {
@@ -21,6 +25,8 @@ const JobPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [isSplitModalOpen, setIsSplitModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const { data: users } = useProjectMembers(projectId || '')
@@ -28,6 +34,8 @@ const JobPage = () => {
   const assignUserToJob = useAssignUserToJob(projectId || '');
   const { mutate: updateStatus } = useJobStatusUpdate(projectId || '');
   const { mutateAsync: splitJob } = useSplitJob(projectId || '');
+  const { mutate: editJob, isPending: editJobPending, error: errorEditjob } = useEditJob(projectId || '');
+  const { mutate: deleteJob, isPending: deleteJobPending } = useDeleteJob(projectId || '');
 
 
   if (isLoading || !jobs) {
@@ -70,6 +78,16 @@ const JobPage = () => {
     setSelectedJob(job);
     setIsSplitModalOpen(true);
   };
+
+  const handleOpenEditModal = (job: Job) => {
+    setSelectedJob(job);
+    setIsEditModalOpen(true);
+  };
+
+  const handleOpenDeleteModal = (job: Job) => {
+    setSelectedJob(job);
+    setIsDeleteModalOpen(true);
+  }
 
 
   const handleViewJob = (job: Job) => {
@@ -154,6 +172,51 @@ const JobPage = () => {
     }
   };
 
+  const handleEditJob = (job: Job, newName: string, newDescription?: string) => {
+    editJob(
+      {
+        jobId: job.id,
+        name: newName,
+        description: newDescription,
+      },
+      {
+        onSuccess: (updatedJob) => {
+          toast({
+            title: "Job updated",
+            description: `"${updatedJob.name}" has been updated successfully.`,
+          });
+          setIsEditModalOpen(false);
+        },
+        onError: (err: any) => {
+          toast({
+            title: "Update failed",
+            description: err.message || "Something went wrong.",
+            variant: "destructive",
+          });
+        },
+      }
+    );
+  };
+
+  const handleDeleteJob = (job: Job) => {
+    deleteJob(job.id, {
+      onSuccess: () => {
+        toast({
+          title: "Job deleted",
+          description: `"${job.name}" has been deleted successfully.`,
+        });
+        setIsDeleteModalOpen(false);
+      },
+      onError: (err: any) => {
+        toast({
+          title: "Delete failed",
+          description: err.message || "Something went wrong.",
+          variant: "destructive",
+        });
+      },
+    });
+  };
+
   return (
     <div className="space-y-6 p-6 w-full">
       {/* Header */}
@@ -193,6 +256,8 @@ const JobPage = () => {
               onViewJob={handleViewJob}
               onStatusChange={handleStatusChange}
               onSplitJob={handleOpenSplitModal}
+              onEditJob={handleOpenEditModal}
+              onDeleteJob={handleOpenDeleteModal}
             />
             
             <JobsSection
@@ -204,6 +269,8 @@ const JobPage = () => {
               onViewJob={handleViewJob}
               onStatusChange={handleStatusChange}
               onSplitJob={handleOpenSplitModal}
+              onEditJob={handleOpenEditModal}
+              onDeleteJob={handleOpenDeleteModal}
             />
             
             <JobsSection
@@ -214,6 +281,8 @@ const JobPage = () => {
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
               onStatusChange={handleStatusChange}
+              onEditJob={handleOpenEditModal}
+              onDeleteJob={handleOpenDeleteModal}
             />
             
             <JobsSection
@@ -224,6 +293,8 @@ const JobPage = () => {
               onAssignJob={handleOpenAssignModal}
               onViewJob={handleViewJob}
               onStatusChange={handleStatusChange}
+              onEditJob={handleOpenEditModal}
+              onDeleteJob={handleOpenDeleteModal}
             />
           </div>
         </div>
@@ -247,6 +318,27 @@ const JobPage = () => {
           job={selectedJob}
           users={users || []}
           onSplitJob={handleSplitJob}
+        />
+      )}
+
+      {selectedJob && (
+        <EditJobModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          job={selectedJob}
+          onSave={handleEditJob}
+          isLoading={editJobPending}
+        />
+      )}
+
+
+      {selectedJob && (
+        <DeleteJobModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          job={selectedJob}
+          onDelete={handleDeleteJob}
+          isLoading={deleteJobPending}
         />
       )}
   
