@@ -165,10 +165,10 @@ export const NotificationSidebar: FC = () => {
 
       {!isOpen && (
         <button
-          className="fixed top-4 right-4 z-50 bg-slate-200 p-2 rounded shadow hover:bg-slate-300 transition"
+          className="fixed top-4 right-4 z-50 bg-blue-600 p-2 rounded shadow hover:bg-blue-700 transition"
           onClick={() => setIsOpen(true)}
         >
-          <Bell className="h-4 w-4 text-slate-700" />
+          <Bell className="h-4 w-4 text-white" />
         </button>
       )}
     </>
