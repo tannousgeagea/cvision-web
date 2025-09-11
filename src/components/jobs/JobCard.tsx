@@ -3,6 +3,7 @@ import { Job, JobStatus, allowedStatusTransitions } from "@/types/jobs";
 import { Button } from "@/components/ui/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/ui/card";
 import { Badge } from "@/components/ui/ui/badge";
+import { renderProgressBar } from "./ui/JobProgress";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/ui/tooltip";
 import {
   Select,
@@ -62,6 +63,8 @@ const getStatusBadge = (status: JobStatus) => {
     }
     return null;
   };
+
+
   return (
     <Card className="h-full animate-fade-in bg-white hover:shadow-md transition-shadow duration-200">
       <CardContent className="p-4">
@@ -105,7 +108,7 @@ const getStatusBadge = (status: JobStatus) => {
             <span className="text-sm text-slate-600">Created:</span>
             <span className="text-sm">{formatDistanceToNow(job.createdAt, { addSuffix: true })}</span>
           </div>
-          
+          {renderProgressBar(job)}
           <div className="flex items-center justify-between">
             <span className="text-sm text-slate-600">Assigned to:</span>
             {job.assignedUser ? (

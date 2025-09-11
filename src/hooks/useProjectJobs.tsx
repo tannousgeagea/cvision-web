@@ -32,6 +32,7 @@ export async function fetchProjectJobs(projectId: string): Promise<Job[]> {
     } as User : null,
     createdAt: new Date(job.createdAt),
     updatedAt: new Date(job.updatedAt),
+    progress: job.progress
   })) as Job[];
 }
 

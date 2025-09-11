@@ -12,6 +12,13 @@ export interface ProjectMember extends User {
   role: Role
 }
 
+export interface JobProgress {
+  total: number;
+  annotated: number;
+  reviewed: number;
+  completed: number;
+}
+
 export interface Job {
     id: string;
     name: string;
@@ -23,7 +30,8 @@ export interface Job {
     updatedAt: Date;
     parentJobId?: string;
     sliceNumber?: number;
-    projectId?: string
+    projectId?: string;
+    progress?: JobProgress;   // 👈 new
   }
 
   export type AllowedTransition = {
