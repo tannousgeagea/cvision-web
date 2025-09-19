@@ -4,7 +4,6 @@ import { FC, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/ui/badge";
 import { Skeleton } from "@/components/ui/ui/skeleton";
-import { ScrollArea } from "@/components/ui/ui/scroll-area";
 import { useUserJobs } from "@/hooks/useUserJobs";
 import { Job, JobStatus } from "@/types/jobs";
 import { cn } from "@/lib/utils";
@@ -115,7 +114,7 @@ const EmptyState = () => (
 
 export const NotificationSidebar: FC = () => {
   const { data: jobs, isLoading, error } = useUserJobs();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
@@ -165,10 +164,15 @@ export const NotificationSidebar: FC = () => {
 
       {!isOpen && (
         <button
-          className="fixed top-4 right-4 z-50 bg-blue-600 p-2 rounded shadow hover:bg-blue-700 transition"
+          className="fixed top-4 right-4 z-50 bg-yellow-300 p-2 rounded shadow hover:bg-yellow-500 transition"
           onClick={() => setIsOpen(true)}
         >
-          <Bell className="h-4 w-4 text-white" />
+          <Bell className="h-6 w-6 text-white" />
+          {jobs && jobs.length > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white text-xs font-medium">
+              {jobs.length}
+            </span>
+          )}
         </button>
       )}
     </>
