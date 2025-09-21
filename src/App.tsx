@@ -30,6 +30,7 @@ import SessionsPage from './pages/training_sessions/TrainingSession';
 import SessionDetailPage from './pages/training_sessions/TrainingSessionDetails';
 import TeamProgress from './pages/team_progress/TeamProgress';
 import Inference from './pages/inference/Inference';
+import CreateProject from './pages/project/create-project';
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
                 <Route path='/organizations/:orgId/progress' element={<TeamProgress />} />
                 <Route path='/datalake' element={<DataLake />} />
                 <Route path='/projects' element={<Projects />} />
+                <Route path='/projects/add' element={<CreateProject />} />
                 <Route path='/inference' element={<Inference />} />
                 <Route path='projects/:projectId' element={<ProjectLayout />}>
                   <Route path='upload' element={<UploadIndex />} />

@@ -12,6 +12,10 @@ const Projects: FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     
+    const handleNewProject = (): void => {
+        navigate('/projects/add')
+    }
+
     const handleViewProject = (projectId: string): void => {
         navigate(`/projects/${projectId}/dataset`, { state: { projects } });
     };
@@ -110,8 +114,8 @@ const Projects: FC = () => {
 
                             {/* Create Project Button */}
                             <button 
-                                disabled
-                                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl opacity-50 cursor-not-allowed"
+                                onClick={handleNewProject}
+                                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
                             >
                                 <Plus className="w-5 h-5" />
                                 New Project
