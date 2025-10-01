@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { useParams } from "react-router-dom";
+import TeamAnalyticsSection from "@/components/team-analytics/TeamAnalyticsSection";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/ui/tabs";
 import UserProgressSection from "@/components/jobs/UserProgressSection";
 
 const TeamProgress: FC = () => {
@@ -11,9 +13,22 @@ const TeamProgress: FC = () => {
   };
 
     return (
-        <div className="space-y-6 p-8 w-full">
+      <main className="space-y-6 p-8 w-full">
+        <Tabs defaultValue="team-progress" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="team-progress">Team Progress</TabsTrigger>
+            <TabsTrigger value="team-analytics">Team Analytics</TabsTrigger>
+          </TabsList>
+                        
+          <TabsContent value="team-progress">
             <UserProgressSection orgId={orgId || ""} onUserClick={handleUserClick} />
-        </div>
+          </TabsContent>
+          
+          <TabsContent value="team-analytics">
+            <TeamAnalyticsSection />
+          </TabsContent>
+        </Tabs>
+      </main>
     )
 }
 
