@@ -1,5 +1,6 @@
 import { useQuery, useQueries } from "@tanstack/react-query";
 import { UserAnalytics, AnalyticsKPIs, AnalyticsFilters } from "@/types/analytics";
+import { ImageAnalyticsFilters, ImageAnalyticsResponse, ImageStatusBreakdown, UserImagePerformance, UserImageAnalytics, ImageAnalyticsKPIs } from "@/types/analytics";
 import axios from "axios";
 import { baseURL } from "@/components/api/base";
 
@@ -58,6 +59,54 @@ const fetchAnalytics = async (filters: AnalyticsFilters): Promise<AnalyticsRespo
   return data;
 };
 
+const fetchImageAnalytics = async (filters: ImageAnalyticsFilters): Promise<ImageAnalyticsResponse> => {
+  const params = new URLSearchParams();
+  params.append("timeFrame", filters.timeFrame);
+  
+  if (filters.role) {
+    params.append("role", filters.role);
+  }
+  // if (filters.userId) {
+  //   params.append("userId", filters.userId);
+  // }
+  if (filters.projectId) {
+    params.append("projectId", filters.projectId);
+  }
+  if (filters.status) {
+    params.append("status", filters.status);
+  }
+
+  const { data } = await apiClient.get<ImageAnalyticsResponse>(
+    `/api/v1/analytics/images?${params.toString()}`
+  );
+  return data;
+};
+
+const fetchImageStatusBreakdown = async (projectId?: string): Promise<ImageStatusBreakdown> => {
+  const params = new URLSearchParams();
+  if (projectId) {
+    params.append("projectId", projectId);
+  }
+
+  const { data } = await apiClient.get<ImageStatusBreakdown>(
+    `/api/v1/analytics/images/status-breakdown?${params.toString()}`
+  );
+  return data;
+};
+
+const fetchUserImagePerformance = async (
+  userId: string,
+  timeFrame: string
+): Promise<UserImagePerformance> => {
+  const params = new URLSearchParams();
+  params.append("timeFrame", timeFrame);
+
+  const { data } = await apiClient.get<UserImagePerformance>(
+    `/api/v1/analytics/images/user/${userId}?${params.toString()}`
+  );
+  return data;
+};
+
 const fetchUsers = async (): Promise<UserInfo[]> => {
   const { data } = await apiClient.get<UserInfo[]>("/api/v1/analytics/users");
   return data;
@@ -86,6 +135,45 @@ export const useTeamAnalytics = (filters: AnalyticsFilters) => {
       data: data.data,
       kpis: data.kpis,
     }),
+  });
+};
+
+// Hook for image-level analytics
+export const useImageAnalytics = (filters: ImageAnalyticsFilters) => {
+  return useQuery({
+    queryKey: ["analytics", "images", filters],
+    queryFn: () => fetchImageAnalytics(filters),
+    staleTime: 60000,
+    refetchInterval: 300000,
+    refetchOnWindowFocus: true,
+    retry: 2,
+    select: (data) => ({
+      data: data.data,
+      kpis: data.kpis,
+    }),
+  });
+};
+
+// Hook for image status breakdown
+export const useImageStatusBreakdown = (projectId?: string) => {
+  return useQuery({
+    queryKey: ["analytics", "images", "status", projectId],
+    queryFn: () => fetchImageStatusBreakdown(projectId),
+    staleTime: 120000, // 2 minutes
+    refetchOnWindowFocus: true,
+    retry: 2,
+  });
+};
+
+// Hook for individual user image performance
+export const useUserImagePerformance = (userId: string, timeFrame: string = "week") => {
+  return useQuery({
+    queryKey: ["analytics", "images", "user", userId, timeFrame],
+    queryFn: () => fetchUserImagePerformance(userId, timeFrame),
+    staleTime: 60000,
+    refetchOnWindowFocus: true,
+    retry: 2,
+    enabled: !!userId, // Only fetch if userId is provided
   });
 };
 
@@ -118,6 +206,34 @@ export const useAnalyticsProjects = () => {
     retry: 2,
   });
 };
+
+// Combined hook for both job and image analytics
+export const useCombinedAnalytics = (filters: AnalyticsFilters) => {
+  const jobAnalytics = useTeamAnalytics(filters);
+  const imageAnalytics = useImageAnalytics(filters);
+
+  return {
+    jobs: {
+      data: jobAnalytics.data?.data || [],
+      kpis: jobAnalytics.data?.kpis,
+      isLoading: jobAnalytics.isLoading,
+      isError: jobAnalytics.isError,
+      error: jobAnalytics.error,
+      refetch: jobAnalytics.refetch,
+    },
+    images: {
+      data: imageAnalytics.data?.data || [],
+      kpis: imageAnalytics.data?.kpis,
+      isLoading: imageAnalytics.isLoading,
+      isError: imageAnalytics.isError,
+      error: imageAnalytics.error,
+      refetch: imageAnalytics.refetch,
+    },
+    isLoading: jobAnalytics.isLoading || imageAnalytics.isLoading,
+    isError: jobAnalytics.isError || imageAnalytics.isError,
+  };
+};
+
 
 // Combined hook for all filter options (useful for filter dropdowns)
 export const useAnalyticsFilterOptions = () => {
@@ -157,6 +273,25 @@ export const useMultipleAnalytics = (filtersList: AnalyticsFilters[]) => {
     queries: filtersList.map((filters) => ({
       queryKey: ["analytics", filters],
       queryFn: () => fetchAnalytics(filters),
+      staleTime: 60000,
+      refetchInterval: 300000,
+    })),
+  });
+
+  return {
+    results: queries.map((query) => query.data),
+    isLoading: queries.some((query) => query.isLoading),
+    isError: queries.some((query) => query.isError),
+    errors: queries.map((query) => query.error),
+  };
+};
+
+// Hook for multiple image analytics queries
+export const useMultipleImageAnalytics = (filtersList: ImageAnalyticsFilters[]) => {
+  const queries = useQueries({
+    queries: filtersList.map((filters) => ({
+      queryKey: ["analytics", "images", filters],
+      queryFn: () => fetchImageAnalytics(filters),
       staleTime: 60000,
       refetchInterval: 300000,
     })),
@@ -230,6 +365,75 @@ export const useAnalyticsComparison = (
   };
 };
 
+// Hook for comparing image analytics between two time periods
+export const useImageAnalyticsComparison = (
+  currentFilters: ImageAnalyticsFilters,
+  previousFilters: ImageAnalyticsFilters
+) => {
+  const currentQuery = useQuery({
+    queryKey: ["analytics", "images", "current", currentFilters],
+    queryFn: () => fetchImageAnalytics(currentFilters),
+    staleTime: 60000,
+  });
+
+  const previousQuery = useQuery({
+    queryKey: ["analytics", "images", "previous", previousFilters],
+    queryFn: () => fetchImageAnalytics(previousFilters),
+    staleTime: 60000,
+  });
+
+  // Calculate percentage changes
+  const comparison = {
+    annotatedChange: 0,
+    reviewedChange: 0,
+    finalizedChange: 0,
+    completionRateChange: 0,
+  };
+
+  if (currentQuery.data && previousQuery.data) {
+    const current = currentQuery.data.kpis;
+    const previous = previousQuery.data.kpis;
+
+    if (previous.totalAnnotatedThisWeek > 0) {
+      comparison.annotatedChange =
+        ((current.totalAnnotatedThisWeek - previous.totalAnnotatedThisWeek) /
+          previous.totalAnnotatedThisWeek) *
+        100;
+    }
+
+    if (previous.totalReviewedThisWeek > 0) {
+      comparison.reviewedChange =
+        ((current.totalReviewedThisWeek - previous.totalReviewedThisWeek) /
+          previous.totalReviewedThisWeek) *
+        100;
+    }
+
+    if (previous.totalFinalizedThisWeek > 0) {
+      comparison.finalizedChange =
+        ((current.totalFinalizedThisWeek - previous.totalFinalizedThisWeek) /
+          previous.totalFinalizedThisWeek) *
+        100;
+    }
+
+    if (previous.imageCompletionRate > 0) {
+      comparison.completionRateChange =
+        ((current.imageCompletionRate - previous.imageCompletionRate) /
+          previous.imageCompletionRate) *
+        100;
+    }
+  }
+
+  return {
+    current: currentQuery.data,
+    previous: previousQuery.data,
+    comparison,
+    isLoading: currentQuery.isLoading || previousQuery.isLoading,
+    isError: currentQuery.isError || previousQuery.isError,
+    errors: [currentQuery.error, previousQuery.error],
+  };
+};
+
+
 // Utility function to prefetch analytics data (useful for optimistic navigation)
 export const prefetchAnalytics = async (
   queryClient: any,
@@ -254,5 +458,28 @@ export const useRealtimeAnalytics = (filters: AnalyticsFilters, enabled = true) 
   });
 };
 
+// Hook for real-time image analytics updates
+export const useRealtimeImageAnalytics = (filters: ImageAnalyticsFilters, enabled = true) => {
+  return useQuery({
+    queryKey: ["analytics", "images", "realtime", filters],
+    queryFn: () => fetchImageAnalytics(filters),
+    staleTime: 10000,
+    refetchInterval: enabled ? 30000 : false,
+    refetchOnWindowFocus: true,
+    enabled,
+  });
+};
+
 // Export types for convenience
-export type { AnalyticsResponse, UserInfo, ProjectInfo };
+export type {
+  AnalyticsResponse,
+  UserInfo,
+  ProjectInfo,
+  UserImageAnalytics,
+  ImageAnalyticsKPIs,
+  ImageAnalyticsResponse,
+  ImageStatusBreakdown,
+  ImageAnalyticsFilters,
+  UserImagePerformance,
+};
+
