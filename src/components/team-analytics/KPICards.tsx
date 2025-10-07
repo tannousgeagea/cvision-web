@@ -1,17 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/ui/card";
-import { TrendingUp, Users, CheckCircle, Clock } from "lucide-react";
-import { AnalyticsKPIs } from "@/types/analytics";
+import { TrendingUp, Users, CheckCircle, Clock, Image, FileCheck } from "lucide-react";
+import { AnalyticsKPIs, ImageAnalyticsKPIs } from "@/types/analytics";
 
 interface KPICardsProps {
-  kpis: AnalyticsKPIs;
+  jobKpis: AnalyticsKPIs;
+  imageKpis: ImageAnalyticsKPIs;
   isLoading?: boolean;
 }
 
-export const KPICards = ({ kpis, isLoading }: KPICardsProps) => {
+export const KPICards = ({ jobKpis, imageKpis, isLoading }: KPICardsProps) => {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {Array.from({ length: 4 }).map((_, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        {Array.from({ length: 6 }).map((_, i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <div className="h-4 bg-muted rounded w-24"></div>
@@ -29,37 +30,51 @@ export const KPICards = ({ kpis, isLoading }: KPICardsProps) => {
 
   const kpiData = [
     {
-      title: "Annotations This Week",
-      value: kpis.totalAnnotationsThisWeek.toLocaleString(),
-      description: "Total images annotated",
+      title: "Jobs Annotated",
+      value: jobKpis.totalAnnotationsThisWeek.toLocaleString(),
+      description: "Jobs in annotation",
       icon: TrendingUp,
       color: "text-blue-600",
     },
     {
-      title: "Reviews Completed",
-      value: kpis.totalReviewsThisWeek.toLocaleString(),
-      description: "Reviews completed this week",
+      title: "Jobs Reviewed",
+      value: jobKpis.totalReviewsThisWeek.toLocaleString(),
+      description: "Jobs in review",
       icon: CheckCircle,
       color: "text-green-600",
     },
     {
       title: "Jobs Completed",
-      value: kpis.totalCompletionsThisWeek.toLocaleString(),
-      description: "Total jobs completed",
-      icon: Users,
+      value: jobKpis.totalCompletionsThisWeek.toLocaleString(),
+      description: "Total jobs finished",
+      icon: FileCheck,
       color: "text-purple-600",
     },
     {
-      title: "Avg. Completion Time",
-      value: `${Math.round(kpis.averageCompletionTimeMinutes / 60 * 10) / 10}h`,
-      description: `Top: ${kpis.topPerformer.userName}`,
+      title: "Images Annotated",
+      value: imageKpis.totalAnnotatedThisWeek.toLocaleString(),
+      description: "Total images annotated",
+      icon: Image,
+      color: "text-cyan-600",
+    },
+    {
+      title: "Images Finalized",
+      value: imageKpis.totalFinalizedThisWeek.toLocaleString(),
+      description: `${imageKpis.imageCompletionRate}% completion rate`,
+      icon: Users,
+      color: "text-indigo-600",
+    },
+    {
+      title: "Avg. Time",
+      value: `${Math.round(jobKpis.averageCompletionTimeMinutes / 60 * 10) / 10}h`,
+      description: `Top: ${jobKpis.topPerformer.userName}`,
       icon: Clock,
       color: "text-orange-600",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
       {kpiData.map((kpi, index) => (
         <Card key={index} className="hover:shadow-md transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

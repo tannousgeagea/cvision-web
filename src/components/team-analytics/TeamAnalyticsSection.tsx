@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnalyticsFilters } from "@/types/analytics";
 // import { useTeamAnalytics } from "@/hooks/useTeamAnalyticsMock";
-import { useTeamAnalytics} from '@/hooks/useTeamAnalytics';
+import { useTeamAnalytics, useImageAnalytics } from '@/hooks/useTeamAnalytics';
 import { AnalyticsFiltersComponent } from "./AnalyticsFilter";
 import { KPICards } from "./KPICards";
 import { PerformanceCharts } from "./PerformanceCharts";
@@ -14,7 +14,12 @@ export const TeamAnalyticsSection = () => {
     timeFrame: 'day',
   });
 
-  const { data: analyticsResponse, isLoading, error } = useTeamAnalytics(filters);
+  // const { data: analyticsResponse, isLoading, error } = useTeamAnalytics(filters);
+  const { data: jobResponse, isLoading: isLoadingJobs, error: jobError } = useTeamAnalytics(filters);
+  const { data: imageResponse, isLoading: isLoadingImages, error: imageError } = useImageAnalytics(filters);
+
+  const isLoading = isLoadingJobs || isLoadingImages;
+  const error = jobError || imageError;
 
   if (error) {
     return (
@@ -42,7 +47,7 @@ export const TeamAnalyticsSection = () => {
       <AnalyticsFiltersComponent 
         filters={filters} 
         onFiltersChange={setFilters}
-        availableUsers={analyticsResponse ? [...new Set(analyticsResponse.data.map(entry => entry.userName))] : []}
+        availableUsers={jobResponse ? [...new Set(jobResponse.data.map(entry => entry.userName))] : []}
       />
 
       {/* Loading State */}
@@ -56,14 +61,15 @@ export const TeamAnalyticsSection = () => {
       )}
 
       {/* Analytics Content */}
-      {analyticsResponse && (
+      {jobResponse && imageResponse && (
         <>
           {/* KPI Cards */}
-          <KPICards kpis={analyticsResponse.kpis} isLoading={isLoading} />
+          <KPICards jobKpis={jobResponse.kpis} imageKpis={imageResponse.kpis} isLoading={isLoading} />
 
           {/* Performance Charts */}
           <PerformanceCharts 
-            data={analyticsResponse.data} 
+            jobData={jobResponse.data}
+            imageData={imageResponse.data}
             timeFrame={filters.timeFrame}
             isLoading={isLoading}
             selectedUsers={filters.selectedUsers}
@@ -72,7 +78,8 @@ export const TeamAnalyticsSection = () => {
 
           {/* Analytics Table */}
           <AnalyticsTable 
-            data={analyticsResponse.data} 
+            jobData={jobResponse.data}
+            imageData={imageResponse.data}
             timeFrame={filters.timeFrame}
             isLoading={isLoading}
           />
